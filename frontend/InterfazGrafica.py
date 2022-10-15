@@ -12,22 +12,26 @@ class InterfazGrafica:
         self.window.config(background="gray16")
 
 
-
-        self.frame_prueba_1 = tk.Frame(self.window)
-        self.frame_prueba_1.config(background="gray16")
-        self.frame_prueba_1.pack()
-        self.label_1 = tk.Label(self.frame_prueba_1, text="Consultorio")
+        #Titulo
+        self.frame_titulo = tk.Frame(self.window)
+        self.frame_botones=tk.Frame(self.window)
+        self.frame_titulo.config(background="gray16")
+        self.frame_botones.config(background="gray16")
+        self.frame_titulo.pack()
+        self.frame_botones.pack()
+        self.label_1 = tk.Label(self.frame_titulo, text="Consultorio")
         self.label_1.config(font=("Candara",48),fg="white",background="gray16")
         self.label_1.pack()
+
         #Texto respuesta para cuando se registra
-        self.label_2 = tk.Label(self.frame_prueba_1)
+        self.label_2 = tk.Label(self.frame_botones)
         self.label_2.config(font="Candara",fg="white",background="gray16")
 
-        self.boton_1=tk.Button(self.frame_prueba_1,text="Registrar Usuario",command=self.registrar)
+        self.boton_1=tk.Button(self.frame_botones,text="Registrar Usuario",command=self.registrar)
         self.boton_1.config(font="Candara",fg="white",background="gray16")
-        self.boton_2=tk.Button(self.frame_prueba_1,text="Elimino Usuario",command=self.eliminar_usuario)
+        self.boton_2=tk.Button(self.frame_botones,text="Elimino Usuario",command=self.eliminar_usuario)
         self.boton_2.config(font="Candara", fg="white",background="gray16")
-        self.boton_3=tk.Button(self.frame_prueba_1,text="Abrir Nueva ventana",command=self.crear_ventana)
+        self.boton_3=tk.Button(self.frame_botones,text="Abrir Nueva ventana",command=self.crear_ventana)
         self.boton_3.config(font="Candara",fg="white",background="gray16")
 
         #Empaquetar los Botones
