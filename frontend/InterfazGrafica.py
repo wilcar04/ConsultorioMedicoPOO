@@ -18,6 +18,7 @@ class InterfazGrafica:
         self.imagen_boton_registrar = tk.PhotoImage(file="imagenes/btn_registrar_usuario.png")
         self.imagen_boton_eliminar= tk.PhotoImage(file="imagenes/btn_eliminar_usuario.png")
         self.imagen_titulo=tk.PhotoImage(file="imagenes/logo_titulo.png" )
+        self.imagen_boton_registrar_nombre=tk.PhotoImage(file="Imagenes/btn_nombre_registrar.png")
         #Disminuir escala imagen
         self.imagen_titulo=self.imagen_titulo.subsample(2)
 
@@ -93,8 +94,14 @@ class InterfazGrafica:
      self.label_registrar = tk.Label(self.frame_titulo_registrar, text="Consultorio")
      self.label_registrar.config(font=("Candara", 48), fg="white", background="black", image=self.imagen_titulo)
      self.label_registrar.grid(row=0, column=1)
-     self.entrada=tk.Entry(self.frame_botones_registrar,font="Candara",bd=4)
-     self.entrada.grid(row=2,column=1)
+     #Entradas -> info
+     self.nombre_registrar=tk.Label(self.frame_botones_registrar)
+     self.nombre_registrar.config(font=("Candara",48),fg="white",background="black",image=self.imagen_boton_registrar_nombre)
+     self.nombre_registrar.grid(row=2,column=0)
+     self.entrada_nombre=tk.Entry(self.frame_botones_registrar,font="Candara",bd=4,width=35, justify="center")
+     self.entrada_nombre.grid(row=2,column=1)
+
+
 
 
 
