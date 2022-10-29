@@ -2,8 +2,8 @@ import tkinter as tk
 from backend.ModeloDelMundo import *
 from tkinter import messagebox
 from frontend import *
-#import uuid
 
+informacion=Informacion()
 
 class InterfazGrafica:
     def __init__(self,nombre:str):
@@ -18,21 +18,27 @@ class InterfazGrafica:
         self.window.maxsize(1280,720)
 
         # Cargar imagen
-        self.imagen_boton_registrar = tk.PhotoImage(file="imagenes/btn_registrar_usuario.png")
-        self.imagen_boton_eliminar= tk.PhotoImage(file="imagenes/btn_eliminar_usuario.png")
+
         self.imagen_titulo=tk.PhotoImage(file="imagenes/logo_titulo.png" )
         self.imagen_boton_registrar_nombre=tk.PhotoImage(file="imagenes/btn_nombre_registrar.png")
+        self.imagen_boton_registrar_registrar=tk.PhotoImage(file="imagenes/btn_registrar_registrar.png")
+        self.imagen_boton_eliminar_eliminar=tk.PhotoImage(file="imagenes/lbl_eliminar_eliminar_usuario.png")
+        self.imagen_boton_registrar_cita=tk.PhotoImage(file="imagenes/btn_registrar_cita.png")
+
         self.imagen_boton_registrar_cedula=tk.PhotoImage(file="imagenes/btn_cedula_registrar.png")
         self.imagen_boton_registrar_sexo=tk.PhotoImage(file="imagenes/btn_sexo_registrar.png")
         self.imagen_boton_registrar_fecha=tk.PhotoImage(file="imagenes/btn_fecha_registrar.png")
         self.imagen_boton_registrar_celular=tk.PhotoImage(file="imagenes/btn_registrar_celular.png")
         self.imagen_boton_volver_menu_registrar=tk.PhotoImage(file="imagenes/btn_registrar_volver_menu.png")
-        self.imagen_boton_registrar_registrar=tk.PhotoImage(file="imagenes/btn_registrar_registrar.png")
-        self.imagen_boton_eliminar_eliminar=tk.PhotoImage(file="imagenes/lbl_eliminar_eliminar_usuario.png")
+
+        self.imagen_label_fecha_registrar_cita=tk.PhotoImage(file="imagenes/lbl_fecha_registrar_cita.png")
+        self.imagen_label_hora_registrar_cita=tk.PhotoImage(file="imagenes/lbl_hora_registrar_cita.png")
+
+
         #Disminuir escala imagen
         self.imagen_titulo=self.imagen_titulo.subsample(2)
         self.imagen_titulo_pequena=self.imagen_titulo.subsample(2)
-        self.imagen_boton_registrar_pequena=self.imagen_boton_registrar.subsample(2)
+
 
         #Frame Titulo
         self.frame_titulo = tk.Frame(self.window)
@@ -64,15 +70,18 @@ class InterfazGrafica:
         
         self.label_2.config(font="Candara",fg="white",background="black")
 
-        self.boton_1=tk.Button(self.frame_botones,text="Registrar Usuario",borderwidth=0,image=self.imagen_boton_registrar,command=self.registrar)
+        self.boton_1=tk.Button(self.frame_botones,text="Registrar Usuario",borderwidth=0,image=self.imagen_boton_registrar_registrar,command=self.registrar)
         self.boton_1.config(font="Candara",fg="white",background="black")
-        self.boton_2=tk.Button(self.frame_botones,text="Elimino Usuario",command=self.eliminar,borderwidth=0,image=self.imagen_boton_eliminar)
+        self.boton_2=tk.Button(self.frame_botones,text="Elimino Usuario",command=self.eliminar,borderwidth=0,image=self.imagen_boton_eliminar_eliminar)
         self.boton_2.config(font="Candara", fg="white",background="black")
+        self.boton_3=tk.Button(self.frame_botones, text="Registrar Cita",borderwidth=0,image=self.imagen_boton_registrar_cita,command=self.registrar_cita)
+        self.boton_3.config(font="Candara",fg="white",background="black")
 
 
         #Empaquetar los Botones
-        self.boton_1.pack()
-        self.boton_2.pack()
+        self.boton_1.grid(row=0,column=1)
+        self.boton_2.grid(row=0, column=2)
+        self.boton_3.grid(row= 1,column=1)
 
         self.window.mainloop()
 
@@ -165,7 +174,10 @@ class InterfazGrafica:
      self.ventana_registrar.destroy()
      self.window.iconify()
      self.window.state("zoomed")
-     print(diccionario)
+     informacion.agregrar_informacion_registrar(diccionario)
+     print(f"La Información de citas registradas es {informacion.informacion_registrar_cita} \n"
+           f"La Informacion de citas canceladas es {informacion.informacion_eliminar} \n"
+           f"La informacion de pacientes registrados es {informacion.informacion_registrar}")
      return paciente
     def devolverse_registrar_a_menu(self):
         self.ventana_registrar.destroy()
@@ -175,6 +187,11 @@ class InterfazGrafica:
         self.ventana_eliminar.destroy()
         self.window.iconify()
         self.window.state("zoomed")
+    def devolverse_registrar_cita_a_menu(self):
+        self.ventana_registrar_cita.destroy()
+        self.window.iconify()
+        self.window.state("zoomed")
+
 
 
 
@@ -211,10 +228,10 @@ class InterfazGrafica:
         self.label_vacio_eliminar.grid(row=0, column=0)
         self.label_vacio_eliminar2.grid(row=0, column=2)
 
-        self.nombre_eliminar = tk.Label(self.frame_botones_eliminar)
-        self.nombre_eliminar.config(font=("Candara", 48), fg="white", background="black",
+        self.cedula_eliminar = tk.Label(self.frame_botones_eliminar)
+        self.cedula_eliminar.config(font=("Candara", 48), fg="white", background="black",
                                      image=self.imagen_boton_registrar_cedula)
-        self.nombre_eliminar.grid(row=2, column=0)
+        self.cedula_eliminar.grid(row=2, column=0)
         self.entrada_cedula = tk.Entry(self.frame_botones_eliminar, font="Candara", bd=4, width=30, justify="center")
         self.entrada_cedula.grid(row=2, column=1)
         self.boton_eliminar_usuario=tk.Button(self.frame_botones_eliminar,borderwidth=0,image=self.imagen_boton_eliminar_eliminar,background="black",command=self.eliminar_usuario)
@@ -229,6 +246,11 @@ class InterfazGrafica:
 
     def eliminar_usuario(self):
         cedula=str(self.entrada_cedula.get())
+        informacion.agregar_informacion_eliminar(cedula)
+        hay_paciente=False
+        print(f"La Información de citas registradas es {informacion.informacion_registrar_cita} \n"
+              f"La Informacion de citas canceladas es {informacion.informacion_eliminar} \n"
+              f"La informacion de pacientes registrados es {informacion.informacion_registrar}")
         for paciente in Paciente.lista_pacientes:
             if paciente.cedula ==cedula:
                 Paciente.lista_pacientes.remove(paciente)
@@ -236,8 +258,138 @@ class InterfazGrafica:
                 self.ventana_eliminar.destroy()
                 self.window.iconify()
                 self.window.state("zoomed")
-            else:
-             tk.messagebox.showinfo("No existe","No se pudo encontrar el paciente, digite otra vez la cedula")
+                hay_paciente=True
+
+
+        if hay_paciente is False:
+          tk.messagebox.showinfo("No existe","No se pudo encontrar el paciente, digite otra vez la cedula")
+
+    def registrar_cita(self):
+        self.window.withdraw()
+        self.ventana_registrar_cita=tk.Toplevel()
+        self.ventana_registrar_cita.iconbitmap("imagenes/logo_ventana.ico")
+        self.ventana_registrar_cita.geometry("1280x820")
+        self.ventana_registrar_cita.title("Registrar cita")
+        self.ventana_registrar_cita.resizable(False, False)
+        self.ventana_registrar_cita.config(background="black")
+        self.frame_titulo_registrar_cita=tk.Frame(self.ventana_registrar_cita)
+        self.frame_titulo_registrar_cita.config(background="black")
+        self.frame_titulo_registrar_cita.grid(row=0,column=1)
+        self.frame_botones_registrar_cita=tk.Frame(self.ventana_registrar_cita)
+        self.frame_botones_registrar_cita.config(background="black")
+        self.frame_botones_registrar_cita.grid(row=1,column=1)
+
+        self.frame_botones_padre_registrar_cita=tk.Frame(self.ventana_registrar_cita)
+        self.frame_botones_padre_registrar_cita.config(background="black")
+        self.frame_botones_padre_registrar_cita.grid(row=2,column=1)
+
+        self.label_titulo_registrar_cita=tk.Label(self.frame_titulo_registrar_cita, text="Consultorio")
+        self.label_titulo_registrar_cita.config(font=("Candara",48),fg="white", background="black",
+                                    image=self.imagen_titulo_pequena)
+        self.label_titulo_registrar_cita.grid(row=0,column=1)
+
+        self.label_vacio_registrar_cita = tk.Label(self.frame_titulo_registrar_cita,
+                                             text="                                                         ",
+                                             background="black", font=("Candara", 30))
+        self.label_vacio_registrar_cita2 = tk.Label(self.frame_titulo_registrar_cita,
+                                              text="                                                         ",
+                                              background="black", font=("Candara", 30))
+        self.label_vacio_registrar_cita.grid(row=0, column=0)
+        self.label_vacio_registrar_cita2.grid(row=0, column=2)
+
+        self.cedula_registrar_cita = tk.Label(self.frame_botones_registrar_cita)
+        self.cedula_registrar_cita.config(font=("Candara", 48), fg="white", background="black",
+                                    image=self.imagen_boton_registrar_cedula)
+        self.cedula_registrar_cita.grid(row=2, column=0)
+        self.entrada_cedula_registrar_cita = tk.Entry(self.frame_botones_registrar_cita, font="Candara", bd=4, width=30, justify="center")
+        self.entrada_cedula_registrar_cita.grid(row=2, column=1)
+
+
+
+        self.fecha_registrar_cita = tk.Label(self.frame_botones_registrar_cita)
+        self.fecha_registrar_cita.config(font=("Candara", 48), fg="white", background="black",
+                                          image=self.imagen_label_fecha_registrar_cita)
+        self.fecha_registrar_cita.grid(row=3, column=0)
+        self.entrada_fecha_registrar_cita = tk.Entry(self.frame_botones_registrar_cita, font="Candara", bd=4, width=30,
+                                                      justify="center")
+        self.entrada_fecha_registrar_cita.grid(row=3, column=1)
+
+        self.hora_registrar_cita = tk.Label(self.frame_botones_registrar_cita)
+        self.hora_registrar_cita.config(font=("Candara", 48), fg="white", background="black",
+                                         image=self.imagen_label_hora_registrar_cita)
+        self.hora_registrar_cita.grid(row=4, column=0)
+        self.entrada_hora_registrar_cita = tk.Entry(self.frame_botones_registrar_cita, font="Candara", bd=4, width=30,
+                                                     justify="center")
+        self.entrada_hora_registrar_cita.grid(row=4, column=1)
+
+
+
+        self.boton_obtener_info_registrar_cita = tk.Button(self.frame_botones_padre_registrar_cita, borderwidth=0,
+                                            image=self.imagen_boton_registrar_cita, background="black",
+                                            command=self.obtener_informacion_registrar_cita)
+        self.boton_obtener_info_registrar_cita.grid(row=0, column=1)
+
+        self.boton_devolverse_registrar_cita = tk.Button(self.frame_botones_padre_registrar_cita, borderwidth=0,
+                                          image=self.imagen_boton_volver_menu_registrar, background="black",
+                                          command=self.devolverse_registrar_cita_a_menu)
+        self.boton_devolverse_registrar_cita.grid(row=0, column=0)
+
+    def obtener_informacion_registrar_cita(self):
+        cedula=self.entrada_cedula_registrar_cita.get()
+        fecha=self.entrada_fecha_registrar_cita.get()
+        hora=self.entrada_hora_registrar_cita.get()
+        diccionario={"cedula":cedula,"fecha":fecha,"hora":hora}
+        informacion.agregar_informacion_registrar_cita(diccionario)
+        print(f"La Información de citas registradas es {informacion.informacion_registrar_cita} \n"
+              f"La Informacion de citas canceladas es {informacion.informacion_eliminar} \n"
+              f"La informacion de pacientes registrados es {informacion.informacion_registrar}")
+        tk.messagebox.showinfo("Registro exitoso", "Se pudo registrar la cita exitosamente")
+        self.ventana_registrar_cita.destroy()
+        self.window.deiconify()
+        self.window.state("zoomed")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

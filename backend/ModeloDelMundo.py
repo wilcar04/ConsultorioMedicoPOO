@@ -12,5 +12,19 @@ class Paciente:
     def __repr__(self):
         return self.cedula
 
+class Informacion:
+    def __init__(self):
+        self.informacion_registrar:list[dict]=[]
+        self.informacion_eliminar:list[str]=[]
+        self.informacion_registrar_cita:list[dict]=[]
+
+    def agregrar_informacion_registrar(self,diccionario:dict):
+        self.informacion_registrar.append(diccionario)
+    def agregar_informacion_eliminar(self,cedula):
+        self.informacion_eliminar.append(cedula)
+    def agregar_informacion_registrar_cita(self,diccionario):
+        self.informacion_registrar_cita.append(diccionario)
+
+
 
 
