@@ -69,6 +69,7 @@ class InterfazGrafica:
 
 
     def registrar(self):
+     self.window.withdraw()
      self.ventana_registrar=tk.Toplevel()
      self.ventana_registrar.geometry("1280x720")
      self.ventana_registrar.title("Registrar")
@@ -80,7 +81,7 @@ class InterfazGrafica:
      self.frame_botones_registrar.config(background="black")
      self.frame_titulo_registrar.config(background="black")
      self.frame_titulo_registrar.grid(row=0, column=0)
-     self.frame_botones_registrar.grid(row=0,column=0)
+     self.frame_botones_registrar.grid(row=1,column=0)
      self.label_vacio_registrar = tk.Label(self.frame_titulo_registrar, text="                                           ",
                                  background="black", font=("Candara", 30))
      self.label_vacio_registrar2 = tk.Label(self.frame_titulo_registrar, text="                                             ",
@@ -92,6 +93,9 @@ class InterfazGrafica:
      self.label_registrar = tk.Label(self.frame_titulo_registrar, text="Consultorio")
      self.label_registrar.config(font=("Candara", 48), fg="white", background="black", image=self.imagen_titulo)
      self.label_registrar.grid(row=0, column=1)
+     self.entrada=tk.Entry(self.frame_botones_registrar,font="Candara",bd=4)
+     self.entrada.grid(row=2,column=1)
+
 
 
 
