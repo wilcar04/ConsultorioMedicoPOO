@@ -2,12 +2,112 @@ import tkinter as tk
 from backend.ModeloDelMundo import *
 from tkinter import messagebox
 from datetime import *
+import os
 
 info = Informacion()
 
 
 class UI:
+    TEXTO_H_L="""HISTORIA CLINICA 
+Nombre:
+Edad :
+Sexo :
+Ocupación :
+Previsión :
+Domicilio :
+ANAMNESIS ACTUAL:
+
+
+
+
+
+ANAMNESIS REMOTA:
+
+
+Antecedentes mórbidos:
+
+
+
+Revisión por sistemas:
+
+
+
+Respiratorios : 
+
+
+
+Examen Físico:
+
+
+
+General:
+
+
+
+
+
+
+
+Examen físico segmentario:
+Cabeza:
+
+
+Cara:
+
+
+Boca:
+
+
+Cuello:
+
+
+
+Tórax:
+
+
+
+
+Abdomen:
+
+
+
+Extremidades:
+
+
+
+
+
+
+
+Vascular:
+
+
+
+Neurológico periférico:
+
+
+
+Columna:
+
+"""
+    TEXTO_E_M="""RESULTADO DE EXAMEN:
+
+Nombre:
+Edad :
+Sexo :
+Ocupación :
+Previsión :
+Domicilio :
+
+
+TIPO DE EXAMEN:
+
+
+
+
+OBSERVACIONES:"""
     def __init__(self, nombre: str):
+        self.imagen_boton_atender_paciente = None
         self.boton_5 = None
         self.imagen_boton_cancelar_cita = None
         self.cedula_cancelar_cita = None
@@ -125,6 +225,9 @@ class UI:
         self.imagen_label_hora_registrar_cita = tk.PhotoImage(file="images/lbl_hora_registrar_cita.png")
         self.imagen_boton_confirmar_cita = tk.PhotoImage(file="images/btn_confirmar_cita.png")
         self.imagen_boton_cancelar_cita = tk.PhotoImage(file="images/btn_cancelar_cita.png")
+        self.imagen_boton_atender_paciente = tk.PhotoImage(file="images/btn_atender_paciente.png")
+        self.imagen_boton_historia_medica= tk.PhotoImage(file="images/btn_historia_medica.png")
+        self.imagen_boton_resultados_examenes= tk.PhotoImage(file="images/btn_resultados_examen.png")
 
         self.imagen_titulo = self.imagen_titulo.subsample(2)
         self.imagen_titulo_pequena = self.imagen_titulo.subsample(2)
@@ -172,6 +275,9 @@ class UI:
         self.boton_5 = tk.Button(self.frame_botones, text="Cancelar Cita", borderwidth=0,
                                  image=self.imagen_boton_cancelar_cita, command=self.delete_medical_appointment)
         self.boton_5.config(font="Candara", fg="white", background="black")
+        self.boton_6 = tk.Button(self.frame_botones, text="Atender Cita", borderwidth=0,
+                                 image=self.imagen_boton_atender_paciente, command=self.atender_cita_medica)
+        self.boton_6.config(font="Candara", fg="white", background="black")
 
         # Empaquetar los Botones
         self.boton_1.grid(row=0, column=0)
@@ -179,6 +285,7 @@ class UI:
         self.boton_3.grid(row=0, column=2)
         self.boton_4.grid(row=1, column=0)
         self.boton_5.grid(row=1, column=1)
+        self.boton_6.grid(row=1, column=2)
 
         self.window.mainloop()
 
@@ -327,6 +434,11 @@ class UI:
 
     def return_cancel_medical_appointment_a_menu(self):
         self.ventana_cancelar_cita.destroy()
+        self.window.iconify()
+        self.window.state("zoomed")
+
+    def return_atender_medical_appointment_a_menu(self):
+        self.ventana_atender_cita.destroy()
         self.window.iconify()
         self.window.state("zoomed")
 
@@ -657,3 +769,173 @@ class UI:
             self.ventana_cancelar_cita.destroy()
             self.window.iconify()
             self.window.state("zoomed")
+
+    def atender_cita_medica(self):
+        self.window.withdraw()
+
+        self.ventana_atender_cita = tk.Toplevel()
+        self.ventana_atender_cita.maxsize(1280, 720)
+        self.ventana_atender_cita.state("zoomed")
+        self.ventana_atender_cita.iconbitmap("images/logo_ventana.ico")
+        self.ventana_atender_cita.geometry("1280x420")
+        self.ventana_atender_cita.title("Atender cita")
+        self.ventana_atender_cita.resizable(True, True)
+        self.ventana_atender_cita.config(background="black")
+
+        self.frame_titulo_atender_cita = tk.Frame(self.ventana_atender_cita)
+        self.frame_titulo_atender_cita.config(background="black")
+        self.frame_botones_atender_cita = tk.Frame(self.ventana_atender_cita)
+        self.frame_botones_atender_cita.config(background="black")
+        self.frame_titulo_atender_cita.grid(row=0, column=1)
+        self.frame_botones_atender_cita.grid(row=1, column=1)
+
+        self.label_atender_cita = tk.Label(self.frame_titulo_atender_cita, text="Consultorio")
+        self.label_atender_cita.config(font=("Candara", 48), fg="white", background="black",
+                                       image=self.imagen_titulo_pequena)
+        self.label_atender_cita.grid(row=0, column=1)
+
+        self.label_vacio_atender_cita = tk.Label(self.frame_titulo_atender_cita,
+                                                 text="                                                         ",
+                                                 background="black", font=("Candara", 30))
+        self.label_vacio_atender_cita2 = tk.Label(self.frame_titulo_atender_cita,
+                                                  text="                                                         ",
+                                                  background="black", font=("Candara", 30))
+        self.label_vacio_atender_cita.grid(row=0, column=0)
+        self.label_vacio_atender_cita2.grid(row=0, column=2)
+
+        self.cedula_atender_cita = tk.Label(self.frame_botones_atender_cita)
+        self.cedula_atender_cita.config(font=("Candara", 48), fg="white", background="black",
+                                        image=self.imagen_boton_registrar_cedula)
+        self.cedula_atender_cita.grid(row=2, column=0)
+        self.entry_cedula_atender_cita = tk.Entry(self.frame_botones_atender_cita, font="Candara", bd=4, width=30,
+                                                  justify="center")
+        self.entry_cedula_atender_cita.grid(row=2, column=1)
+        self.boton_atender_cita_usuario = tk.Button(self.frame_botones_atender_cita, borderwidth=0,
+                                                    image=self.imagen_boton_atender_paciente, background="black",
+                                                    command=self.get_info_atender_cita)
+        self.boton_atender_cita_usuario.grid(row=3, column=1)
+
+        self.boton_return_atender_cita = tk.Button(self.frame_botones_atender_cita, borderwidth=0,
+                                                   image=self.imagen_boton_volver_menu_registrar,
+                                                   background="black",
+                                                   command=self.return_atender_medical_appointment_a_menu)
+        self.boton_return_atender_cita.grid(row=3, column=0)
+
+        self.ventana_atender_cita.mainloop()
+
+    def get_info_atender_cita(self):
+        try:
+            cedula = str(self.entry_cedula_atender_cita.get())
+            hay_paciente = True
+            have_medical_appointment = True
+
+            if cedula.isdigit() is False:
+                raise Exception("La cedula es un numero, ingresa el numero nuevamente.")
+
+            if hay_paciente is False:
+                raise Exception("No se encuentra el paciente")
+
+            if have_medical_appointment is False:
+                raise Exception("El paciente no tiene una cita asignada")
+
+        except Exception as error:
+            tk.messagebox.showwarning("Error", str(error))
+
+        else:
+            self.ventana_atender_cita.withdraw()
+            self.ventana_elegir = tk.Toplevel()
+
+            self.ventana_elegir.maxsize(1280, 720)
+            self.ventana_elegir.state("zoomed")
+            self.ventana_elegir.iconbitmap("images/logo_ventana.ico")
+            self.ventana_elegir.geometry("720x420")
+            self.ventana_elegir.title("Elegir Tipo de examen")
+            self.ventana_elegir.resizable(True, True)
+            self.ventana_elegir.config(background="black")
+
+            self.frame_titulo_elegir = tk.Frame(self.ventana_elegir)
+            self.frame_titulo_elegir.config(background="black")
+            self.frame_titulo_elegir.grid(row=0, column=1)
+            self.frame_botones_elegir = tk.Frame(self.ventana_elegir)
+            self.frame_botones_elegir.config(background="black")
+            self.frame_botones_elegir.grid(row=1,column=1)
+
+            self.label_elegir = tk.Label(self.frame_titulo_elegir, text="Consultorio")
+            self.label_elegir.config(font=("Candara", 48), fg="white", background="black",
+                                     image=self.imagen_titulo_pequena)
+            self.label_elegir.grid(row=0, column=1)
+
+            self.label_vacio_elegir = tk.Label(self.frame_titulo_elegir,
+                                               text="                                                         ",
+                                               background="black", font=("Candara", 30))
+            self.label_vacio_elegir2 = tk.Label(self.frame_titulo_elegir,
+                                                text="                                                         ",
+                                                background="black", font=("Candara", 30))
+            self.label_vacio_elegir.grid(row=0, column=0)
+            self.label_vacio_elegir2.grid(row=0, column=2)
+
+            self.boton_historia_medica=tk.Button(self.frame_botones_elegir, borderwidth=0,
+                                                    image=self.imagen_boton_historia_medica, background="black",
+                                                    command=self.proceso_historia_medica)
+            self.boton_resultado_examen=tk.Button(self.frame_botones_elegir, borderwidth=0, image=self.imagen_boton_resultados_examenes, background="black"
+                                                  ,command=self.proceso_resultado_examen)
+
+            self.boton_historia_medica.grid(row=3,column=0)
+            self.boton_resultado_examen.grid(row=3,column=1)
+
+            self.ventana_elegir.mainloop()
+
+
+    def proceso_historia_medica(self):
+        tk.messagebox.showinfo("Para el llenado de la historia medica del paciente", """
+        1)  Se va abrir el editor de texto.
+        2)  Editas el archivo y se guarda(Ctrl+S).
+        3)  Aparece una ventana emergente de informacion, la cierras cuando ya hayas editado el archivo.""")
+
+        os.startfile(r"C:\Users\jvald\OneDrive\Escritorio\InterfazgraficaPOO\frontend\files\historia_medica.txt")
+        tk.messagebox.showinfo("Cierrame cuando hayas editado el archivo", "Cierrame cuando hayas editado el archivo")
+
+        historia=open("files/historia_medica.txt","r",encoding="utf-8")
+        texto_historia_medica = historia.read()
+        historia.close()
+
+        historia=open("files/historia_medica.txt", "w",encoding="utf-8")
+        historia.write(UI.TEXTO_H_L)
+        historia.close()
+        diccionario={self.entry_cedula_atender_cita.get(): texto_historia_medica}
+        info.informacion_historias_medicas.append(diccionario)
+        print(info.informacion_historias_medicas)
+        self.ventana_elegir.destroy()
+        self.ventana_atender_cita.destroy()
+        self.window.iconify()
+        self.window.state("zoomed")
+
+
+    def proceso_resultado_examen(self):
+        tk.messagebox.showinfo("Para el llenado de los resultados de los examenes del paciente", """
+                1)  Se va abrir el editor de texto.
+                2)  Editas el archivo y se guarda(Ctrl+S).
+                3)  Aparece una ventana emergente de informacion, la cierras cuando ya hallas editado el archivo.""")
+        os.startfile(r"C:\Users\jvald\OneDrive\Escritorio\InterfazgraficaPOO\frontend\files\resultado_examen.txt")
+        tk.messagebox.showinfo("Cierrame cuando hallas editado el archivo", "Cierrame cuando hayas editado el archivo")
+
+        examen = open("files/resultado_examen.txt", "r", encoding="utf-8")
+        texto_examen = examen.read()
+        examen.close()
+        examen= open("files/resultado_examen.txt", "w", encoding="utf-8")
+        examen.write(UI.TEXTO_E_M)
+        examen.close()
+
+
+        diccionario = {self.entry_cedula_atender_cita.get(): texto_examen}
+        info.informacion_resultados_examenes.append(diccionario)
+        print(info.informacion_resultados_examenes)
+
+
+        self.ventana_elegir.destroy()
+        self.ventana_atender_cita.destroy()
+        self.window.iconify()
+        self.window.state("zoomed")
+
+
+

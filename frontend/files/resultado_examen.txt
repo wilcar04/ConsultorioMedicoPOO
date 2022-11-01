@@ -1,0 +1,16 @@
+RESULTADO DE EXAMEN:
+
+Nombre:
+Edad :
+Sexo :
+Ocupación :
+Previsión :
+Domicilio :
+
+
+TIPO DE EXAMEN:
+
+
+
+
+OBSERVACIONES:
