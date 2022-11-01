@@ -1,6 +1,7 @@
 import tkinter as tk
 from backend.ModeloDelMundo import *
 from tkinter import messagebox
+from datetime import *
 from frontend import *
 
 informacion=Informacion()
@@ -163,22 +164,39 @@ class InterfazGrafica:
 
 
     def obtener_info(self):
-     nombre=self.entrada_nombre.get()
-     cedula=self.entrada_cedula.get()
-     sexo=self.entrada_genero.get()
-     fecha=self.entrada_fecha.get()
-     celular=self.entrada_celular.get()
-     diccionario={"nombre":nombre, "cedula":cedula,"sexo":sexo,"fecha":fecha,"celular":celular}
-     paciente=Paciente(nombre,cedula,sexo,fecha,celular)
-     tk.messagebox.showinfo("Registro"," El registro se hizo sin problemas")
-     self.ventana_registrar.destroy()
-     self.window.iconify()
-     self.window.state("zoomed")
-     informacion.agregrar_informacion_registrar(diccionario)
-     print(f"La Información de citas registradas es {informacion.informacion_registrar_cita} \n"
-           f"La Informacion de citas canceladas es {informacion.informacion_eliminar} \n"
-           f"La informacion de pacientes registrados es {informacion.informacion_registrar}")
-     return paciente
+        try:
+            nombre=self.entrada_nombre.get()
+            cedula=self.entrada_cedula.get()
+            sexo=self.entrada_genero.get()
+            fecha=self.entrada_fecha.get()
+            celular=self.entrada_celular.get()
+            nombre=nombre.replace(" ","")
+            verificacion_nombre=nombre.isalpha()
+            verificacion_cedula=cedula.isdigit()
+            verificar_fecha=datetime.strptime(fecha,"%d/%m/%Y")
+            verificacion_sexo=sexo.isalpha()
+            verificar_celular=celular.isdigit()
+            if verificacion_nombre==False:
+                raise Exception("No ingresaste bien el nombre.")
+            if verificacion_cedula is False and len(cedula)<=10:
+                raise Exception("No ingresaste bien la cedula.")
+            if verificacion_sexo is False:
+                raise Exception("No ingresaste bien el sexo.")
+            if verificar_celular is False:
+                raise Exception("No ingresaste Bien la fecha.")
+        except ValueError as error:
+            tk.messagebox.showwarning("Mala digitación",str(error))
+        except Exception as error:
+            tk.messagebox.showwarning("Mala digitaciòn",f"{str(error)}")
+        else:
+            diccionario={"nombre":nombre, "cedula":cedula,"sexo":sexo,"fecha":fecha,"celular":celular}
+            paciente=Paciente(nombre,cedula,sexo,fecha,celular)
+            tk.messagebox.showinfo("Registro"," El registro se hizo sin problemas")
+            self.ventana_registrar.destroy()
+            self.window.iconify()
+            self.window.state("zoomed")
+            informacion.agregrar_informacion_registrar(diccionario)
+            return paciente
     def devolverse_registrar_a_menu(self):
         self.ventana_registrar.destroy()
         self.window.iconify()
@@ -245,24 +263,25 @@ class InterfazGrafica:
         self.ventana_eliminar.mainloop()
 
     def eliminar_usuario(self):
-        cedula=str(self.entrada_cedula.get())
-        informacion.agregar_informacion_eliminar(cedula)
-        hay_paciente=False
-        print(f"La Información de citas registradas es {informacion.informacion_registrar_cita} \n"
-              f"La Informacion de citas canceladas es {informacion.informacion_eliminar} \n"
-              f"La informacion de pacientes registrados es {informacion.informacion_registrar}")
-        for paciente in Paciente.lista_pacientes:
-            if paciente.cedula ==cedula:
+        try:
+            cedula=str(self.entrada_cedula.get())
+            informacion.agregar_informacion_eliminar(cedula)
+            hay_paciente=False
+            if cedula.isdigit() is False:
+                raise Exception("La cedula es un numero, ingresa el numero nuevamente.")
+
+            for paciente in Paciente.lista_pacientes:
+             if paciente.cedula ==cedula:
                 Paciente.lista_pacientes.remove(paciente)
                 tk.messagebox.showinfo("Eliminación", " la eliminación del usuario se hizo sin problemas.")
                 self.ventana_eliminar.destroy()
                 self.window.iconify()
                 self.window.state("zoomed")
                 hay_paciente=True
-
-
-        if hay_paciente is False:
-          tk.messagebox.showinfo("No existe","No se pudo encontrar el paciente, digite otra vez la cedula")
+            if hay_paciente is False:
+                raise Exception("No se encuentra el paciente")
+        except Exception as error:
+            tk.messagebox.showwarning("Error",str(error))
 
     def registrar_cita(self):
         self.window.withdraw()
@@ -335,18 +354,31 @@ class InterfazGrafica:
         self.boton_devolverse_registrar_cita.grid(row=0, column=0)
 
     def obtener_informacion_registrar_cita(self):
-        cedula=self.entrada_cedula_registrar_cita.get()
-        fecha=self.entrada_fecha_registrar_cita.get()
-        hora=self.entrada_hora_registrar_cita.get()
-        diccionario={"cedula":cedula,"fecha":fecha,"hora":hora}
-        informacion.agregar_informacion_registrar_cita(diccionario)
-        print(f"La Información de citas registradas es {informacion.informacion_registrar_cita} \n"
-              f"La Informacion de citas canceladas es {informacion.informacion_eliminar} \n"
-              f"La informacion de pacientes registrados es {informacion.informacion_registrar}")
-        tk.messagebox.showinfo("Registro exitoso", "Se pudo registrar la cita exitosamente")
-        self.ventana_registrar_cita.destroy()
-        self.window.deiconify()
-        self.window.state("zoomed")
+        try:
+            cedula=self.entrada_cedula_registrar_cita.get()
+            fecha=self.entrada_fecha_registrar_cita.get()
+            hora=self.entrada_hora_registrar_cita.get()
+            verificar_fecha = datetime.strptime(fecha, "%d/%m/%Y")
+            verificar_hora= datetime.strptime(hora, "%H")
+            if cedula.isdigit() is False:
+                raise Exception("La cedula es un nùmero, ingresalo nuevamente")
+
+
+            diccionario={"cedula":cedula,"fecha":fecha,"hora":hora}
+            informacion.agregar_informacion_registrar_cita(diccionario)
+
+            tk.messagebox.showinfo("Registro exitoso", "Se pudo registrar la cita exitosamente")
+            self.ventana_registrar_cita.destroy()
+            self.window.deiconify()
+            self.window.state("zoomed")
+        except ValueError as error:
+            tk.messagebox.showwarning("Ingresa bien las fechas", str(error))
+
+        except Exception as error:
+            tk.messagebox.showwarning("Mala digitación", str(error))
+
+
+
 
 
 
