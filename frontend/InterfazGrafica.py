@@ -12,11 +12,11 @@ class InterfazGrafica:
     def crear_ventana_principal(self):
         self.window = tk.Tk()
         self.window.iconbitmap("imagenes/logo_ventana.ico")
-        self.window.geometry("1280x820")
-        self.window.resizable(False, False)
+        self.window.geometry("1280x720")
+        self.window.resizable(True,True)
         self.window.title("Consultorio")
         self.window.config(background="black")
-        self.window.maxsize(1280,720)
+
 
         # Cargar imagen
 
@@ -31,9 +31,9 @@ class InterfazGrafica:
         self.imagen_boton_registrar_fecha=tk.PhotoImage(file="imagenes/btn_fecha_registrar.png")
         self.imagen_boton_registrar_celular=tk.PhotoImage(file="imagenes/btn_registrar_celular.png")
         self.imagen_boton_volver_menu_registrar=tk.PhotoImage(file="imagenes/btn_registrar_volver_menu.png")
-
         self.imagen_label_fecha_registrar_cita=tk.PhotoImage(file="imagenes/lbl_fecha_registrar_cita.png")
         self.imagen_label_hora_registrar_cita=tk.PhotoImage(file="imagenes/lbl_hora_registrar_cita.png")
+        self.imagen_boton_confirmar_cita=tk.PhotoImage(file="imagenes/btn_confirmar_cita.png")
 
 
         #Disminuir escala imagen
@@ -77,12 +77,15 @@ class InterfazGrafica:
         self.boton_2.config(font="Candara", fg="white",background="black")
         self.boton_3=tk.Button(self.frame_botones, text="Registrar Cita",borderwidth=0,image=self.imagen_boton_registrar_cita,command=self.registrar_cita)
         self.boton_3.config(font="Candara",fg="white",background="black")
+        self.boton_4=tk.Button(self.frame_botones, text="Confirmar cita",borderwidth=0,image=self.imagen_boton_confirmar_cita,command=self.confirmar_cita)
+        self.boton_4.config(font="Candara",fg="white",background="black")
 
 
         #Empaquetar los Botones
         self.boton_1.grid(row=0,column=1)
         self.boton_2.grid(row=0, column=2)
         self.boton_3.grid(row= 1,column=1)
+        self.boton_4.grid(row=1,column=2)
 
         self.window.mainloop()
 
@@ -94,12 +97,12 @@ class InterfazGrafica:
     def registrar(self):
      self.window.withdraw()
      self.ventana_registrar=tk.Toplevel()
+     self.ventana_registrar.state("zoomed")
      self.ventana_registrar.iconbitmap("imagenes/logo_ventana.ico")
      self.ventana_registrar.geometry("1280x820")
      self.ventana_registrar.title("Registrar")
-     self.ventana_registrar.resizable(False, False)
+     self.ventana_registrar.resizable(True, True)
      self.ventana_registrar.config(background="black")
-
      self.frame_titulo_registrar=tk.Frame(self.ventana_registrar)
      self.frame_botones_registrar = tk.Frame(self.ventana_registrar)
      self.frame_boton_padre_registrar=tk.Frame(self.ventana_registrar)
@@ -183,7 +186,7 @@ class InterfazGrafica:
             if verificacion_sexo is False:
                 raise Exception("No ingresaste bien el sexo.")
             if verificar_celular is False:
-                raise Exception("No ingresaste Bien la fecha.")
+                raise Exception("No ingresaste bien el celular.")
         except ValueError as error:
             tk.messagebox.showwarning("Mala digitación",str(error))
         except Exception as error:
@@ -205,8 +208,14 @@ class InterfazGrafica:
         self.ventana_eliminar.destroy()
         self.window.iconify()
         self.window.state("zoomed")
+
+
     def devolverse_registrar_cita_a_menu(self):
         self.ventana_registrar_cita.destroy()
+        self.window.iconify()
+        self.window.state("zoomed")
+    def devolverse_confirmar_cita_a_menu(self):
+        self.ventana_confirmar_cita.destroy()
         self.window.iconify()
         self.window.state("zoomed")
 
@@ -218,10 +227,11 @@ class InterfazGrafica:
         self.window.withdraw()
 
         self.ventana_eliminar = tk.Toplevel()
+        self.ventana_eliminar.state("zoomed")
         self.ventana_eliminar.iconbitmap("imagenes/logo_ventana.ico")
         self.ventana_eliminar.geometry("1280x420")
         self.ventana_eliminar.title("Eliminar")
-        self.ventana_eliminar.resizable(False, False)
+        self.ventana_eliminar.resizable(True, True)
         self.ventana_eliminar.config(background="black")
 
         self.frame_titulo_eliminar = tk.Frame(self.ventana_eliminar)
@@ -286,10 +296,11 @@ class InterfazGrafica:
     def registrar_cita(self):
         self.window.withdraw()
         self.ventana_registrar_cita=tk.Toplevel()
+        self.ventana_registrar_cita.state("zoomed")
         self.ventana_registrar_cita.iconbitmap("imagenes/logo_ventana.ico")
         self.ventana_registrar_cita.geometry("1280x820")
         self.ventana_registrar_cita.title("Registrar cita")
-        self.ventana_registrar_cita.resizable(False, False)
+        self.ventana_registrar_cita.resizable(True, True)
         self.ventana_registrar_cita.config(background="black")
         self.frame_titulo_registrar_cita=tk.Frame(self.ventana_registrar_cita)
         self.frame_titulo_registrar_cita.config(background="black")
@@ -376,6 +387,58 @@ class InterfazGrafica:
 
         except Exception as error:
             tk.messagebox.showwarning("Mala digitación", str(error))
+
+    def confirmar_cita(self):
+        self.window.withdraw()
+
+        self.ventana_confirmar_cita = tk.Toplevel()
+        self.ventana_confirmar_cita.state("zoomed")
+        self.ventana_confirmar_cita.iconbitmap("imagenes/logo_ventana.ico")
+        self.ventana_confirmar_cita.geometry("1280x420")
+        self.ventana_confirmar_cita.title("Confirmar_cita")
+        self.ventana_confirmar_cita.resizable(True, True)
+        self.ventana_confirmar_cita.config(background="black")
+
+        self.frame_titulo_confirmar_cita = tk.Frame(self.ventana_confirmar_cita)
+        self.frame_titulo_confirmar_cita.config(background="black")
+        self.frame_botones_confirmar_cita = tk.Frame(self.ventana_confirmar_cita)
+        self.frame_botones_confirmar_cita.config(background="black")
+        self.frame_titulo_confirmar_cita.grid(row=0, column=1)
+        self.frame_botones_confirmar_cita.grid(row=1, column=1)
+
+        self.label_confirmar_cita = tk.Label(self.frame_titulo_confirmar_cita, text="Consultorio")
+        self.label_confirmar_cita.config(font=("Candara", 48), fg="white", background="black",
+                                   image=self.imagen_titulo_pequena)
+        self.label_confirmar_cita.grid(row=0, column=1)
+
+        self.label_vacio_confirmar_cita = tk.Label(self.frame_titulo_confirmar_cita,
+                                             text="                                                         ",
+                                             background="black", font=("Candara", 30))
+        self.label_vacio_confirmar_cita2 = tk.Label(self.frame_titulo_confirmar_cita,
+                                              text="                                                         ",
+                                              background="black", font=("Candara", 30))
+        self.label_vacio_confirmar_cita.grid(row=0, column=0)
+        self.label_vacio_confirmar_cita2.grid(row=0, column=2)
+
+        self.cedula_confirmar_cita = tk.Label(self.frame_botones_confirmar_cita)
+        self.cedula_confirmar_cita.config(font=("Candara", 48), fg="white", background="black",
+                                    image=self.imagen_boton_registrar_cedula)
+        self.cedula_confirmar_cita.grid(row=2, column=0)
+        self.entrada_cedula_confirmar_cita = tk.Entry(self.frame_botones_confirmar_cita, font="Candara", bd=4, width=30, justify="center")
+        self.entrada_cedula_confirmar_cita.grid(row=2, column=1)
+        self.boton_confirmar_cita_usuario = tk.Button(self.frame_botones_confirmar_cita, borderwidth=0,
+                                                image=self.imagen_boton_eliminar_eliminar, background="black",
+                                                command=self.eliminar_usuario)
+        self.boton_confirmar_cita_usuario.grid(row=3, column=1)
+
+        self.boton_devolverse_confirmar_cita = tk.Button(self.frame_botones_confirmar_cita, borderwidth=0,
+                                          image=self.imagen_boton_volver_menu_registrar, background="black",
+                                          command=self.devolverse_confirmar_cita_a_menu)
+        self.boton_devolverse_confirmar_cita.grid(row=3, column=0)
+
+        self.ventana_confirmar_cita.mainloop()
+
+
 
 
 
