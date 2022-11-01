@@ -228,6 +228,8 @@ OBSERVACIONES:"""
         self.imagen_boton_atender_paciente = tk.PhotoImage(file="images/btn_atender_paciente.png")
         self.imagen_boton_historia_medica= tk.PhotoImage(file="images/btn_historia_medica.png")
         self.imagen_boton_resultados_examenes= tk.PhotoImage(file="images/btn_resultados_examen.png")
+        self.imagen_boton_obtener_citas_pendientes= tk.PhotoImage(file="images/btn_citas_pendientes.png")
+        self.imagen_boton_historial_paciente= tk.PhotoImage(file="images/btn_historial_paciente.png")
 
         self.imagen_titulo = self.imagen_titulo.subsample(2)
         self.imagen_titulo_pequena = self.imagen_titulo.subsample(2)
@@ -278,6 +280,13 @@ OBSERVACIONES:"""
         self.boton_6 = tk.Button(self.frame_botones, text="Atender Cita", borderwidth=0,
                                  image=self.imagen_boton_atender_paciente, command=self.atender_cita_medica)
         self.boton_6.config(font="Candara", fg="white", background="black")
+        self.boton_7 =tk.Button(self.frame_botones,text="Citas Pendientes", borderwidth=0,
+                                image=self.imagen_boton_obtener_citas_pendientes,command=self.obtener_la_agenda_de_las_citas_pendientes)
+        self.boton_7.config(font="Candara",fg="white",background="black")
+        self.boton_8 = tk.Button(self.frame_botones,image=self.imagen_boton_historial_paciente,command=self.historial_paciente,borderwidth=0)
+        self.boton_8.config(fg="white",background="black")
+
+
 
         # Empaquetar los Botones
         self.boton_1.grid(row=0, column=0)
@@ -286,6 +295,9 @@ OBSERVACIONES:"""
         self.boton_4.grid(row=1, column=0)
         self.boton_5.grid(row=1, column=1)
         self.boton_6.grid(row=1, column=2)
+        self.boton_7.grid(row=2, column=0)
+        self.boton_8.grid(row=2,column=1)
+
 
         self.window.mainloop()
 
@@ -328,35 +340,35 @@ OBSERVACIONES:"""
         self.name_registrar.config(font=("Candara", 48), fg="white", background="black",
                                    image=self.imagen_boton_registrar_nombre)
         self.name_registrar.grid(row=2, column=0)
-        self.entry_name = tk.Entry(self.frame_buttons_registrar, font="Candara", bd=4, width=30, justify="center")
+        self.entry_name = tk.Entry(self.frame_buttons_registrar, font=("Arial rounded MT", 14), bd=4, width=30, justify="center")
         self.entry_name.grid(row=2, column=1)
 
         self.id_registrar = tk.Label(self.frame_buttons_registrar)
         self.id_registrar.config(font=("Candara", 48), fg="white", background="black",
                                  image=self.imagen_boton_registrar_cedula)
         self.id_registrar.grid(row=3, column=0)
-        self.entry_id = tk.Entry(self.frame_buttons_registrar, font="Candara", bd=4, width=30, justify="center")
+        self.entry_id = tk.Entry(self.frame_buttons_registrar, font=("Arial rounded MT", 14), bd=4, width=30, justify="center")
         self.entry_id.grid(row=3, column=1)
 
         self.gender_registrar = tk.Label(self.frame_buttons_registrar)
         self.gender_registrar.config(font=("Candara", 48), fg="white", background="black",
                                      image=self.imagen_boton_registrar_sexo)
         self.gender_registrar.grid(row=4, column=0)
-        self.entry_gender = tk.Entry(self.frame_buttons_registrar, font="Candara", bd=4, width=30, justify="center")
+        self.entry_gender = tk.Entry(self.frame_buttons_registrar, font=("Arial rounded MT", 14), bd=4, width=30, justify="center")
         self.entry_gender.grid(row=4, column=1)
 
         self.date_registrar = tk.Label(self.frame_buttons_registrar)
         self.date_registrar.config(font=("Candara", 48), fg="white", background="black",
                                    image=self.imagen_boton_registrar_fecha)
         self.date_registrar.grid(row=5, column=0)
-        self.entry_date = tk.Entry(self.frame_buttons_registrar, font="Candara", bd=4, width=30, justify="center")
+        self.entry_date = tk.Entry(self.frame_buttons_registrar, font=("Arial rounded MT", 14), bd=4, width=30, justify="center")
         self.entry_date.grid(row=5, column=1)
 
         self.cell_registrar = tk.Label(self.frame_buttons_registrar)
         self.cell_registrar.config(font=("Candara", 48), fg="white", background="black",
                                    image=self.imagen_boton_registrar_celular)
         self.cell_registrar.grid(row=6, column=0)
-        self.entry_cell = tk.Entry(self.frame_buttons_registrar, font="Candara", bd=4, width=30, justify="center")
+        self.entry_cell = tk.Entry(self.frame_buttons_registrar, font=("Arial rounded MT", 14), bd=4, width=30, justify="center")
         self.entry_cell.grid(row=6, column=1)
 
         self.button_get_info = tk.Button(self.frame_button_padre_registrar, borderwidth=0,
@@ -412,35 +424,7 @@ OBSERVACIONES:"""
             self.window.iconify()
             self.window.state("zoomed")
 
-    def return_registrar_a_menu(self):
-        self.ventana_registrar.destroy()
-        self.window.iconify()
-        self.window.state("zoomed")
 
-    def return_delete_a_menu(self):
-        self.ventana_delete.destroy()
-        self.window.iconify()
-        self.window.state("zoomed")
-
-    def return_registrar_medical_appointment_a_menu(self):
-        self.ventana_registrar_cita.destroy()
-        self.window.iconify()
-        self.window.state("zoomed")
-
-    def return_confirm_medical_appointment_a_menu(self):
-        self.ventana_confirmar_cita.destroy()
-        self.window.iconify()
-        self.window.state("zoomed")
-
-    def return_cancel_medical_appointment_a_menu(self):
-        self.ventana_cancelar_cita.destroy()
-        self.window.iconify()
-        self.window.state("zoomed")
-
-    def return_atender_medical_appointment_a_menu(self):
-        self.ventana_atender_cita.destroy()
-        self.window.iconify()
-        self.window.state("zoomed")
 
     def delete(self):
         self.window.withdraw()
@@ -478,7 +462,7 @@ OBSERVACIONES:"""
         self.cedula_eliminar.config(font=("Candara", 48), fg="white", background="black",
                                     image=self.imagen_boton_registrar_cedula)
         self.cedula_eliminar.grid(row=2, column=0)
-        self.entry_id = tk.Entry(self.frame_buttons_delete, font="Candara", bd=4, width=30, justify="center")
+        self.entry_id = tk.Entry(self.frame_buttons_delete, font=("Arial rounded MT", 18), bd=4, width=30, justify="center")
         self.entry_id.grid(row=2, column=1)
         self.boton_eliminar_user = tk.Button(self.frame_buttons_delete, borderwidth=0,
                                              image=self.imagen_boton_eliminar_eliminar, background="black",
@@ -550,7 +534,7 @@ OBSERVACIONES:"""
         self.cedula_registrar_cita.config(font=("Candara", 48), fg="white", background="black",
                                           image=self.imagen_boton_registrar_cedula)
         self.cedula_registrar_cita.grid(row=2, column=0)
-        self.entrada_cedula_registrar_cita = tk.Entry(self.frame_botones_registrar_cita, font="Candara", bd=4, width=30,
+        self.entrada_cedula_registrar_cita = tk.Entry(self.frame_botones_registrar_cita, font=("Arial rounded MT", 18), bd=4, width=30,
                                                       justify="center")
         self.entrada_cedula_registrar_cita.grid(row=2, column=1)
 
@@ -558,7 +542,7 @@ OBSERVACIONES:"""
         self.fecha_registrar_cita.config(font=("Candara", 48), fg="white", background="black",
                                          image=self.imagen_label_fecha_registrar_cita)
         self.fecha_registrar_cita.grid(row=3, column=0)
-        self.entrada_fecha_registrar_cita = tk.Entry(self.frame_botones_registrar_cita, font="Candara", bd=4, width=30,
+        self.entrada_fecha_registrar_cita = tk.Entry(self.frame_botones_registrar_cita, font=("Arial rounded MT", 18), bd=4, width=30,
                                                      justify="center")
         self.entrada_fecha_registrar_cita.grid(row=3, column=1)
 
@@ -566,7 +550,7 @@ OBSERVACIONES:"""
         self.hora_registrar_cita.config(font=("Candara", 48), fg="white", background="black",
                                         image=self.imagen_label_hora_registrar_cita)
         self.hora_registrar_cita.grid(row=4, column=0)
-        self.entrada_hora_registrar_cita = tk.Entry(self.frame_botones_registrar_cita, font="Candara", bd=4, width=30,
+        self.entrada_hora_registrar_cita = tk.Entry(self.frame_botones_registrar_cita, font=("Arial rounded MT", 18), bd=4, width=30,
                                                     justify="center")
         self.entrada_hora_registrar_cita.grid(row=4, column=1)
 
@@ -649,7 +633,7 @@ OBSERVACIONES:"""
         self.cedula_confirmar_cita.config(font=("Candara", 48), fg="white", background="black",
                                           image=self.imagen_boton_registrar_cedula)
         self.cedula_confirmar_cita.grid(row=2, column=0)
-        self.entry_cedula_confirmar_cita = tk.Entry(self.frame_botones_confirmar_cita, font="Candara", bd=4, width=30,
+        self.entry_cedula_confirmar_cita = tk.Entry(self.frame_botones_confirmar_cita, font=("Arial rounded MT", 18), bd=4, width=30,
                                                     justify="center")
         self.entry_cedula_confirmar_cita.grid(row=2, column=1)
         self.boton_confirmar_cita_usuario = tk.Button(self.frame_botones_confirmar_cita, borderwidth=0,
@@ -699,7 +683,7 @@ OBSERVACIONES:"""
         self.ventana_cancelar_cita.state("zoomed")
         self.ventana_cancelar_cita.iconbitmap("images/logo_ventana.ico")
         self.ventana_cancelar_cita.geometry("1280x420")
-        self.ventana_cancelar_cita.title("Confirmar_cita")
+        self.ventana_cancelar_cita.title("Cancelar Cita")
         self.ventana_cancelar_cita.resizable(True, True)
         self.ventana_cancelar_cita.config(background="black")
 
@@ -728,7 +712,7 @@ OBSERVACIONES:"""
         self.cedula_cancelar_cita.config(font=("Candara", 48), fg="white", background="black",
                                          image=self.imagen_boton_registrar_cedula)
         self.cedula_cancelar_cita.grid(row=2, column=0)
-        self.entry_cedula_cancelar_cita = tk.Entry(self.frame_botones_cancelar_cita, font="Candara", bd=4, width=30,
+        self.entry_cedula_cancelar_cita = tk.Entry(self.frame_botones_cancelar_cita, font=("Arial rounded MT", 18), bd=4, width=30,
                                                    justify="center")
         self.entry_cedula_cancelar_cita.grid(row=2, column=1)
         self.boton_cancelar_cita_usuario = tk.Button(self.frame_botones_cancelar_cita, borderwidth=0,
@@ -807,7 +791,7 @@ OBSERVACIONES:"""
         self.cedula_atender_cita.config(font=("Candara", 48), fg="white", background="black",
                                         image=self.imagen_boton_registrar_cedula)
         self.cedula_atender_cita.grid(row=2, column=0)
-        self.entry_cedula_atender_cita = tk.Entry(self.frame_botones_atender_cita, font="Candara", bd=4, width=30,
+        self.entry_cedula_atender_cita = tk.Entry(self.frame_botones_atender_cita, font=("Arial rounded MT", 18), bd=4, width=30,
                                                   justify="center")
         self.entry_cedula_atender_cita.grid(row=2, column=1)
         self.boton_atender_cita_usuario = tk.Button(self.frame_botones_atender_cita, borderwidth=0,
@@ -880,6 +864,12 @@ OBSERVACIONES:"""
             self.boton_resultado_examen=tk.Button(self.frame_botones_elegir, borderwidth=0, image=self.imagen_boton_resultados_examenes, background="black"
                                                   ,command=self.proceso_resultado_examen)
 
+            self.boton_return_atender_cita = tk.Button(self.frame_botones_elegir, borderwidth=0,
+                                                           image=self.imagen_boton_volver_menu_registrar,
+                                                           background="black",
+                                                           command=self.return_elegir_a_menu)
+
+            self.boton_return_atender_cita.grid(row=3,column=2)
             self.boton_historia_medica.grid(row=3,column=0)
             self.boton_resultado_examen.grid(row=3,column=1)
 
@@ -892,7 +882,7 @@ OBSERVACIONES:"""
         2)  Editas el archivo y se guarda(Ctrl+S).
         3)  Aparece una ventana emergente de informacion, la cierras cuando ya hayas editado el archivo.""")
 
-        os.startfile(r"C:\Users\jvald\OneDrive\Escritorio\InterfazgraficaPOO\frontend\files\historia_medica.txt")
+        os.startfile(r"C:\Users\jvald\PycharmProjects\Interfazz\frontend\files\historia_medica.txt")
         tk.messagebox.showinfo("Cierrame cuando hayas editado el archivo", "Cierrame cuando hayas editado el archivo")
 
         historia=open("files/historia_medica.txt","r",encoding="utf-8")
@@ -905,6 +895,8 @@ OBSERVACIONES:"""
         diccionario={self.entry_cedula_atender_cita.get(): texto_historia_medica}
         info.informacion_historias_medicas.append(diccionario)
         print(info.informacion_historias_medicas)
+        tk.messagebox.showinfo("Se ha ingresado correctamente",
+                               "La información de los resultados de la historia medica se ingreso correctamente.")
         self.ventana_elegir.destroy()
         self.ventana_atender_cita.destroy()
         self.window.iconify()
@@ -916,7 +908,7 @@ OBSERVACIONES:"""
                 1)  Se va abrir el editor de texto.
                 2)  Editas el archivo y se guarda(Ctrl+S).
                 3)  Aparece una ventana emergente de informacion, la cierras cuando ya hallas editado el archivo.""")
-        os.startfile(r"C:\Users\jvald\OneDrive\Escritorio\InterfazgraficaPOO\frontend\files\resultado_examen.txt")
+        os.startfile(r"C:\Users\jvald\PycharmProjects\Interfazz\frontend\files\resultado_examen.txt")
         tk.messagebox.showinfo("Cierrame cuando hallas editado el archivo", "Cierrame cuando hayas editado el archivo")
 
         examen = open("files/resultado_examen.txt", "r", encoding="utf-8")
@@ -930,12 +922,200 @@ OBSERVACIONES:"""
         diccionario = {self.entry_cedula_atender_cita.get(): texto_examen}
         info.informacion_resultados_examenes.append(diccionario)
         print(info.informacion_resultados_examenes)
+        tk.messagebox.showinfo("Se ha ingresado correctamente", "La información de los resultados de los examenes medico se ingreso correctamente.")
 
 
         self.ventana_elegir.destroy()
         self.ventana_atender_cita.destroy()
         self.window.iconify()
         self.window.state("zoomed")
+
+    def obtener_la_agenda_de_las_citas_pendientes(self):
+        self.window.withdraw()
+        self.ventana_citas_pendientes= tk.Toplevel()
+        self.ventana_citas_pendientes.maxsize(1280, 820)
+        self.ventana_citas_pendientes.state("zoomed")
+        self.ventana_citas_pendientes.iconbitmap("images/logo_ventana.ico")
+        self.ventana_citas_pendientes.geometry("1280x820")
+        self.ventana_citas_pendientes.title("Agenda citas Pendientes")
+        self.ventana_citas_pendientes.resizable(True, True)
+        self.ventana_citas_pendientes.config(background="black")
+        self.frame_title_citas_pendientes = tk.Frame(self.ventana_citas_pendientes)
+        self.frame_title_citas_pendientes.config(background="black")
+        self.frame_labels_citas_pendientes = tk.Frame(self.ventana_citas_pendientes)
+        self.frame_labels_citas_pendientes.config(background="black")
+        self.frame_title_citas_pendientes.grid(row=0,column=0)
+        self.frame_labels_citas_pendientes.grid(row=1, column=0)
+
+        self.label_empty_citas_pendientes = tk.Label(self.frame_title_citas_pendientes,
+                                              text="                                                         ",
+                                              background="black", font=("Candara", 30))
+        self.label_empty_citas_pendientes2 = tk.Label(self.frame_title_citas_pendientes,
+                                               text="                                                         ",
+                                               background="black", font=("Candara", 30))
+
+        texto_citas=ciclo_obtener_texto_citas()
+
+        self.label_title_citas_pendientes = tk.Label(self.frame_title_citas_pendientes, text="doctor's office")
+        self.label_title_citas_pendientes.config(font=("Candara", 48), fg="white", background="black",
+                                    image=self.imagen_boton_obtener_citas_pendientes)
+
+        self.label_citas_pendientes= tk.Label(self.frame_labels_citas_pendientes, text=str(texto_citas))
+        self.label_citas_pendientes.config(font=("Arial rounded MT", 11), fg="white", background="black")
+
+        self.boton_return_citas_pendientes = tk.Button(self.frame_labels_citas_pendientes, borderwidth=0,
+                                                   image=self.imagen_boton_volver_menu_registrar,
+                                                   background="black",
+                                                   command=self.return_citas_pendientes_a_menu)
+        self.boton_return_citas_pendientes.grid(row=3, column=1)
+
+
+        self.label_citas_pendientes.grid(row=1,column=1)
+        self.label_empty_citas_pendientes.grid(row=0, column=0)
+        self.label_title_citas_pendientes.grid(row=0, column=1)
+        self.label_empty_citas_pendientes2.grid(row=0, column=2)
+
+
+
+
+
+    def return_registrar_a_menu(self):
+        self.ventana_registrar.destroy()
+        self.window.iconify()
+        self.window.state("zoomed")
+
+    def return_delete_a_menu(self):
+        self.ventana_delete.destroy()
+        self.window.iconify()
+        self.window.state("zoomed")
+
+    def return_registrar_medical_appointment_a_menu(self):
+        self.ventana_registrar_cita.destroy()
+        self.window.iconify()
+        self.window.state("zoomed")
+
+    def return_confirm_medical_appointment_a_menu(self):
+        self.ventana_confirmar_cita.destroy()
+        self.window.iconify()
+        self.window.state("zoomed")
+
+    def return_cancel_medical_appointment_a_menu(self):
+        self.ventana_cancelar_cita.destroy()
+        self.window.iconify()
+        self.window.state("zoomed")
+
+    def return_atender_medical_appointment_a_menu(self):
+        self.ventana_atender_cita.destroy()
+        self.window.iconify()
+        self.window.state("zoomed")
+
+    def return_citas_pendientes_a_menu(self):
+        self.ventana_citas_pendientes.destroy()
+        self.window.iconify()
+        self.window.state("zoomed")
+
+    def return_elegir_a_menu(self):
+        self.ventana_atender_cita.destroy()
+        self.ventana_elegir.destroy()
+        self.window.iconify()
+        self.window.state("zoomed")
+
+    def return_historia_paciente_a_menu(self):
+        self.ventana_historial_paciente.destroy()
+        self.window.iconify()
+        self.window.state("zoomed")
+
+
+    def historial_paciente(self):
+        self.window.withdraw()
+        self.ventana_historial_paciente = tk.Toplevel()
+        self.ventana_historial_paciente.maxsize(1280, 720)
+        self.ventana_historial_paciente.state("zoomed")
+        self.ventana_historial_paciente.iconbitmap("images/logo_ventana.ico")
+        self.ventana_historial_paciente.geometry("1280x820")
+        self.ventana_historial_paciente.title("Registrar cita")
+        self.ventana_historial_paciente.resizable(True, True)
+        self.ventana_historial_paciente.config(background="black")
+        self.frame_historial_paciente = tk.Frame(self.ventana_historial_paciente)
+        self.frame_historial_paciente.config(background="black")
+        self.frame_historial_paciente.grid(row=0, column=1)
+        self.frame_botones_historial_paciente = tk.Frame(self.ventana_historial_paciente)
+        self.frame_botones_historial_paciente.config(background="black")
+        self.frame_botones_historial_paciente.grid(row=1, column=1)
+
+        self.frame_botones_padre_historial_cita = tk.Frame(self.ventana_historial_paciente)
+        self.frame_botones_padre_historial_cita.config(background="black")
+        self.frame_botones_padre_historial_cita.grid(row=2, column=1)
+
+        self.label_titulo_historial_cita = tk.Label(self.frame_historial_paciente, text="Consultorio")
+        self.label_titulo_historial_cita.config(font=("Candara", 48), fg="white", background="black",
+                                                image=self.imagen_titulo_pequena)
+        self.label_titulo_historial_cita.grid(row=0, column=1)
+
+        self.label_vacio_historial_cita = tk.Label(self.frame_historial_paciente,
+                                                   text="                                                         ",
+                                                   background="black", font=("Candara", 30))
+        self.label_vacio_historial_cita2 = tk.Label(self.frame_historial_paciente,
+                                                    text="                                                         ",
+                                                    background="black", font=("Candara", 30))
+        self.label_vacio_historial_cita.grid(row=0, column=0)
+        self.label_vacio_historial_cita2.grid(row=0, column=2)
+
+        self.cedula_historial_cita= tk.Label(self.frame_botones_historial_paciente)
+        self.cedula_historial_cita.config(font=("Candara", 48), fg="white", background="black",
+                                          image=self.imagen_boton_registrar_cedula)
+        self.cedula_historial_cita.grid(row=2, column=0)
+        self.entrada_cedula_historial_cita = tk.Entry(self.frame_botones_historial_paciente, font=("Arial rounded MT", 18),
+                                                      bd=4, width=30,
+                                                      justify="center")
+        self.entrada_cedula_historial_cita.grid(row=2, column=1)
+
+
+        self.boton_get_info_historial_paciente = tk.Button(self.frame_botones_padre_historial_cita, borderwidth=0,
+                                                       image=self.imagen_boton_historial_paciente, background="black",
+                                                       command="")
+        self.boton_get_info_historial_paciente.grid(row=0, column=1)
+
+        self.boton_return_historial_cita = tk.Button(self.frame_botones_padre_historial_cita, borderwidth=0,
+                                                     image=self.imagen_boton_volver_menu_registrar,
+                                                     background="black",
+                                                     command=self.return_historia_paciente_a_menu)
+        self.boton_return_historial_cita.grid(row=0, column=0)
+
+
+
+
+
+def ciclo_obtener_texto_citas():
+
+    text: str = ""
+    text_acumulado:str=""
+    citas_pacientes_no_atendidos = {"0": ["1000204245", "Juan Esteban" ], "1": ["1000203456","Pepito"]}
+
+    for cita in citas_pacientes_no_atendidos:
+        text = (f"La identificacion de la cita es : {cita} -> El nombre del paciente es : {citas_pacientes_no_atendidos[cita][1]} -> "
+                f"y la cedula del paciente es : {citas_pacientes_no_atendidos[cita][0]}\n")
+        text_acumulado += text + "\n"
+
+    return text_acumulado
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
