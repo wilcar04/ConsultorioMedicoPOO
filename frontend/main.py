@@ -1,6 +1,6 @@
-from InterfazGrafica import *
+from UI import *
 if __name__ == '__main__':
-   UI = InterfazGrafica("Consultorio")
-   UI.crear_ventana_principal()
+   UI = UI("Consultorio")
+   UI.create_ventana_principal()
 
 
