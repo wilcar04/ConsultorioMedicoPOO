@@ -264,20 +264,20 @@ OBSERVACIONES:"""
         self.boton_1 = tk.Button(self.frame_botones, text="Registrar Usuario", borderwidth=0,
                                  image=self.imagen_boton_registrar_registrar, command=controlador.click_registrar_usuario)
         self.boton_1.config(font="Candara", fg="white", background="black")
-        self.boton_2 = tk.Button(self.frame_botones, text="Elimino Usuario", command=self.delete, borderwidth=0,
+        self.boton_2 = tk.Button(self.frame_botones, text="Elimino Usuario", command=controlador.click_eliminar_paciente, borderwidth=0,
                                  image=self.imagen_boton_eliminar_eliminar)
         self.boton_2.config(font="Candara", fg="white", background="black")
         self.boton_3 = tk.Button(self.frame_botones, text="Registrar Cita", borderwidth=0,
-                                 image=self.imagen_boton_registrar_cita, command=self.registrar_medical_appointment)
+                                 image=self.imagen_boton_registrar_cita, command=controlador.click_asignar_cita)
         self.boton_3.config(font="Candara", fg="white", background="black")
         self.boton_4 = tk.Button(self.frame_botones, text="Confirmar cita", borderwidth=0,
-                                 image=self.imagen_boton_confirmar_cita, command=self.confirm_medical_appointment)
+                                 image=self.imagen_boton_confirmar_cita, command=controlador.click_confirmar_cita)
         self.boton_4.config(font="Candara", fg="white", background="black")
         self.boton_5 = tk.Button(self.frame_botones, text="Cancelar Cita", borderwidth=0,
-                                 image=self.imagen_boton_cancelar_cita, command=self.delete_medical_appointment)
+                                 image=self.imagen_boton_cancelar_cita, command=controlador.click_cancelar_cita)
         self.boton_5.config(font="Candara", fg="white", background="black")
         self.boton_6 = tk.Button(self.frame_botones, text="Atender Cita", borderwidth=0,
-                                 image=self.imagen_boton_atender_paciente, command=self.atender_cita_medica)
+                                 image=self.imagen_boton_atender_paciente, command=controlador.click_atender_cita)
         self.boton_6.config(font="Candara", fg="white", background="black")
         self.boton_7 =tk.Button(self.frame_botones,text="Citas Pendientes", borderwidth=0,
                                 image=self.imagen_boton_obtener_citas_pendientes,command=self.obtener_la_agenda_de_las_citas_pendientes)
@@ -421,11 +421,35 @@ OBSERVACIONES:"""
         self.ventana_registrar.destroy()
         self.window.iconify()
         self.window.state("zoomed")
+    def finalizar_eliminar(self):
+        tk.messagebox.showinfo("Eliminar", " La eliminacion se hizo con exito")
+        self.ventana_delete.destroy()
+        self.window.iconify()
+        self.window.state("zoomed")
 
+    def finalizar_asignar(self):
+        tk.messagebox.showinfo("Registro exitoso", "Se pudo registrar la cita exitosamente")
+        self.ventana_registrar_cita.destroy()
+        self.window.deiconify()
+        self.window.state("zoomed")
+    def finalizar_confirmar(self):
+        tk.messagebox.showinfo("Confirmación", " la confirmación de la cita se hizo sin problemas.")
+        self.ventana_confirmar_cita.destroy()
+        self.window.iconify()
+        self.window.state("zoomed")
+    def finalizar_cancelar_cita(self):
+        tk.messagebox.showinfo("Cancelación", " la eliminación de la cita se hizo sin problemas.")
+        self.ventana_cancelar_cita.destroy()
+        self.window.iconify()
+        self.window.state("zoomed")
 
+    def finalizar_atender_cita(self):
+        self.ventana_elegir.destroy()
+        self.ventana_atender_cita.destroy()
+        self.window.iconify()
+        self.window.state("zoomed")
 
-
-    def delete(self):
+    def delete(self,controlador):
         self.window.withdraw()
         self.ventana_delete = tk.Toplevel()
         self.ventana_delete.maxsize(1280, 420)
@@ -465,7 +489,7 @@ OBSERVACIONES:"""
         self.entry_id.grid(row=2, column=1)
         self.boton_eliminar_user = tk.Button(self.frame_buttons_delete, borderwidth=0,
                                              image=self.imagen_boton_eliminar_eliminar, background="black",
-                                             command=self.delete_user)
+                                             command=controlador.click_obtener_eliminar_paciente)
         self.boton_eliminar_user.grid(row=3, column=1)
 
         self.button_return = tk.Button(self.frame_buttons_delete, borderwidth=0,
@@ -487,12 +511,9 @@ OBSERVACIONES:"""
         except Exception as error:
             tk.messagebox.showwarning("Error", str(error))
         else:
-            tk.messagebox.showinfo("Eliminación", " la eliminación del usuario se hizo sin problemas.")
-            self.ventana_delete.destroy()
-            self.window.iconify()
-            self.window.state("zoomed")
+            return cedula
 
-    def registrar_medical_appointment(self):
+    def registrar_medical_appointment(self,controlador):
         self.window.withdraw()
         self.ventana_registrar_cita = tk.Toplevel()
         self.ventana_registrar_cita.maxsize(1280, 720)
@@ -553,7 +574,7 @@ OBSERVACIONES:"""
 
         self.boton_get_info_registrar_cita = tk.Button(self.frame_botones_padre_registrar_cita, borderwidth=0,
                                                        image=self.imagen_boton_registrar_cita, background="black",
-                                                       command=self.get_info_registrar_medical_appointment)
+                                                       command=controlador.click_obtener_asignar_cita)
         self.boton_get_info_registrar_cita.grid(row=0, column=1)
 
         self.boton_return_registrar_cita = tk.Button(self.frame_botones_padre_registrar_cita, borderwidth=0,
@@ -567,17 +588,19 @@ OBSERVACIONES:"""
             cedula = self.entrada_cedula_registrar_cita.get()
             fecha = self.entrada_fecha_registrar_cita.get()
             hora = self.entrada_hora_registrar_cita.get()
-            verificar_fecha = datetime.strptime(fecha, "%d/%m/%Y")
+            verificar_fecha = datetime.strptime(fecha, "%d/%m")
             verificar_hora = datetime.strptime(hora, "%H")
             hay_paciente = True
             if cedula.isdigit() is False:
                 raise Exception("La cedula es un nùmero, ingresalo nuevamente")
             if hay_paciente is False:
                 raise Exception("El paciente no esta registrado")
-            if verificar_fecha == datetime.strptime(fecha, "%d/%m/%Y"):
+            if verificar_fecha == datetime.strptime(fecha, "%d/%m"):
                 pass
             if verificar_hora == datetime.strptime(hora, "%H"):
                 pass
+            dia,mes =str(fecha).split("/")
+
 
         except ValueError as error:
             tk.messagebox.showwarning("Ingresa bien la fecha", str(error))
@@ -585,13 +608,9 @@ OBSERVACIONES:"""
         except Exception as error:
             tk.messagebox.showwarning("error", str(error))
         else:
-            diccionario = {"cedula": cedula, "fecha": fecha, "hora": hora}
-            tk.messagebox.showinfo("Registro exitoso", "Se pudo registrar la cita exitosamente")
-            self.ventana_registrar_cita.destroy()
-            self.window.deiconify()
-            self.window.state("zoomed")
+            return {"cedula": cedula, "mes": mes, "dia": dia,"hora":hora}
 
-    def confirm_medical_appointment(self):
+    def confirm_medical_appointment(self,controlador):
         self.window.withdraw()
 
         self.ventana_confirmar_cita = tk.Toplevel()
@@ -633,7 +652,7 @@ OBSERVACIONES:"""
         self.entry_cedula_confirmar_cita.grid(row=2, column=1)
         self.boton_confirmar_cita_usuario = tk.Button(self.frame_botones_confirmar_cita, borderwidth=0,
                                                       image=self.imagen_boton_confirmar_cita, background="black",
-                                                      command=self.get_info_confirmar_cita)
+                                                      command=controlador.click_obtener_confirmar_cita)
         self.boton_confirmar_cita_usuario.grid(row=3, column=1)
 
         self.boton_return_confirmar_cita = tk.Button(self.frame_botones_confirmar_cita, borderwidth=0,
@@ -663,12 +682,9 @@ OBSERVACIONES:"""
             tk.messagebox.showwarning("Error", str(error))
 
         else:
-            tk.messagebox.showinfo("Confirmación", " la confirmación de la cita se hizo sin problemas.")
-            self.ventana_confirmar_cita.destroy()
-            self.window.iconify()
-            self.window.state("zoomed")
+            return cedula
 
-    def delete_medical_appointment(self):
+    def delete_medical_appointment(self,controlador):
         self.window.withdraw()
 
         self.ventana_cancelar_cita = tk.Toplevel()
@@ -710,7 +726,7 @@ OBSERVACIONES:"""
         self.entry_cedula_cancelar_cita.grid(row=2, column=1)
         self.boton_cancelar_cita_usuario = tk.Button(self.frame_botones_cancelar_cita, borderwidth=0,
                                                      image=self.imagen_boton_cancelar_cita, background="black",
-                                                     command=self.get_info_cancelar_cita)
+                                                     command=controlador.click_obtener_cancelar_cita)
         self.boton_cancelar_cita_usuario.grid(row=3, column=1)
 
         self.boton_return_cancelar_cita = tk.Button(self.frame_botones_cancelar_cita, borderwidth=0,
@@ -740,12 +756,9 @@ OBSERVACIONES:"""
             tk.messagebox.showwarning("Error", str(error))
 
         else:
-            tk.messagebox.showinfo("Cancelación", " la eliminación de la cita se hizo sin problemas.")
-            self.ventana_cancelar_cita.destroy()
-            self.window.iconify()
-            self.window.state("zoomed")
+            return cedula
 
-    def atender_cita_medica(self):
+    def atender_cita_medica(self,controlador):
         self.window.withdraw()
 
         self.ventana_atender_cita = tk.Toplevel()
@@ -787,7 +800,7 @@ OBSERVACIONES:"""
         self.entry_cedula_atender_cita.grid(row=2, column=1)
         self.boton_atender_cita_usuario = tk.Button(self.frame_botones_atender_cita, borderwidth=0,
                                                     image=self.imagen_boton_atender_paciente, background="black",
-                                                    command=self.get_info_atender_cita)
+                                                    command=controlador.click_obtener_atender_cita)
         self.boton_atender_cita_usuario.grid(row=3, column=1)
 
         self.boton_return_atender_cita = tk.Button(self.frame_botones_atender_cita, borderwidth=0,
@@ -873,7 +886,7 @@ OBSERVACIONES:"""
         2)  Editas el archivo y se guarda(Ctrl+S).
         3)  Aparece una ventana emergente de informacion, la cierras cuando ya hayas editado el archivo.""")
 
-        os.startfile(r"C:\Users\jvald\PycharmProjects\Interfazz\frontend\files\historia_medica.txt")
+        os.startfile(r"C:\Users\jvald\OneDrive\Escritorio\ui\frontend\files\historia_medica.txt")
         tk.messagebox.showinfo("Cierrame cuando hayas editado el archivo", "Cierrame cuando hayas editado el archivo")
 
         historia=open("files/historia_medica.txt","r",encoding="utf-8")
@@ -883,13 +896,8 @@ OBSERVACIONES:"""
         historia=open("files/historia_medica.txt", "w",encoding="utf-8")
         historia.write(UI.TEXTO_H_L)
         historia.close()
-        diccionario={self.entry_cedula_atender_cita.get(): texto_historia_medica}
-        tk.messagebox.showinfo("Se ha ingresado correctamente",
-                               "La información de los resultados de la historia medica se ingreso correctamente.")
-        self.ventana_elegir.destroy()
-        self.ventana_atender_cita.destroy()
-        self.window.iconify()
-        self.window.state("zoomed")
+        diccionario={"cedula":str(self.entry_cedula_atender_cita.get()),"texto":str(texto_historia_medica)}
+        return diccionario
 
 
     def proceso_resultado_examen(self):
@@ -897,7 +905,7 @@ OBSERVACIONES:"""
                 1)  Se va abrir el editor de texto.
                 2)  Editas el archivo y se guarda(Ctrl+S).
                 3)  Aparece una ventana emergente de informacion, la cierras cuando ya hallas editado el archivo.""")
-        os.startfile(r"C:\Users\jvald\PycharmProjects\Interfazz\frontend\files\resultado_examen.txt")
+        os.startfile(r"C:\Users\jvald\OneDrive\Escritorio\ui\frontend\files\resultado_examen.txt")
         tk.messagebox.showinfo("Cierrame cuando hallas editado el archivo", "Cierrame cuando hayas editado el archivo")
 
         examen = open("files/resultado_examen.txt", "r", encoding="utf-8")
@@ -1092,6 +1100,11 @@ OBSERVACIONES:"""
         tk.messagebox.showinfo("Ya finalisate la lectura de la ultima historia medica",
                                "No hubo problemas.")
 
+    def excepcion(self):
+        tk.messagebox.showerror("hubo un problema", "intentalo de nuevo")
+
+
+
 def ciclo_obtener_texto_citas():
 
     text: str = ""
@@ -1116,6 +1129,7 @@ def ciclo_obtener_historial_medico_paciente():
         text_acumulado += valor + "\n"
 
     return text_acumulado
+
 
 
 
