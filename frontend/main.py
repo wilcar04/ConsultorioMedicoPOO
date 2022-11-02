@@ -1,7 +1,8 @@
-from UI import *
+from UI import UI
+from modelo import Consultorio
+from controlador import Controlador
+
 if __name__ == '__main__':
-   UI = UI("Consultorio")
-   UI.create_ventana_principal()
-
-
+    controlador = Controlador(UI(), Consultorio())
+    controlador.start()
 

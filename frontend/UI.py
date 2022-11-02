@@ -1,10 +1,9 @@
 import tkinter as tk
-from backend.ModeloDelMundo import *
 from tkinter import messagebox
 from datetime import *
 import os
 
-info = Informacion()
+
 
 
 class UI:
@@ -106,7 +105,8 @@ TIPO DE EXAMEN:
 
 
 OBSERVACIONES:"""
-    def __init__(self, nombre: str):
+    def __init__(self):
+
         self.imagen_boton_atender_paciente = None
         self.boton_5 = None
         self.imagen_boton_cancelar_cita = None
@@ -197,9 +197,8 @@ OBSERVACIONES:"""
         self.label_empty_registrar = None
         self.ventana_registrar = None
         self.boton_confirmar_cita_usuario = None
-        self.nombre = nombre
 
-    def create_ventana_principal(self):
+    def create_ventana_principal(self,controlador):
         self.window = tk.Tk()
         self.window.iconbitmap("images/logo_ventana.ico")
         self.window.geometry("1280x720")
@@ -263,7 +262,7 @@ OBSERVACIONES:"""
         self.label_2.config(font="Candara", fg="white", background="black")
 
         self.boton_1 = tk.Button(self.frame_botones, text="Registrar Usuario", borderwidth=0,
-                                 image=self.imagen_boton_registrar_registrar, command=self.registrar)
+                                 image=self.imagen_boton_registrar_registrar, command=controlador.click_registrar_usuario)
         self.boton_1.config(font="Candara", fg="white", background="black")
         self.boton_2 = tk.Button(self.frame_botones, text="Elimino Usuario", command=self.delete, borderwidth=0,
                                  image=self.imagen_boton_eliminar_eliminar)
@@ -301,7 +300,7 @@ OBSERVACIONES:"""
 
         self.window.mainloop()
 
-    def registrar(self):
+    def registrar(self,controlador):
         self.window.withdraw()
         self.ventana_registrar = tk.Toplevel()
         self.ventana_registrar.maxsize(1280, 820)
@@ -373,7 +372,7 @@ OBSERVACIONES:"""
 
         self.button_get_info = tk.Button(self.frame_button_padre_registrar, borderwidth=0,
                                          image=self.imagen_boton_registrar_registrar, background="black",
-                                         command=self.get_info)
+                                         command=controlador.click_obtener_registrar_usuario)
         self.button_get_info.grid(row=0, column=1)
 
         self.button_return = tk.Button(self.frame_button_padre_registrar, borderwidth=0,
@@ -382,7 +381,7 @@ OBSERVACIONES:"""
         self.button_return.grid(row=0, column=0)
         self.ventana_registrar.mainloop()
 
-    def get_info(self):
+    def get_info_registrar(self):
         try:
             name = self.entry_name.get()
             id_get_info = self.entry_id.get()
@@ -414,14 +413,15 @@ OBSERVACIONES:"""
         except Exception as error:
             tk.messagebox.showwarning("wrong data entry", f"{str(error)}")
         else:
-            dictionary = {"name": name, "id": id_get_info, "gender": gender, "date": date_get_info,
-                          "cel_get_info": cel_get_info}
-            tk.messagebox.showinfo("Registro", " El registro se hizo sin problemas")
-            info.agregar_informacion_registrar(dictionary)
-            print(info.informacion_registrar)
-            self.ventana_registrar.destroy()
-            self.window.iconify()
-            self.window.state("zoomed")
+            return {"name": name, "id": id_get_info, "gender": gender, "date": date_get_info,
+                    "cel_get_info": cel_get_info}
+
+    def finalizar_registrar(self):
+        tk.messagebox.showinfo("Registro", " El registro se hizo sin problemas")
+        self.ventana_registrar.destroy()
+        self.window.iconify()
+        self.window.state("zoomed")
+
 
 
 
@@ -487,8 +487,6 @@ OBSERVACIONES:"""
         except Exception as error:
             tk.messagebox.showwarning("Error", str(error))
         else:
-            info.agregar_informacion_eliminar(cedula)
-            print(info.informacion_eliminar)
             tk.messagebox.showinfo("Eliminación", " la eliminación del usuario se hizo sin problemas.")
             self.ventana_delete.destroy()
             self.window.iconify()
@@ -589,8 +587,6 @@ OBSERVACIONES:"""
         else:
             diccionario = {"cedula": cedula, "fecha": fecha, "hora": hora}
             tk.messagebox.showinfo("Registro exitoso", "Se pudo registrar la cita exitosamente")
-            info.agregar_informacion_registrar_cita(diccionario)
-            print(info.informacion_registrar_cita)
             self.ventana_registrar_cita.destroy()
             self.window.deiconify()
             self.window.state("zoomed")
@@ -667,8 +663,6 @@ OBSERVACIONES:"""
             tk.messagebox.showwarning("Error", str(error))
 
         else:
-            info.agregar_informacion_confirmar_cita(cedula)
-            print(info.informacion_confirmar_cita)
             tk.messagebox.showinfo("Confirmación", " la confirmación de la cita se hizo sin problemas.")
             self.ventana_confirmar_cita.destroy()
             self.window.iconify()
@@ -746,8 +740,6 @@ OBSERVACIONES:"""
             tk.messagebox.showwarning("Error", str(error))
 
         else:
-            info.agregar_informacion_cancelar_cita(cedula)
-            print(info.informacion_eliminar_cita)
             tk.messagebox.showinfo("Cancelación", " la eliminación de la cita se hizo sin problemas.")
             self.ventana_cancelar_cita.destroy()
             self.window.iconify()
@@ -892,8 +884,6 @@ OBSERVACIONES:"""
         historia.write(UI.TEXTO_H_L)
         historia.close()
         diccionario={self.entry_cedula_atender_cita.get(): texto_historia_medica}
-        info.informacion_historias_medicas.append(diccionario)
-        print(info.informacion_historias_medicas)
         tk.messagebox.showinfo("Se ha ingresado correctamente",
                                "La información de los resultados de la historia medica se ingreso correctamente.")
         self.ventana_elegir.destroy()
@@ -919,8 +909,6 @@ OBSERVACIONES:"""
 
 
         diccionario = {self.entry_cedula_atender_cita.get(): texto_examen}
-        info.informacion_resultados_examenes.append(diccionario)
-        print(info.informacion_resultados_examenes)
         tk.messagebox.showinfo("Se ha ingresado correctamente", "La información de los resultados de los examenes medico se ingreso correctamente.")
 
 
