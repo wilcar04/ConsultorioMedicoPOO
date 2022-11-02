@@ -380,7 +380,6 @@ OBSERVACIONES:"""
                                        image=self.imagen_boton_volver_menu_registrar, background="black",
                                        command=self.return_registrar_a_menu)
         self.button_return.grid(row=0, column=0)
-
         self.ventana_registrar.mainloop()
 
     def get_info(self):
@@ -1073,7 +1072,7 @@ OBSERVACIONES:"""
 
         self.boton_get_info_historial_paciente = tk.Button(self.frame_botones_padre_historial_cita, borderwidth=0,
                                                        image=self.imagen_boton_historial_paciente, background="black",
-                                                       command="")
+                                                       command=self.get_info_historial_paciente)
         self.boton_get_info_historial_paciente.grid(row=0, column=1)
 
         self.boton_return_historial_cita = tk.Button(self.frame_botones_padre_historial_cita, borderwidth=0,
@@ -1082,9 +1081,28 @@ OBSERVACIONES:"""
                                                      command=self.return_historia_paciente_a_menu)
         self.boton_return_historial_cita.grid(row=0, column=0)
 
+        self.ventana_historial_paciente.mainloop()
+
+    def get_info_historial_paciente(self):
+        self.ventana_historial_paciente.withdraw()
+        tk.messagebox.showinfo("Visualización de la ultima historia medica del paciente", """
+               1)  Se va abrir el editor de texto.
+               2)  lees el archivo y se guarda(Ctrl+S).
+               3)  Aparece una ventana emergente de informacion, la cierras cuando ya hayas leido el archivo.""")
+
+        historia = open("files/historia_medica.txt", "w", encoding="utf-8")
+        historia.write("pepo")
+        historia.close()
+
+        os.startfile(r"C:\Users\jvald\PycharmProjects\Interfazz\frontend\files\historia_medica.txt")
+        tk.messagebox.showinfo("Cierrame cuando hayas leido el archivo", "Cierrame cuando hayas leido el archivo")
+        historia = open("files/historia_medica.txt", "w", encoding="utf-8")
+        historia.write(UI.TEXTO_H_L)
+        historia.close()
 
 
-
+        tk.messagebox.showinfo("Ya finalisate la lectura de la ultima historia medica",
+                               "No hubo problemas.")
 
 def ciclo_obtener_texto_citas():
 
@@ -1098,6 +1116,19 @@ def ciclo_obtener_texto_citas():
         text_acumulado += text + "\n"
 
     return text_acumulado
+
+def ciclo_obtener_historial_medico_paciente():
+
+
+    text_acumulado:str=""
+    historial_paciente = ["Fecha",str(UI.TEXTO_H_L)]
+    valor_acumulado=""
+    for valor in historial_paciente:
+
+        text_acumulado += valor + "\n"
+
+    return text_acumulado
+
 
 
 
