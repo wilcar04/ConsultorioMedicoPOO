@@ -432,11 +432,13 @@ OBSERVACIONES:"""
         self.ventana_registrar_cita.destroy()
         self.window.deiconify()
         self.window.state("zoomed")
+
     def finalizar_confirmar(self):
         tk.messagebox.showinfo("Confirmación", " la confirmación de la cita se hizo sin problemas.")
         self.ventana_confirmar_cita.destroy()
         self.window.iconify()
         self.window.state("zoomed")
+
     def finalizar_cancelar_cita(self):
         tk.messagebox.showinfo("Cancelación", " la eliminación de la cita se hizo sin problemas.")
         self.ventana_cancelar_cita.destroy()
@@ -600,7 +602,6 @@ OBSERVACIONES:"""
             if verificar_hora == datetime.strptime(hora, "%H"):
                 pass
             dia,mes =str(fecha).split("/")
-
 
         except ValueError as error:
             tk.messagebox.showwarning("Ingresa bien la fecha", str(error))

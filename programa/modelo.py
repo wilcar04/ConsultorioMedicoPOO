@@ -6,9 +6,9 @@ from exceptions import *
 
 class Historial(ABC):
 
-    def __init__(self, fecha: datetime.date, informacion: str):
-        self.fecha: datetime.date = fecha
-        self.informacion: str = informacion
+    def __init__(self, texto: str):
+        self.fecha: datetime.date = datetime.date.today()
+        self.texto: str = texto
 
     @abstractmethod
     def __str__(self):
@@ -17,24 +17,24 @@ class Historial(ABC):
 
 class HistoriaClinica(Historial):
 
-    def __init__(self, fecha: datetime.date, informacion: str):
-        super().__init__(fecha, informacion)
+    def __init__(self, texto):
+        super().__init__(texto)
 
     def __str__(self):
         return f"Fecha: {self.fecha}\n" \
-               f"Resultado: {self.informacion}"
+               f"Resultado: {self.texto}"
 
 
 class ResultadoEcografia(Historial):
 
-    def __init__(self, fecha: datetime.date, informacion: str, tipo_ecografia: str):
-        super().__init__(fecha, informacion)
+    def __init__(self, texto, tipo_ecografia: str):
+        super().__init__(texto)
         self.tipo_ecografia: str = tipo_ecografia
 
     def __str__(self):
         return f"Fecha: {self.fecha}\n" \
                f"Tipo de Ecografía: {self.tipo_ecografia}\n" \
-               f"Resultado: {self.informacion}"
+               f"Resultado: {self.texto}"
 
 
 class Cita(ABC):
@@ -51,7 +51,7 @@ class Cita(ABC):
         pass
 
     @abstractmethod
-    def convertir_archivo(self, ruta_archivo: str) -> Historial:
+    def crear_historial(self, texto: str) -> Historial:
         pass
 
     def cita_confirmada(self):
@@ -72,8 +72,8 @@ class CitaMedica(Cita):
     def __str__(self):
         return f"Fecha: {self.fecha}, Hora: {self.hora}"
 
-    def convertir_archivo(self, ruta_archivo: str) -> Historial:
-        pass
+    def crear_historial(self, texto: str) -> Historial:
+        return Historial(texto)
 
 
 class CitaEcografia(Cita):
@@ -85,8 +85,8 @@ class CitaEcografia(Cita):
     def __str__(self):
         return f"Fecha: {self.fecha}, Hora: {self.hora}, Tipo de Ecografía: {self.tipo_ecografia}"
 
-    def convertir_archivo(self, ruta_archivo: str) -> Historial:
-        pass
+    def crear_historial(self, texto: str) -> Historial:
+        return Historial(texto)
 
 
 class Paciente:
@@ -100,6 +100,7 @@ class Paciente:
         self.celular: str = celular
         self.cita: Optional[Cita] = None
         self.historial: list[Historial] = []
+        self.marcado: bool = False
 
     def __str__(self):
         return f"Nombre: {self.nombre} Cedula: {self.cedula} Celular: {self.celular}"
@@ -121,8 +122,8 @@ class Paciente:
     def eliminar_cita(self):
         self.cita = None
 
-    def convertir_archivo(self, ruta_archivo: str) -> Historial:
-        return self.cita.convertir_archivo(ruta_archivo)
+    def crear_historial(self, texto: str) -> Historial:
+        return self.cita.crear_historial(texto)
 
     def agregar_historial(self, historial: Historial):
         self.historial.append(historial)
@@ -133,11 +134,11 @@ class Paciente:
     def tiene_historial(self) -> bool:
         return self.historial != []
 
-    def informacion_historia(self) -> list[str]:
-        informacion_historial = []
-        for historial in self.historial:
-            informacion_historial.append(str(historial))
-        return informacion_historial
+    def informacion_historia(self) -> str:
+        return str(self.historial[-1:])
+
+    def marcar(self):
+        self.marcado = True
 
 
 class AgendaDiaria:
@@ -282,7 +283,7 @@ class Consultorio:
 
     # Requisitos de programa:
 
-    def registrar_ususario(self, nombre: str, cedula: str, sexo: str, fecha_nacimiento: str, celular: str):
+    def registrar_ususario(self, cedula: str, nombre: str, sexo: str, fecha_nacimiento: str, celular: str):
         if not self.usuario_existe(cedula):
             formato_fecha = None
             try:
@@ -290,7 +291,7 @@ class Consultorio:
                 formato_fecha = datetime.date(int(lista_fecha[2]), int(lista_fecha[1]), int(lista_fecha[0]))
             except ValueError:
                 raise FechaNacimientoNoValidaError
-            paciente = Paciente(nombre, cedula, sexo, formato_fecha, celular)
+            paciente = Paciente(cedula, nombre, sexo, formato_fecha, celular)
             self.pacientes[cedula] = paciente
         else:
             raise UsuarioYaRegistradoError
@@ -346,16 +347,15 @@ class Consultorio:
         else:
             raise UsuarioNoRegistradoError
 
-    def atender_cita(self, cedula: str, ruta_archivo: str):
+    def atender_cita(self, cedula: str, texto: str):
         if self.usuario_existe(cedula):
             paciente = self.pacientes[cedula]
             if paciente.paciente_tiene_cita():
-                historial = paciente.convertir_archivo(ruta_archivo)
+                historial = paciente.crear_historial(texto)
                 paciente.agregar_historial(historial)
                 paciente.cita_atendida()
             else:
                 raise PacienteNoTieneCitaError
-
         else:
             raise UsuarioNoRegistradoError
 
@@ -374,7 +374,7 @@ class Consultorio:
         lista_horas = self.agenda.obtener_horas(fecha)
         return self.organizar_agenda(lista_horas, lista_informacion)
 
-    def obtener_historial_paciente(self, cedula: str):
+    def obtener_historial_paciente(self, cedula: str) -> str:
         if not self.usuario_existe(cedula):
             raise UsuarioNoRegistradoError
         paciente = self.buscar_paciente(cedula)
@@ -383,5 +383,9 @@ class Consultorio:
         else:
             raise PacienteSinHistorialError
 
-    def recuperar_informacion(self):
-        pass
+    def marcar_paciente(self, cedula: str):
+        if self.usuario_existe(cedula):
+            paciente = self.buscar_paciente(cedula)
+            paciente.marcar()
+        else:
+            raise UsuarioNoRegistradoError

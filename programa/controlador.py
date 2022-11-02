@@ -11,14 +11,13 @@ class Controlador:
     def start(self):
         self.vista.create_ventana_principal(self)
 
-
     def click_registrar_usuario(self):
         self.vista.registrar(self)
 
     def click_obtener_registrar_usuario(self):
         datos = self.vista.get_info_registrar()
         try:
-            self.modelo.registrar_ususario(datos["id"],datos["name"],datos["gender"],datos["date"],datos["cel_get_info"])
+            self.modelo.registrar_ususario(datos["id"], datos["name"], datos["gender"], datos["date"], datos["cel_get_info"])
         except UsuarioYaRegistradoError:
             self.vista.excepcion()
         else:
@@ -26,8 +25,6 @@ class Controlador:
 
     def click_eliminar_paciente(self):
         self.vista.delete(self)
-
-
 
     def click_obtener_eliminar_paciente(self):
         cedula = self.vista.delete_user()
@@ -41,7 +38,6 @@ class Controlador:
 
     def click_asignar_cita(self):
         self.vista.registrar_medical_appointment(self)
-
 
     def click_obtener_asignar_cita(self):
         datos = self.vista.get_info_registrar_medical_appointment()
@@ -106,8 +102,3 @@ class Controlador:
             self.vista.excepcion()
         else:
             self.vista.finalizar_atender_cita()
-
-
-
-
-
