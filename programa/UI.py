@@ -458,10 +458,10 @@ OBSERVACIONES:"""
     def finalizar_atender_cita(self):
         self.ventana_elegir.destroy()
         self.ventana_atender_cita.destroy()
-
-    def finalizar_requisito_atender_cita(self):
         self.window.iconify()
         self.window.state("zoomed")
+
+
 
     def delete(self,controlador):
         self.window.withdraw()
@@ -838,22 +838,16 @@ OBSERVACIONES:"""
         try:
             cedula = str(self.entry_cedula_atender_cita.get())
             hay_paciente = True
-            have_medical_appointment = True
 
             if cedula.isdigit() is False:
                 raise Exception("La cedula es un numero, ingresa el numero nuevamente.")
-
-            if hay_paciente is False:
-                raise Exception("No se encuentra el paciente")
-
-            if have_medical_appointment is False:
-                raise Exception("El paciente no tiene una cita asignada")
 
         except Exception as error:
             tk.messagebox.showwarning("Error", str(error))
 
         else:
-            self.ventana_elegir_atender_cita()
+            return cedula
+
 
 
 
@@ -900,12 +894,8 @@ OBSERVACIONES:"""
 
         diccionario = {self.entry_cedula_atender_cita.get(): texto_examen}
         tk.messagebox.showinfo("Se ha ingresado correctamente", "La información de los resultados de los examenes medico se ingreso correctamente.")
-
-
-        self.ventana_elegir.destroy()
-        self.ventana_atender_cita.destroy()
-        self.window.iconify()
-        self.window.state("zoomed")
+        print(diccionario)
+        return diccionario
 
     def obtener_la_agenda_de_las_citas_pendientes(self):
         self.window.withdraw()
@@ -1085,7 +1075,7 @@ OBSERVACIONES:"""
     def excepcion(self,texto:str):
         tk.messagebox.showerror(texto,texto)
 
-    def ventana_elegir_atender_cita(self):
+    def ventana_elegir_atender_cita(self,controlador):
         self.ventana_atender_cita.withdraw()
         self.ventana_elegir = tk.Toplevel()
 
@@ -1120,10 +1110,10 @@ OBSERVACIONES:"""
 
         self.boton_historia_medica = tk.Button(self.frame_botones_elegir, borderwidth=0,
                                                image=self.imagen_boton_historia_medica, background="black",
-                                               command=self.proceso_historia_medica)
+                                               command=controlador.click_historia_clinica_atender_cita())
         self.boton_resultado_examen = tk.Button(self.frame_botones_elegir, borderwidth=0,
                                                 image=self.imagen_boton_resultados_examenes, background="black"
-                                                , command=self.proceso_resultado_examen)
+                                                , command=controlador.click_examen_resultados_atender_cita())
 
         self.boton_return_atender_cita = tk.Button(self.frame_botones_elegir, borderwidth=0,
                                                    image=self.imagen_boton_volver_menu_registrar,

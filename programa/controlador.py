@@ -93,18 +93,27 @@ class Controlador:
         self.vista.atender_cita_medica(self)
 
     def click_obtener_atender_cita(self):
-        self.crear_ventana_elegir_atender_cita()
-        datos = self.vista.proceso_historia_medica()
+
+        cedula= self.vista.get_info_atender_cita()
+
         try:
-            self.modelo.atender_cita(datos["cedula"], datos["texto"])
+            if not self.modelo.usuario_existe(cedula):
+                raise UsuarioNoRegistradoError
         except UsuarioNoRegistradoError:
             self.vista.excepcion("El Usuario no esta registrado")
         except PacienteNoTieneCitaError:
             self.vista.excepcion("El Usuario no tiene cita")
         else:
-            self.vista.finalizar_requisito_atender_cita()
+            self.crear_ventana_elegir_atender_cita()
+
+
 
     def crear_ventana_elegir_atender_cita(self):
-        self.vista.ventana_elegir_atender_cita()
+        self.vista.ventana_elegir_atender_cita(self)
+
+    def click_historia_clinica_atender_cita(self):
+        self.vista.proceso_historia_medica()
+    def click_examen_resultados_atender_cita(self):
+        self.vista.proceso_resultado_examen()
 
 
