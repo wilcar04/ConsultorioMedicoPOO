@@ -19,9 +19,9 @@ class Controlador:
         try:
             self.modelo.registrar_ususario(datos["id"], datos["name"], datos["gender"], datos["date"], datos["cel_get_info"])
         except UsuarioYaRegistradoError:
-            self.vista.excepcion()
+            self.vista.excepcion("Usuario ya registrado")
         else:
-         self.vista.finalizar_registrar()
+            self.vista.finalizar_registrar()
 
     def click_eliminar_paciente(self):
         self.vista.delete(self)
@@ -32,7 +32,7 @@ class Controlador:
         try:
             self.modelo.eliminar_paciente(cedula)
         except UsuarioNoRegistradoError:
-            self.vista.excepcion()
+            self.vista.excepcion("Usuario no registrado")
         else:
             self.vista.finalizar_eliminar()
 
@@ -42,23 +42,23 @@ class Controlador:
     def click_obtener_asignar_cita(self):
         datos = self.vista.get_info_registrar_medical_appointment()
         try:
-            self.modelo.asignar_cita(datos["cedula"], datos["mes"], datos["dia"], datos["hora"])
+            self.modelo.asignar_cita(datos["cedula"], datos["mes"], datos["dia"], datos["hora"],datos["tipo_ecografia"])
         except UsuarioNoRegistradoError:
-            self.vista.excepcion()
+            self.vista.excepcion("El Usuario no existe.")
         except PacienteYaTieneCitaError:
-            self.vista.excepcion()
+            self.vista.excepcion("El Paciente ya tiene una cita asignada.")
         except MesNoValidoError:
-            self.vista.excepcion()
+            self.vista.excepcion("Ingresaste un mes no valido.")
         except DiaNoValidoError:
-            self.vista.excepcion()
+            self.vista.excepcion("Ingresaste un dia no vaSlido.")
         except HoraNoValidaError:
-            self.vista.excepcion()
+            self.vista.excepcion("Ingresaste una hora no valida.")
         except HoraIndicadaYaOcupadaError:
-            self.vista.excepcion()
+            self.vista.excepcion("La cita en esta hora ya se encuentra ocupada.")
         except EcografiaIncorrectaError:
-            self.vista.excepcion()
+            self.vista.excepcion("La Ecografia no esta bien ingresada")
         else:
-            self.vista.finalizar_asignar()
+            self.vista.finalizar_registrar_cita()
 
     def click_confirmar_cita(self):
         self.vista.confirm_medical_appointment(self)
@@ -68,9 +68,9 @@ class Controlador:
         try:
             self.modelo.confimar_cita(cedula)
         except UsuarioNoRegistradoError:
-            self.vista.excepcion()
+            self.vista.excepcion("Usuario no registrado")
         except PacienteNoTieneCitaError:
-            self.vista.excepcion()
+            self.vista.excepcion("El paciente no tiene cita")
         else:
             self.vista.finalizar_confirmar()
 
@@ -82,9 +82,9 @@ class Controlador:
         try:
             self.modelo.cancelar_cita(cedula)
         except UsuarioNoRegistradoError:
-            self.vista.excepcion()
+            self.vista.excepcion("El Usuario no esta registrado")
         except PacienteNoTieneCitaError:
-            self.vista.excepcion()
+            self.vista.excepcion("El Usuario no tiene cita")
 
         else:
             self.vista.finalizar_cancelar_cita()
@@ -97,8 +97,8 @@ class Controlador:
         try:
             self.modelo.atender_cita(datos["cedula"], datos["texto"])
         except UsuarioNoRegistradoError:
-            self.vista.excepcion()
+            self.vista.excepcion("El Usuario no esta registrado")
         except PacienteNoTieneCitaError:
-            self.vista.excepcion()
+            self.vista.excepcion("El Usuario no tiene cita")
         else:
             self.vista.finalizar_atender_cita()

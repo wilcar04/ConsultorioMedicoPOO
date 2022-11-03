@@ -422,17 +422,23 @@ OBSERVACIONES:"""
                     "cel_get_info": cel_get_info}
 
     def finalizar_registrar(self):
-        tk.messagebox.showinfo("Registro", " El registro se hizo sin problemas")
+        tk.messagebox.showinfo("Registro", " El registro del usuario se hizo sin problemas")
         self.ventana_registrar.destroy()
         self.window.iconify()
         self.window.state("zoomed")
     def finalizar_eliminar(self):
-        tk.messagebox.showinfo("Eliminar", " La eliminacion se hizo con exito")
+        tk.messagebox.showinfo("Eliminar", " La eliminación del usuario se hizo con exito")
         self.ventana_delete.destroy()
         self.window.iconify()
         self.window.state("zoomed")
 
-    def finalizar_asignar(self):
+    def finalizar_registrar_cita(self):
+        tk.messagebox.showinfo("Registro exitoso", "se pudo registrar la cita exiitosamente")
+        self.ventana_registrar_cita.destroy()
+        self.window.deiconify()
+        self.window.state("zoomed")
+
+    def finalizar_asignar_cita(self):
         tk.messagebox.showinfo("Registro exitoso", "Se pudo registrar la cita exitosamente")
         self.ventana_registrar_cita.destroy()
         self.window.deiconify()
@@ -523,7 +529,7 @@ OBSERVACIONES:"""
     def registrar_medical_appointment(self,controlador):
         self.window.withdraw()
         self.ventana_registrar_cita = tk.Toplevel()
-        self.ventana_registrar_cita.maxsize(1280, 720)
+        self.ventana_registrar_cita.maxsize(1280, 820)
         self.ventana_registrar_cita.state("zoomed")
         self.ventana_registrar_cita.iconbitmap("images/logo_ventana.ico")
         self.ventana_registrar_cita.geometry("1280x820")
@@ -556,43 +562,43 @@ OBSERVACIONES:"""
         self.label_vacio_registrar_cita2.grid(row=0, column=2)
 
         self.cedula_registrar_cita = tk.Label(self.frame_botones_registrar_cita)
-        self.cedula_registrar_cita.config(font=("Candara", 48), fg="white", background="black",
+        self.cedula_registrar_cita.config(font=("Candara", 30), fg="white", background="black",
                                           image=self.imagen_boton_registrar_cedula)
         self.cedula_registrar_cita.grid(row=2, column=0)
-        self.entrada_cedula_registrar_cita = tk.Entry(self.frame_botones_registrar_cita, font=("Arial rounded MT", 16), bd=4, width=30,
+        self.entrada_cedula_registrar_cita = tk.Entry(self.frame_botones_registrar_cita, font=("Arial rounded MT", 16), bd=3, width=20,
                                                       justify="center")
         self.entrada_cedula_registrar_cita.grid(row=2, column=1)
 
         self.mes_registrar_cita = tk.Label(self.frame_botones_registrar_cita)
-        self.mes_registrar_cita.config(font=("Candara", 48), fg="white", background="black",
+        self.mes_registrar_cita.config(font=("Candara", 30), fg="white", background="black",
                                          image=self.imagen_registrar_cita_mes)
         self.mes_registrar_cita.grid(row=3, column=0)
-        self.entrada_mes_registrar_cita = tk.Entry(self.frame_botones_registrar_cita, font=("Arial rounded MT", 16), bd=4, width=30,
+        self.entrada_mes_registrar_cita = tk.Entry(self.frame_botones_registrar_cita, font=("Arial rounded MT", 16), bd=3, width=20,
                                                      justify="center")
         self.entrada_mes_registrar_cita.grid(row=3, column=1)
 
         self.dia_registrar_cita = tk.Label(self.frame_botones_registrar_cita)
-        self.dia_registrar_cita.config(font=("Candara", 48), fg="white", background="black",
+        self.dia_registrar_cita.config(font=("Candara", 30), fg="white", background="black",
                                         image=self.imagen_registrar_cita_dia)
         self.dia_registrar_cita.grid(row=4, column=0)
-        self.entrada_dia_registrar_cita = tk.Entry(self.frame_botones_registrar_cita, font=("Arial rounded MT", 16), bd=4, width=30,
+        self.entrada_dia_registrar_cita = tk.Entry(self.frame_botones_registrar_cita, font=("Arial rounded MT", 16), bd=3, width=20,
                                                     justify="center")
         self.entrada_dia_registrar_cita.grid(row=4, column=1)
 
         self.hora_registrar_cita= tk.Label(self.frame_botones_registrar_cita)
-        self.hora_registrar_cita.config(font=("Candara",48), fg="white",background="black",image=self.imagen_registrar_cita_hora)
+        self.hora_registrar_cita.config(font=("Candara",30), fg="white",background="black",image=self.imagen_registrar_cita_hora)
         self.entrada_hora_registrar_cita = tk.Entry(self.frame_botones_registrar_cita, font=("Arial rounded MT", 16),
-                                                   bd=4, width=30,
+                                                   bd=3, width=20,
                                                    justify="center")
 
         self.hora_registrar_cita.grid(row=5,column=0)
         self.entrada_hora_registrar_cita.grid(row=5,column=1)
         self.ecografia_registrar_cita=tk.Label(self.frame_botones_registrar_cita)
-        self.ecografia_registrar_cita.config(font=("Candara",48),fg="white",background="black",image=self.imagen_registrar_cita_ecografia)
+        self.ecografia_registrar_cita.config(font=("Candara",30),fg="white",background="black",image=self.imagen_registrar_cita_ecografia)
         self.ecografia_registrar_cita.grid(row=6,column=0)
         self.entrada_ecografia_registrar_cita=tk.Entry(self.frame_botones_registrar_cita, font=("Arial rounded MT", 16),
-                                                   bd=4, width=30,
-                                                   justify="center")
+                                                   bd=3, width=20,
+                                                   justify="center",)
         self.entrada_ecografia_registrar_cita.grid(row=6,column=1)
 
         self.boton_get_info_registrar_cita = tk.Button(self.frame_botones_padre_registrar_cita, borderwidth=0,
@@ -609,20 +615,16 @@ OBSERVACIONES:"""
     def get_info_registrar_medical_appointment(self):
         try:
             cedula = self.entrada_cedula_registrar_cita.get()
-            fecha = self.entrada_fecha_registrar_cita.get()
+            mes = self.entrada_mes_registrar_cita.get()
+            dia=self.entrada_dia_registrar_cita.get()
             hora = self.entrada_hora_registrar_cita.get()
-            verificar_fecha = datetime.strptime(fecha, "%d/%m")
-            verificar_hora = datetime.strptime(hora, "%H")
-            hay_paciente = True
+            ecografia=self.entrada_ecografia_registrar_cita.get()
             if cedula.isdigit() is False:
                 raise Exception("La cedula es un nùmero, ingresalo nuevamente")
-            if hay_paciente is False:
-                raise Exception("El paciente no esta registrado")
-            if verificar_fecha == datetime.strptime(fecha, "%d/%m"):
-                pass
-            if verificar_hora == datetime.strptime(hora, "%H"):
-                pass
-            dia,mes =str(fecha).split("/")
+            if mes.isalpha() is False:
+                raise Exception("El mes esta mal ingresado")
+            if dia.isdigit() is False:
+                raise Exception("El dia es un número, ingresalo nuevamente")
 
         except ValueError as error:
             tk.messagebox.showwarning("Ingresa bien la fecha", str(error))
@@ -630,7 +632,7 @@ OBSERVACIONES:"""
         except Exception as error:
             tk.messagebox.showwarning("error", str(error))
         else:
-            return {"cedula": cedula, "mes": mes, "dia": dia,"hora":hora}
+            return {"cedula": cedula, "mes": mes, "dia": dia,"hora":hora,"tipo_ecografia":ecografia}
 
     def confirm_medical_appointment(self,controlador):
         self.window.withdraw()
@@ -1122,8 +1124,8 @@ OBSERVACIONES:"""
         tk.messagebox.showinfo("Ya finalisate la lectura de la ultima historia medica",
                                "No hubo problemas.")
 
-    def excepcion(self):
-        tk.messagebox.showerror("hubo un problema", "intentalo de nuevo")
+    def excepcion(self,texto:str):
+        tk.messagebox.showerror(texto,texto)
 
 
 
