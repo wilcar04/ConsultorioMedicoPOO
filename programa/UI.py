@@ -869,33 +869,35 @@ OBSERVACIONES:"""
             historia=open("files/historia_medica.txt", "w",encoding="utf-8")
             historia.write(UI.TEXTO_H_L)
             historia.close()
-            diccionario= {"cedula": str(self.entry_cedula_atender_cita.get()), "texto": str(texto_historia_medica)}
-            print(diccionario)
-            return diccionario
+            info_historia = [self.entry_cedula_atender_cita.get(), str(texto_historia_medica)]
+            return info_historia
         except FileNotFoundError:
             tk.messagebox.showwarning("Error: No se encuentra la ruta absoluta",
                                       "Modifique la ruta absoluta en el archivo Python en UI")
 
     def proceso_resultado_examen(self):
-        tk.messagebox.showinfo("Para el llenado de los resultados de los examenes del paciente", """
+        try:
+            tk.messagebox.showinfo("Para el llenado de los resultados de los examenes del paciente", """
                 1)  Se va abrir el editor de texto.
                 2)  Editas el archivo y se guarda(Ctrl+S).
                 3)  Aparece una ventana emergente de informacion, la cierras cuando ya hallas editado el archivo.""")
-        os.startfile(self.RUTA_ABSOLUTA_RESULTADO)
-        tk.messagebox.showinfo("Cierrame cuando hallas editado el archivo", "Cierrame cuando hayas editado el archivo")
+            os.startfile(self.RUTA_ABSOLUTA_RESULTADO)
+            tk.messagebox.showinfo("Cierrame cuando hallas editado el archivo", "Cierrame cuando hayas editado el archivo")
 
-        examen = open("files/resultado_examen.txt", "r", encoding="utf-8")
-        texto_examen = examen.read()
-        examen.close()
-        examen= open("files/resultado_examen.txt", "w", encoding="utf-8")
-        examen.write(UI.TEXTO_E_M)
-        examen.close()
+            examen = open("files/resultado_examen.txt", "r", encoding="utf-8")
+            texto_examen = examen.read()
+            examen.close()
+            examen= open("files/resultado_examen.txt", "w", encoding="utf-8")
+            examen.write(UI.TEXTO_E_M)
+            examen.close()
 
-
-        diccionario = {self.entry_cedula_atender_cita.get(): texto_examen}
-        tk.messagebox.showinfo("Se ha ingresado correctamente", "La información de los resultados de los examenes medico se ingreso correctamente.")
-        print(diccionario)
-        return diccionario
+            info_examen =[self.entry_cedula_atender_cita.get(), texto_examen]
+            print(info_examen)
+        except FileNotFoundError:
+            tk.messagebox.showwarning("Error: No se encuentra la ruta absoluta",
+                                      "Modifique la ruta absoluta en el archivo Python en UI")
+        else:
+            return info_examen
 
     def obtener_la_agenda_de_las_citas_pendientes(self):
         self.window.withdraw()
@@ -1110,10 +1112,10 @@ OBSERVACIONES:"""
 
         self.boton_historia_medica = tk.Button(self.frame_botones_elegir, borderwidth=0,
                                                image=self.imagen_boton_historia_medica, background="black",
-                                               command=controlador.click_historia_clinica_atender_cita())
+                                               command=controlador.click_historia_clinica_atender_cita)
         self.boton_resultado_examen = tk.Button(self.frame_botones_elegir, borderwidth=0,
                                                 image=self.imagen_boton_resultados_examenes, background="black"
-                                                , command=controlador.click_examen_resultados_atender_cita())
+                                                , command=controlador.click_examen_resultados_atender_cita)
 
         self.boton_return_atender_cita = tk.Button(self.frame_botones_elegir, borderwidth=0,
                                                    image=self.imagen_boton_volver_menu_registrar,
