@@ -229,6 +229,11 @@ OBSERVACIONES:"""
         self.imagen_boton_resultados_examenes= tk.PhotoImage(file="images/btn_resultados_examen.png")
         self.imagen_boton_obtener_citas_pendientes= tk.PhotoImage(file="images/btn_citas_pendientes.png")
         self.imagen_boton_historial_paciente= tk.PhotoImage(file="images/btn_historial_paciente.png")
+        self.imagen_registrar_cita_mes= tk.PhotoImage(file="images/registra_cita_mes.png")
+        self.imagen_registrar_cita_dia= tk.PhotoImage(file="images/registrar_cita_dia.png")
+        self.imagen_registrar_cita_hora= tk.PhotoImage(file="images/registrar_cita_hora.png")
+        self.imagen_registrar_cita_ecografia= tk.PhotoImage(file="images/registra_cita_ecografia.png")
+
 
         self.imagen_titulo = self.imagen_titulo.subsample(2)
         self.imagen_titulo_pequena = self.imagen_titulo.subsample(2)
@@ -554,25 +559,41 @@ OBSERVACIONES:"""
         self.cedula_registrar_cita.config(font=("Candara", 48), fg="white", background="black",
                                           image=self.imagen_boton_registrar_cedula)
         self.cedula_registrar_cita.grid(row=2, column=0)
-        self.entrada_cedula_registrar_cita = tk.Entry(self.frame_botones_registrar_cita, font=("Arial rounded MT", 18), bd=4, width=30,
+        self.entrada_cedula_registrar_cita = tk.Entry(self.frame_botones_registrar_cita, font=("Arial rounded MT", 16), bd=4, width=30,
                                                       justify="center")
         self.entrada_cedula_registrar_cita.grid(row=2, column=1)
 
-        self.fecha_registrar_cita = tk.Label(self.frame_botones_registrar_cita)
-        self.fecha_registrar_cita.config(font=("Candara", 48), fg="white", background="black",
-                                         image=self.imagen_label_fecha_registrar_cita)
-        self.fecha_registrar_cita.grid(row=3, column=0)
-        self.entrada_fecha_registrar_cita = tk.Entry(self.frame_botones_registrar_cita, font=("Arial rounded MT", 18), bd=4, width=30,
+        self.mes_registrar_cita = tk.Label(self.frame_botones_registrar_cita)
+        self.mes_registrar_cita.config(font=("Candara", 48), fg="white", background="black",
+                                         image=self.imagen_registrar_cita_mes)
+        self.mes_registrar_cita.grid(row=3, column=0)
+        self.entrada_mes_registrar_cita = tk.Entry(self.frame_botones_registrar_cita, font=("Arial rounded MT", 16), bd=4, width=30,
                                                      justify="center")
-        self.entrada_fecha_registrar_cita.grid(row=3, column=1)
+        self.entrada_mes_registrar_cita.grid(row=3, column=1)
 
-        self.hora_registrar_cita = tk.Label(self.frame_botones_registrar_cita)
-        self.hora_registrar_cita.config(font=("Candara", 48), fg="white", background="black",
-                                        image=self.imagen_label_hora_registrar_cita)
-        self.hora_registrar_cita.grid(row=4, column=0)
-        self.entrada_hora_registrar_cita = tk.Entry(self.frame_botones_registrar_cita, font=("Arial rounded MT", 18), bd=4, width=30,
+        self.dia_registrar_cita = tk.Label(self.frame_botones_registrar_cita)
+        self.dia_registrar_cita.config(font=("Candara", 48), fg="white", background="black",
+                                        image=self.imagen_registrar_cita_dia)
+        self.dia_registrar_cita.grid(row=4, column=0)
+        self.entrada_dia_registrar_cita = tk.Entry(self.frame_botones_registrar_cita, font=("Arial rounded MT", 16), bd=4, width=30,
                                                     justify="center")
-        self.entrada_hora_registrar_cita.grid(row=4, column=1)
+        self.entrada_dia_registrar_cita.grid(row=4, column=1)
+
+        self.hora_registrar_cita= tk.Label(self.frame_botones_registrar_cita)
+        self.hora_registrar_cita.config(font=("Candara",48), fg="white",background="black",image=self.imagen_registrar_cita_hora)
+        self.entrada_hora_registrar_cita = tk.Entry(self.frame_botones_registrar_cita, font=("Arial rounded MT", 16),
+                                                   bd=4, width=30,
+                                                   justify="center")
+
+        self.hora_registrar_cita.grid(row=5,column=0)
+        self.entrada_hora_registrar_cita.grid(row=5,column=1)
+        self.ecografia_registrar_cita=tk.Label(self.frame_botones_registrar_cita)
+        self.ecografia_registrar_cita.config(font=("Candara",48),fg="white",background="black",image=self.imagen_registrar_cita_ecografia)
+        self.ecografia_registrar_cita.grid(row=6,column=0)
+        self.entrada_ecografia_registrar_cita=tk.Entry(self.frame_botones_registrar_cita, font=("Arial rounded MT", 16),
+                                                   bd=4, width=30,
+                                                   justify="center")
+        self.entrada_ecografia_registrar_cita.grid(row=6,column=1)
 
         self.boton_get_info_registrar_cita = tk.Button(self.frame_botones_padre_registrar_cita, borderwidth=0,
                                                        image=self.imagen_boton_registrar_cita, background="black",
