@@ -4,8 +4,6 @@ from datetime import *
 import os
 
 
-
-
 class UI:
     TEXTO_H_L="""HISTORIA CLINICA 
 Nombre:
@@ -105,6 +103,8 @@ TIPO DE EXAMEN:
 
 
 OBSERVACIONES:"""
+    RUTA_ABSOLUTA = r"C:\Users\Wilson\Desktop\ConsultorioMedicoPOO\programa\files\historia_medica.txt"
+    RUTA_ABSOLUTA_RESULTADO = r"C:\Users\Wilson\Desktop\ConsultorioMedicoPOO\programa\files\resultado_examen.txt"
     def __init__(self):
 
         self.imagen_boton_atender_paciente = None
@@ -412,7 +412,6 @@ OBSERVACIONES:"""
 
             if test_date == datetime.strptime(date_get_info, "%d/%m/%Y"):
                 pass
-
         except ValueError as error:
             tk.messagebox.showwarning("wrong data entry", str(error))
         except Exception as error:
@@ -459,6 +458,8 @@ OBSERVACIONES:"""
     def finalizar_atender_cita(self):
         self.ventana_elegir.destroy()
         self.ventana_atender_cita.destroy()
+
+    def finalizar_requisito_atender_cita(self):
         self.window.iconify()
         self.window.state("zoomed")
 
@@ -901,33 +902,36 @@ OBSERVACIONES:"""
 
             self.ventana_elegir.mainloop()
 
-
     def proceso_historia_medica(self):
-        tk.messagebox.showinfo("Para el llenado de la historia medica del paciente", """
-        1)  Se va abrir el editor de texto.
-        2)  Editas el archivo y se guarda(Ctrl+S).
-        3)  Aparece una ventana emergente de informacion, la cierras cuando ya hayas editado el archivo.""")
+        try:
+            tk.messagebox.showinfo("Para el llenado de la historia medica del paciente", """
+            1)  Se va abrir el editor de texto.
+            2)  Editas el archivo y se guarda(Ctrl+S).
+            3)  Aparece una ventana emergente de informacion, la cierras cuando ya hayas editado el archivo.""")
 
-        os.startfile(r"C:\Users\jvald\OneDrive\Escritorio\ui\frontend\files\historia_medica.txt")
-        tk.messagebox.showinfo("Cierrame cuando hayas editado el archivo", "Cierrame cuando hayas editado el archivo")
+            os.startfile(self.RUTA_ABSOLUTA)
+            tk.messagebox.showinfo("Cierrame cuando hayas editado el archivo", "Cierrame cuando hayas editado el archivo")
 
-        historia=open("files/historia_medica.txt","r",encoding="utf-8")
-        texto_historia_medica = historia.read()
-        historia.close()
+            historia = open("files/historia_medica.txt","r",encoding="utf-8")
+            texto_historia_medica = historia.read()
+            historia.close()
 
-        historia=open("files/historia_medica.txt", "w",encoding="utf-8")
-        historia.write(UI.TEXTO_H_L)
-        historia.close()
-        diccionario={"cedula":str(self.entry_cedula_atender_cita.get()),"texto":str(texto_historia_medica)}
-        return diccionario
-
+            historia=open("files/historia_medica.txt", "w",encoding="utf-8")
+            historia.write(UI.TEXTO_H_L)
+            historia.close()
+            diccionario= {"cedula": str(self.entry_cedula_atender_cita.get()), "texto": str(texto_historia_medica)}
+            print(diccionario)
+            return diccionario
+        except FileNotFoundError:
+            tk.messagebox.showwarning("Error: No se encuentra la ruta absoluta",
+                                      "Modifique la ruta absoluta en el archivo Python en UI")
 
     def proceso_resultado_examen(self):
         tk.messagebox.showinfo("Para el llenado de los resultados de los examenes del paciente", """
                 1)  Se va abrir el editor de texto.
                 2)  Editas el archivo y se guarda(Ctrl+S).
                 3)  Aparece una ventana emergente de informacion, la cierras cuando ya hallas editado el archivo.""")
-        os.startfile(r"C:\Users\jvald\OneDrive\Escritorio\ui\frontend\files\resultado_examen.txt")
+        os.startfile(self.RUTA_ABSOLUTA_RESULTADO)
         tk.messagebox.showinfo("Cierrame cuando hallas editado el archivo", "Cierrame cuando hayas editado el archivo")
 
         examen = open("files/resultado_examen.txt", "r", encoding="utf-8")

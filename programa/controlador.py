@@ -48,7 +48,7 @@ class Controlador:
         except PacienteYaTieneCitaError:
             self.vista.excepcion("El Paciente ya tiene una cita asignada.")
         except MesNoValidoError:
-            self.vista.excepcion("Ingresaste un mes no valido.")
+            self.vista.excepcion("Ingresaste un mes no válido.")
         except DiaNoValidoError:
             self.vista.excepcion("Ingresaste un dia no válido.")
         except HoraNoValidaError:
@@ -78,7 +78,7 @@ class Controlador:
         self.vista.delete_medical_appointment(self)
 
     def click_obtener_cancelar_cita(self):
-        cedula = self.vista.get_info_registrar_medical_appointment()
+        cedula = self.vista.get_info_cancelar_cita()
         try:
             self.modelo.cancelar_cita(cedula)
         except UsuarioNoRegistradoError:
@@ -93,6 +93,7 @@ class Controlador:
         self.vista.atender_cita_medica(self)
 
     def click_obtener_atender_cita(self):
+        self.vista.finalizar_atender_cita()
         datos = self.vista.proceso_historia_medica()
         try:
             self.modelo.atender_cita(datos["cedula"], datos["texto"])
@@ -101,4 +102,6 @@ class Controlador:
         except PacienteNoTieneCitaError:
             self.vista.excepcion("El Usuario no tiene cita")
         else:
-            self.vista.finalizar_atender_cita()
+            self.vista.finalizar_requisito_atender_cita()
+
+

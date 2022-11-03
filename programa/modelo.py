@@ -73,7 +73,7 @@ class CitaMedica(Cita):
         return f"Fecha: {self.fecha}, Hora: {self.hora}"
 
     def crear_historial(self, texto: str) -> Historial:
-        return Historial(texto)
+        return HistoriaClinica(texto)
 
 
 class CitaEcografia(Cita):
@@ -86,7 +86,7 @@ class CitaEcografia(Cita):
         return f"Fecha: {self.fecha}, Hora: {self.hora}, Tipo de Ecografía: {self.tipo_ecografia}"
 
     def crear_historial(self, texto: str) -> Historial:
-        return Historial(texto)
+        return ResultadoEcografia(texto, self.tipo_ecografia)
 
 
 class Paciente:
