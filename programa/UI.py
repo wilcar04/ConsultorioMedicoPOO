@@ -103,8 +103,8 @@ TIPO DE EXAMEN:
 
 
 OBSERVACIONES:"""
-    RUTA_ABSOLUTA = r"C:\Users\Wilson\Desktop\ConsultorioMedicoPOO\programa\files\historia_medica.txt"
-    RUTA_ABSOLUTA_RESULTADO = r"C:\Users\Wilson\Desktop\ConsultorioMedicoPOO\programa\files\resultado_examen.txt"
+    RUTA_ABSOLUTA = r"C:\Users\jvald\OneDrive\Escritorio\ConsultorioMedicoPOO\programa\files\historia_medica.txt"
+    RUTA_ABSOLUTA_RESULTADO = r"C:\Users\jvald\OneDrive\Escritorio\ConsultorioMedicoPOO\programa\files\resultado_examen.txt"
     def __init__(self):
 
         self.imagen_boton_atender_paciente = None
@@ -853,54 +853,10 @@ OBSERVACIONES:"""
             tk.messagebox.showwarning("Error", str(error))
 
         else:
-            self.ventana_atender_cita.withdraw()
-            self.ventana_elegir = tk.Toplevel()
+            self.ventana_elegir_atender_cita()
 
-            self.ventana_elegir.maxsize(1280, 720)
-            self.ventana_elegir.state("zoomed")
-            self.ventana_elegir.iconbitmap("images/logo_ventana.ico")
-            self.ventana_elegir.geometry("720x420")
-            self.ventana_elegir.title("Elegir Tipo de examen")
-            self.ventana_elegir.resizable(True, True)
-            self.ventana_elegir.config(background="black")
 
-            self.frame_titulo_elegir = tk.Frame(self.ventana_elegir)
-            self.frame_titulo_elegir.config(background="black")
-            self.frame_titulo_elegir.grid(row=0, column=1)
-            self.frame_botones_elegir = tk.Frame(self.ventana_elegir)
-            self.frame_botones_elegir.config(background="black")
-            self.frame_botones_elegir.grid(row=1,column=1)
 
-            self.label_elegir = tk.Label(self.frame_titulo_elegir, text="Consultorio")
-            self.label_elegir.config(font=("Candara", 48), fg="white", background="black",
-                                     image=self.imagen_titulo_pequena)
-            self.label_elegir.grid(row=0, column=1)
-
-            self.label_vacio_elegir = tk.Label(self.frame_titulo_elegir,
-                                               text="                                                         ",
-                                               background="black", font=("Candara", 30))
-            self.label_vacio_elegir2 = tk.Label(self.frame_titulo_elegir,
-                                                text="                                                         ",
-                                                background="black", font=("Candara", 30))
-            self.label_vacio_elegir.grid(row=0, column=0)
-            self.label_vacio_elegir2.grid(row=0, column=2)
-
-            self.boton_historia_medica=tk.Button(self.frame_botones_elegir, borderwidth=0,
-                                                    image=self.imagen_boton_historia_medica, background="black",
-                                                    command=self.proceso_historia_medica)
-            self.boton_resultado_examen=tk.Button(self.frame_botones_elegir, borderwidth=0, image=self.imagen_boton_resultados_examenes, background="black"
-                                                  ,command=self.proceso_resultado_examen)
-
-            self.boton_return_atender_cita = tk.Button(self.frame_botones_elegir, borderwidth=0,
-                                                           image=self.imagen_boton_volver_menu_registrar,
-                                                           background="black",
-                                                           command=self.return_elegir_a_menu)
-
-            self.boton_return_atender_cita.grid(row=3,column=2)
-            self.boton_historia_medica.grid(row=3,column=0)
-            self.boton_resultado_examen.grid(row=3,column=1)
-
-            self.ventana_elegir.mainloop()
 
     def proceso_historia_medica(self):
         try:
@@ -1129,6 +1085,57 @@ OBSERVACIONES:"""
     def excepcion(self,texto:str):
         tk.messagebox.showerror(texto,texto)
 
+    def ventana_elegir_atender_cita(self):
+        self.ventana_atender_cita.withdraw()
+        self.ventana_elegir = tk.Toplevel()
+
+        self.ventana_elegir.maxsize(1280, 720)
+        self.ventana_elegir.state("zoomed")
+        self.ventana_elegir.iconbitmap("images/logo_ventana.ico")
+        self.ventana_elegir.geometry("720x420")
+        self.ventana_elegir.title("Elegir Tipo de examen")
+        self.ventana_elegir.resizable(True, True)
+        self.ventana_elegir.config(background="black")
+
+        self.frame_titulo_elegir = tk.Frame(self.ventana_elegir)
+        self.frame_titulo_elegir.config(background="black")
+        self.frame_titulo_elegir.grid(row=0, column=1)
+        self.frame_botones_elegir = tk.Frame(self.ventana_elegir)
+        self.frame_botones_elegir.config(background="black")
+        self.frame_botones_elegir.grid(row=1, column=1)
+
+        self.label_elegir = tk.Label(self.frame_titulo_elegir, text="Consultorio")
+        self.label_elegir.config(font=("Candara", 48), fg="white", background="black",
+                                 image=self.imagen_titulo_pequena)
+        self.label_elegir.grid(row=0, column=1)
+
+        self.label_vacio_elegir = tk.Label(self.frame_titulo_elegir,
+                                           text="                                                         ",
+                                           background="black", font=("Candara", 30))
+        self.label_vacio_elegir2 = tk.Label(self.frame_titulo_elegir,
+                                            text="                                                         ",
+                                            background="black", font=("Candara", 30))
+        self.label_vacio_elegir.grid(row=0, column=0)
+        self.label_vacio_elegir2.grid(row=0, column=2)
+
+        self.boton_historia_medica = tk.Button(self.frame_botones_elegir, borderwidth=0,
+                                               image=self.imagen_boton_historia_medica, background="black",
+                                               command=self.proceso_historia_medica)
+        self.boton_resultado_examen = tk.Button(self.frame_botones_elegir, borderwidth=0,
+                                                image=self.imagen_boton_resultados_examenes, background="black"
+                                                , command=self.proceso_resultado_examen)
+
+        self.boton_return_atender_cita = tk.Button(self.frame_botones_elegir, borderwidth=0,
+                                                   image=self.imagen_boton_volver_menu_registrar,
+                                                   background="black",
+                                                   command=self.return_elegir_a_menu)
+
+        self.boton_return_atender_cita.grid(row=3, column=2)
+        self.boton_historia_medica.grid(row=3, column=0)
+        self.boton_resultado_examen.grid(row=3, column=1)
+
+        self.ventana_elegir.mainloop()
+
 
 
 def ciclo_obtener_texto_citas():
@@ -1155,6 +1162,7 @@ def ciclo_obtener_historial_medico_paciente():
         text_acumulado += valor + "\n"
 
     return text_acumulado
+
 
 
 

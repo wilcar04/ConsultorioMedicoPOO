@@ -93,7 +93,7 @@ class Controlador:
         self.vista.atender_cita_medica(self)
 
     def click_obtener_atender_cita(self):
-        self.vista.finalizar_atender_cita()
+        self.crear_ventana_elegir_atender_cita()
         datos = self.vista.proceso_historia_medica()
         try:
             self.modelo.atender_cita(datos["cedula"], datos["texto"])
@@ -103,5 +103,8 @@ class Controlador:
             self.vista.excepcion("El Usuario no tiene cita")
         else:
             self.vista.finalizar_requisito_atender_cita()
+
+    def crear_ventana_elegir_atender_cita(self):
+        self.vista.ventana_elegir_atender_cita()
 
 
