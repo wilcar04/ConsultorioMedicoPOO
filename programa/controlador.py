@@ -21,14 +21,13 @@ class Controlador:
         except UsuarioYaRegistradoError:
             self.vista.excepcion()
         else:
-         self.vista.finalizar_registrar()
+            self.vista.finalizar_registrar()
 
     def click_eliminar_paciente(self):
         self.vista.delete(self)
 
     def click_obtener_eliminar_paciente(self):
         cedula = self.vista.delete_user()
-
         try:
             self.modelo.eliminar_paciente(cedula)
         except UsuarioNoRegistradoError:
@@ -102,3 +101,43 @@ class Controlador:
             self.vista.excepcion()
         else:
             self.vista.finalizar_atender_cita()
+
+    def click_obtener_agenda_dia(self):
+        self.vista.
+
+    def click_obtener_informacion_agendia_dia(self):
+        datos = self.vista.
+        try:
+            info = self.modelo.obtener_agenda_dia(datos[""], datos[""])
+        except MesNoValidoError:
+            self.vista.excepcion()
+        except DiaNoValidoError:
+            self.vista.excepcion()
+        except FechaSinCitasError:
+            self.vista.excepcion()
+        else:
+            self.vista.
+
+    def click_obtener_historial_paciente(self):
+        self.vista.historial_paciente(self)
+
+    def click_obtener_informacion_historial_paciente(self):
+        cedula = self.vista.get_info_historial_paciente()
+        try:
+            info = self.modelo.obtener_historial_paciente(cedula)
+        except UsuarioNoRegistradoError:
+            self.vista.excepcion()
+        except PacienteSinHistorialError:
+            self.vista.excepcion()
+        else:
+            self.vista.
+
+    def marcar_paciente(self):
+        self.vista.
+
+    def marcar_paciente(self):
+        cedula = self.vista.
+        try:
+            info = self.modelo.marcar_paciente(cedula)
+        except UsuarioNoRegistradoError:
+            self.vista.excepcion()

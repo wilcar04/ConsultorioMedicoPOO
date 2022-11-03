@@ -900,7 +900,6 @@ OBSERVACIONES:"""
         diccionario={"cedula":str(self.entry_cedula_atender_cita.get()),"texto":str(texto_historia_medica)}
         return diccionario
 
-
     def proceso_resultado_examen(self):
         tk.messagebox.showinfo("Para el llenado de los resultados de los examenes del paciente", """
                 1)  Se va abrir el editor de texto.
