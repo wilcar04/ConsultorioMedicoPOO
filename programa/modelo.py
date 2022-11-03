@@ -73,7 +73,7 @@ class CitaMedica(Cita):
         return f"Fecha: {self.fecha}, Hora: {self.hora}"
 
     def crear_historial(self, texto: str) -> Historial:
-        return Historial(texto)
+        return HistoriaClinica(texto)
 
 
 class CitaEcografia(Cita):
@@ -86,7 +86,7 @@ class CitaEcografia(Cita):
         return f"Fecha: {self.fecha}, Hora: {self.hora}, Tipo de Ecografía: {self.tipo_ecografia}"
 
     def crear_historial(self, texto: str) -> Historial:
-        return Historial(texto)
+        return ResultadoEcografia(texto, self.tipo_ecografia)
 
 
 class Paciente:
@@ -112,6 +112,9 @@ class Paciente:
 
     def paciente_tiene_cita(self) -> bool:
         return self.cita is not None
+
+    def agregar_cita(self, cita: Cita):
+        self.cita = cita
 
     def cita_confirmada(self):
         self.cita.cita_confirmada()
@@ -159,12 +162,13 @@ class AgendaDiaria:
         return hora not in self.citas
 
     def agregar_cita(self, fecha: datetime.date, hora: datetime.time,
-                     cedula_paciente: str, tipo_ecografia: Optional[str]):
-        if tipo_ecografia is not None:
+                     cedula_paciente: str, tipo_ecografia: str):
+        if tipo_ecografia != "":
             cita = CitaEcografia(fecha, hora, cedula_paciente, tipo_ecografia)
         else:
             cita = CitaMedica(fecha, hora, cedula_paciente)
         self.citas[hora] = cita
+        return cita
 
     def eliminar_cita(self, hora: datetime.time):
         del self.citas[hora]
@@ -191,10 +195,10 @@ class Agenda:
             return True
 
     def agregar_cita(self, fecha: datetime.date, hora: datetime.time,
-                     cedula_paciente: str, tipo_ecografia: Optional[str]):
+                     cedula_paciente: str, tipo_ecografia: str) -> Cita:
         if fecha not in self.agendas_diarias:
             self.agendas_diarias[fecha] = AgendaDiaria(fecha)
-        self.agendas_diarias[fecha].agregar_cita(fecha, hora, cedula_paciente, tipo_ecografia)
+        return self.agendas_diarias[fecha].agregar_cita(fecha, hora, cedula_paciente, tipo_ecografia)
 
     def eliminar_cita(self, fecha: datetime.date, hora: datetime.time):
         self.agendas_diarias[fecha].eliminar_cita(hora)
@@ -224,7 +228,7 @@ class Consultorio:
 
     @staticmethod
     def obtener_numero_mes(mes: str) -> Optional[int]:
-        meses = ("enero", "febrero", "marzo", "arbil", "mayo", "junio", "julio",
+        meses = ("enero", "febrero", "marzo", "abril", "mayo", "junio", "julio",
                  "agosto", "septiembre", "octubre", "noviembre", "diciembre")
         if mes.lower() in meses:
             return meses.index(mes.lower()) + 1
@@ -304,7 +308,9 @@ class Consultorio:
             self.cancelar_cita(cedula)
         del self.pacientes[cedula]
 
-    def asignar_cita(self, cedula: str, mes: str, dia: int, hora: int, tipo_ecografia: str = None):
+    def asignar_cita(self, cedula: str, mes: str, dia: str, hora: str, tipo_ecografia: str):
+        dia = int(dia)
+        hora = int(hora)
         if not self.usuario_existe(cedula):
             raise UsuarioNoRegistradoError
         paciente = self.buscar_paciente(cedula)
@@ -321,9 +327,10 @@ class Consultorio:
         formato_hora = self.obtener_formato_hora(hora)
         if not self.agenda.hora_disponible(formato_fecha, formato_hora):
             raise HoraIndicadaYaOcupadaError
-        if tipo_ecografia not in self.ECOGRAFIAS and tipo_ecografia is not None:
+        if tipo_ecografia not in self.ECOGRAFIAS and tipo_ecografia != "":
             raise EcografiaIncorrectaError
-        self.agenda.agregar_cita(formato_fecha, formato_hora, cedula, tipo_ecografia)
+        cita = self.agenda.agregar_cita(formato_fecha, formato_hora, cedula, tipo_ecografia)
+        paciente.agregar_cita(cita)
 
     def confimar_cita(self, cedula: str):
         if self.usuario_existe(cedula):
