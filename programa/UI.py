@@ -701,10 +701,8 @@ OBSERVACIONES:"""
 
             if have_medical_appointment is False:
                 raise Exception("El paciente no tiene una cita asignada")
-
         except Exception as error:
             tk.messagebox.showwarning("Error", str(error))
-
         else:
             return cedula
 

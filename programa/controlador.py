@@ -42,21 +42,21 @@ class Controlador:
     def click_obtener_asignar_cita(self):
         datos = self.vista.get_info_registrar_medical_appointment()
         try:
-            self.modelo.asignar_cita(datos["cedula"], datos["mes"], datos["dia"], datos["hora"],datos["tipo_ecografia"])
+            self.modelo.asignar_cita(datos["cedula"], datos["mes"], datos["dia"], datos["hora"], datos["tipo_ecografia"])
         except UsuarioNoRegistradoError:
-            self.vista.excepcion("El Usuario no existe.")
+            self.vista.excepcion("La cédula ingresada no está registrada.")
         except PacienteYaTieneCitaError:
             self.vista.excepcion("El Paciente ya tiene una cita asignada.")
         except MesNoValidoError:
             self.vista.excepcion("Ingresaste un mes no valido.")
         except DiaNoValidoError:
-            self.vista.excepcion("Ingresaste un dia no vaSlido.")
+            self.vista.excepcion("Ingresaste un dia no válido.")
         except HoraNoValidaError:
-            self.vista.excepcion("Ingresaste una hora no valida.")
+            self.vista.excepcion("Ingresaste una hora no válida.")
         except HoraIndicadaYaOcupadaError:
-            self.vista.excepcion("La cita en esta hora ya se encuentra ocupada.")
+            self.vista.excepcion("La hora indicada ya se encuentra ocupada.")
         except EcografiaIncorrectaError:
-            self.vista.excepcion("La Ecografia no esta bien ingresada")
+            self.vista.excepcion("La Ecografía no está bien ingresada")
         else:
             self.vista.finalizar_registrar_cita()
 
