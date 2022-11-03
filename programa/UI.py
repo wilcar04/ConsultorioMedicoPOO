@@ -870,10 +870,12 @@ OBSERVACIONES:"""
             historia.write(UI.TEXTO_H_L)
             historia.close()
             info_historia = [self.entry_cedula_atender_cita.get(), str(texto_historia_medica)]
-            return info_historia
+
         except FileNotFoundError:
             tk.messagebox.showwarning("Error: No se encuentra la ruta absoluta",
                                       "Modifique la ruta absoluta en el archivo Python en UI")
+        else:
+            return info_historia
 
     def proceso_resultado_examen(self):
         try:
