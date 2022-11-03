@@ -125,5 +125,11 @@ class Controlador:
         else:
             self.vista.finalizar_atender_cita()
 
+    def click_obtener_agenda_cita(self):
+        self.vista.obtener_la_agenda_de_las_citas_pendientes_dia(self)
+
+    def click_obtener_agenda_cita_dia(self):
+        self.vista.obtener_la_agenda_de_las_citas_pendientes()
+
 
 

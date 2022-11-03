@@ -285,7 +285,7 @@ OBSERVACIONES:"""
                                  image=self.imagen_boton_atender_paciente, command=controlador.click_atender_cita)
         self.boton_6.config(font="Candara", fg="white", background="black")
         self.boton_7 =tk.Button(self.frame_botones,text="Citas Pendientes", borderwidth=0,
-                                image=self.imagen_boton_obtener_citas_pendientes,command=self.obtener_la_agenda_de_las_citas_pendientes)
+                                image=self.imagen_boton_obtener_citas_pendientes,command=controlador.click_obtener_agenda_cita)
         self.boton_7.config(font="Candara",fg="white",background="black")
         self.boton_8 = tk.Button(self.frame_botones,image=self.imagen_boton_historial_paciente,command=self.historial_paciente,borderwidth=0)
         self.boton_8.config(fg="white",background="black")
@@ -899,6 +899,59 @@ OBSERVACIONES:"""
         else:
             return info_examen
 
+    def obtener_la_agenda_de_las_citas_pendientes_dia(self,controlador):
+
+        self.window.withdraw()
+        self.ventana_obtener_agenda_dia = tk.Toplevel()
+        self.ventana_obtener_agenda_dia.maxsize(1280, 720)
+        self.ventana_obtener_agenda_dia.state("zoomed")
+        self.ventana_obtener_agenda_dia.iconbitmap("images/logo_ventana.ico")
+        self.ventana_obtener_agenda_dia.geometry("1280x420")
+        self.ventana_obtener_agenda_dia.title("Obtener Agenda dia")
+        self.ventana_obtener_agenda_dia.resizable(True, True)
+        self.ventana_obtener_agenda_dia.config(background="black")
+
+        self.frame_titulo_obtener_agenda_dia = tk.Frame(self.ventana_obtener_agenda_dia)
+        self.frame_titulo_obtener_agenda_dia.config(background="black")
+        self.frame_botones_obtener_agenda_dia = tk.Frame(self.ventana_obtener_agenda_dia)
+        self.frame_botones_obtener_agenda_dia.config(background="black")
+        self.frame_titulo_obtener_agenda_dia.grid(row=0, column=1)
+        self.frame_botones_obtener_agenda_dia.grid(row=1, column=1)
+
+        self.label_obtener_agenda_dia = tk.Label(self.frame_botones_obtener_agenda_dia, text="Consultorio")
+        self.label_obtener_agenda_dia.config(font=("Candara", 48), fg="white", background="black",
+                                       image=self.imagen_titulo_pequena)
+        self.label_obtener_agenda_dia.grid(row=0, column=1)
+
+        self.label_vacio_obtener_agenda_dia = tk.Label(self.frame_titulo_obtener_agenda_dia,
+                                                 text="                                                         ",
+                                                 background="black", font=("Candara", 30))
+        self.label_vacio_obtener_agenda_dia2 = tk.Label(self.frame_titulo_obtener_agenda_dia,
+                                                  text="                                                         ",
+                                                  background="black", font=("Candara", 30))
+        self.label_vacio_obtener_agenda_dia.grid(row=0, column=0)
+        self.label_vacio_obtener_agenda_dia2.grid(row=0, column=2)
+
+        self.dia_obtener_obtener_agenda = tk.Label(self.frame_botones_obtener_agenda_dia)
+        self.dia_obtener_obtener_agenda.config(font=("Candara", 48), fg="white", background="black",
+                                        image=self.imagen_registrar_cita_dia)
+        self.dia_obtener_obtener_agenda.grid(row=2, column=0)
+        self.entry_dia_obtener_agenda = tk.Entry(self.frame_botones_obtener_agenda_dia, font=("Arial rounded MT", 18), bd=4, width=30,
+                                                  justify="center")
+        self.entry_dia_obtener_agenda.grid(row=2, column=1)
+        self.boton_obtener_dia_agenda_cita = tk.Button(self.frame_botones_obtener_agenda_dia, borderwidth=0,
+                                                    image=self.imagen_boton_obtener_citas_pendientes, background="black",
+                                                    command=controlador.click_obtener_agenda_cita_dia)
+        self.boton_obtener_dia_agenda_cita.grid(row=3, column=1)
+
+        self.boton_return_obtener_agenda = tk.Button(self.frame_botones_obtener_agenda_dia, borderwidth=0,
+                                                   image=self.imagen_boton_volver_menu_registrar,
+                                                   background="black",
+                                                   command=self.return_citas_pendientes_a_menu)
+        self.boton_return_obtener_agenda.grid(row=3, column=0)
+
+        self.ventana_obtener_agenda_dia.mainloop()
+
     def obtener_la_agenda_de_las_citas_pendientes(self):
         self.window.withdraw()
         self.ventana_citas_pendientes= tk.Toplevel()
@@ -923,13 +976,13 @@ OBSERVACIONES:"""
                                                text="                                                         ",
                                                background="black", font=("Candara", 30))
 
-        texto_citas=ciclo_obtener_texto_citas()
+
 
         self.label_title_citas_pendientes = tk.Label(self.frame_title_citas_pendientes, text="doctor's office")
         self.label_title_citas_pendientes.config(font=("Candara", 48), fg="white", background="black",
                                     image=self.imagen_boton_obtener_citas_pendientes)
 
-        self.label_citas_pendientes= tk.Label(self.frame_labels_citas_pendientes, text=str(texto_citas))
+        self.label_citas_pendientes= tk.Label(self.frame_labels_citas_pendientes, text="HOLLLLLLLAAAAAAAAAAAAAAAAAAAAAAAA")
         self.label_citas_pendientes.config(font=("Arial rounded MT", 11), fg="white", background="black")
 
         self.boton_return_citas_pendientes = tk.Button(self.frame_labels_citas_pendientes, borderwidth=0,
@@ -979,7 +1032,7 @@ OBSERVACIONES:"""
         self.window.state("zoomed")
 
     def return_citas_pendientes_a_menu(self):
-        self.ventana_citas_pendientes.destroy()
+        self.ventana_obtener_agenda_dia.destroy()
         self.window.iconify()
         self.window.state("zoomed")
 
@@ -1134,11 +1187,15 @@ def ciclo_obtener_texto_citas():
 
     text: str = ""
     text_acumulado:str=""
-    citas_pacientes_no_atendidos = {"0": ["1000204245", "Juan Esteban" ], "1": ["1000203456","Pepito"]}
+    citas_pacientes_no_atendidos = {"23":[["Juanes","1000204245"],["Pedro","1000203456"]],}
+    lista_dia=citas_pacientes_no_atendidos.keys()
+    dia=lista_dia[0]
 
-    for cita in citas_pacientes_no_atendidos:
-        text = (f"La identificacion de la cita es : {cita} -> El nombre del paciente es : {citas_pacientes_no_atendidos[cita][1]} -> "
-                f"y la cedula del paciente es : {citas_pacientes_no_atendidos[cita][0]}\n")
+
+
+    for cita in citas_pacientes_no_atendidos.values():
+        text = (f"El dia  de la cita es : {dia} -> El nombre del paciente es : {cita[0]} -> "
+                f"y la cedula del paciente es : {cita[1]}\n")
         text_acumulado += text + "\n"
 
     return text_acumulado
