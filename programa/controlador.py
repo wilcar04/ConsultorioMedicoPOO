@@ -115,6 +115,7 @@ class Controlador:
         else:
             self.vista.finalizar_atender_cita()
 
+
     def click_examen_resultados_atender_cita(self):
         examen = self.vista.proceso_resultado_examen()
         try:

@@ -509,7 +509,7 @@ OBSERVACIONES:"""
         self.window.state("zoomed")
 
     def finalizar_registrar_cita(self):
-        tk.messagebox.showinfo("Registro exitoso", "se pudo registrar la cita exiitosamente")
+        tk.messagebox.showinfo("Registro exitoso", "Se pudo registrar la cita exitosamente")
         self.ventana_registrar_cita.destroy()
         self.window.deiconify()
         self.window.state("zoomed")
