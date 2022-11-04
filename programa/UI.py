@@ -285,7 +285,7 @@ OBSERVACIONES:"""
                                  image=self.imagen_boton_atender_paciente, command=controlador.click_atender_cita)
         self.boton_6.config(font="Candara", fg="white", background="black")
         self.boton_7 =tk.Button(self.frame_botones,text="Citas Pendientes", borderwidth=0,
-                                image=self.imagen_boton_obtener_citas_pendientes,command=controlador.click_obtener_agenda_cita)
+                                image=self.imagen_boton_obtener_citas_pendientes,command=controlador.click_obtener_agenda_cita_dia)
         self.boton_7.config(font="Candara",fg="white",background="black")
         self.boton_8 = tk.Button(self.frame_botones,image=self.imagen_boton_historial_paciente,command=self.historial_paciente,borderwidth=0)
         self.boton_8.config(fg="white",background="black")
@@ -948,7 +948,7 @@ OBSERVACIONES:"""
 
         self.boton_obtener_dia_agenda_cita = tk.Button(self.frame_botones_obtener_agenda_dia, borderwidth=0,
                                                     image=self.imagen_boton_obtener_citas_pendientes, background="black",
-                                                    command=controlador.click_obtener_agenda_cita_dia)
+                                                    command=controlador.click_obtener_agenda_cita)
         self.boton_obtener_dia_agenda_cita.grid(row=4, column=1)
 
         self.boton_return_obtener_agenda = tk.Button(self.frame_botones_obtener_agenda_dia, borderwidth=0,
@@ -968,7 +968,7 @@ OBSERVACIONES:"""
             if dia.isdigit() is False:
                 raise Exception("Ingresa bien el dia")
         except Exception as error:
-            self.excepcion(str(error))
+            tk.messagebox.showwarning("Error",str(error))
         else:
             return [mes,dia]
 
