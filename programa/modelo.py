@@ -151,11 +151,11 @@ class AgendaDiaria:
         self.citas: dict[datetime.time, Cita] = {}
 
     @staticmethod
-    def cedula_paciente_por_cita(lista_citas: list[Cita]) -> list[Type[tuple]]:
+    def cedula_paciente_por_cita(lista_citas: list[Cita]) -> list[tuple]:
         lista_cedulas_con_citas = []
         for cita in lista_citas:
             cedula = cita.cedula_paciente
-            lista_cedulas_con_citas.append(tuple[cedula, cita])
+            lista_cedulas_con_citas.append((cedula, cita))
         return lista_cedulas_con_citas
 
     def hora_disponible(self, hora: datetime.time) -> bool:
@@ -209,7 +209,7 @@ class Agenda:
     def lista_citas_en_fecha(self, fecha: datetime.date) -> list[Cita]:
         return self.agendas_diarias[fecha].lista_citas()
 
-    def cedula_paciente_por_cita(self, fecha: datetime.date, lista_citas: list[Cita]) -> list[Type[tuple]]:
+    def cedula_paciente_por_cita(self, fecha: datetime.date, lista_citas: list[Cita]) -> list[tuple]:
         return self.agendas_diarias[fecha].cedula_paciente_por_cita(lista_citas)
 
     def obtener_horas(self, fecha: datetime.date) -> list[datetime.time]:
@@ -264,11 +264,12 @@ class Consultorio:
     def buscar_paciente(self, cedula: str) -> Paciente:
         return self.pacientes[cedula]
 
-    def informacion_paciente_por_cita(self, lista_cedulas_con_citas: list[Type[tuple]]) -> list[Type[tuple]]:
+    def informacion_paciente_por_cita(self, lista_cedulas_con_citas: list[Type[tuple]]) -> list[tuple[str, str]]:
         informacion = []
-        for cedula, cita in lista_cedulas_con_citas:
+        for dato in lista_cedulas_con_citas:
+            cedula, cita = dato
             paciente = self.buscar_paciente(cedula)
-            informacion.append(tuple[str(paciente), str(cita)])
+            informacion.append((str(paciente), str(cita)))
         return informacion
 
     def organizar_agenda(self, lista_horas: list[datetime.time],
@@ -284,6 +285,16 @@ class Consultorio:
             else:
                 agenda_organizada.append(None)
         return tuple(agenda_organizada)
+
+    def traducir_tupla(self, tupla_citas) -> str:
+        texto = ""
+        for i in range(len(tupla_citas)):
+            texto += f"{self.HORA_INICIAL + i}: "
+            if tupla_citas[i] is None:
+                texto += "Cita disponible\n"
+            else:
+                texto += f"{tupla_citas[i][0]}\n"
+        return texto[:-1]
 
     # Requisitos de programa:
 
