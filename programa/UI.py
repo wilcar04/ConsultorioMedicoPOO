@@ -287,7 +287,7 @@ OBSERVACIONES:"""
         self.boton_7 =tk.Button(self.frame_botones,text="Citas Pendientes", borderwidth=0,
                                 image=self.imagen_boton_obtener_citas_pendientes,command=controlador.click_obtener_agenda_cita_dia)
         self.boton_7.config(font="Candara",fg="white",background="black")
-        self.boton_8 = tk.Button(self.frame_botones,image=self.imagen_boton_historial_paciente,command=self.historial_paciente,borderwidth=0)
+        self.boton_8 = tk.Button(self.frame_botones,image=self.imagen_boton_historial_paciente,command=controlador.click_obtener_historial_paciente_cedula,borderwidth=0)
         self.boton_8.config(fg="white",background="black")
 
 
@@ -1076,7 +1076,7 @@ OBSERVACIONES:"""
         self.window.state("zoomed")
 
 
-    def historial_paciente(self):
+    def historial_paciente(self,controlador):
         self.window.withdraw()
         self.ventana_historial_paciente = tk.Toplevel()
         self.ventana_historial_paciente.maxsize(1280, 720)
@@ -1123,7 +1123,7 @@ OBSERVACIONES:"""
 
         self.boton_get_info_historial_paciente = tk.Button(self.frame_botones_padre_historial_cita, borderwidth=0,
                                                        image=self.imagen_boton_historial_paciente, background="black",
-                                                       command=self.get_info_historial_paciente)
+                                                       command=controlador.click_obtener_ultima_historia_medica)
         self.boton_get_info_historial_paciente.grid(row=0, column=1)
 
         self.boton_return_historial_cita = tk.Button(self.frame_botones_padre_historial_cita, borderwidth=0,
@@ -1135,25 +1135,17 @@ OBSERVACIONES:"""
         self.ventana_historial_paciente.mainloop()
 
     def get_info_historial_paciente(self):
-        self.ventana_historial_paciente.withdraw()
-        tk.messagebox.showinfo("Visualización de la ultima historia medica del paciente", """
-               1)  Se va abrir el editor de texto.
-               2)  lees el archivo y se guarda(Ctrl+S).
-               3)  Aparece una ventana emergente de informacion, la cierras cuando ya hayas leido el archivo.""")
 
-        historia = open("files/historia_medica.txt", "w", encoding="utf-8")
-        historia.write("pepo")
-        historia.close()
+        cedula=self.entrada_cedula_historial_cita.get()
+        try:
+            if cedula.isdigit() is False:
+                raise Exception("Ingresa bien la cedula")
+        except Exception as error:
+            tk.messagebox.showwarning("Error",str(error))
+        else:
 
-        os.startfile(self.RUTA_ABSOLUTA)
-        tk.messagebox.showinfo("Cierrame cuando hayas leido el archivo", "Cierrame cuando hayas leido el archivo")
-        historia = open("files/historia_medica.txt", "w", encoding="utf-8")
-        historia.write(UI.TEXTO_H_L)
-        historia.close()
+            return cedula
 
-
-        tk.messagebox.showinfo("Ya finalisate la lectura de la ultima historia medica",
-                               "No hubo problemas.")
 
     def excepcion(self,texto:str):
         tk.messagebox.showerror(texto,texto)
@@ -1224,6 +1216,27 @@ def ciclo_obtener_historial_medico_paciente():
         text_acumulado += valor + "\n"
 
     return text_acumulado
+
+
+# def nose():
+#     tk.messagebox.showinfo("Visualización de la ultima historia medica del paciente", """
+#            1)  Se va abrir el editor de texto.
+#            2)  lees el archivo y se guarda(Ctrl+S).
+#            3)  Aparece una ventana emergente de informacion, la cierras cuando ya hayas leido el archivo.""")
+#
+#     historia = open("files/historia_medica.txt", "w", encoding="utf-8")
+#     historia.write("pepo")
+#     historia.close()
+#
+#     os.startfile(self.RUTA_ABSOLUTA)
+#     tk.messagebox.showinfo("Cierrame cuando hayas leido el archivo", "Cierrame cuando hayas leido el archivo")
+#     historia = open("files/historia_medica.txt", "w", encoding="utf-8")
+#     historia.write(UI.TEXTO_H_L)
+#     historia.close()
+#
+#     tk.messagebox.showinfo("Ya finalizaste la lectura de la ultima historia medica",
+#                            "No hubo problemas.")
+
 
 
 

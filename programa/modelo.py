@@ -138,7 +138,8 @@ class Paciente:
         return self.historial != []
 
     def informacion_historia(self) -> str:
-        return str(self.historial[-1:])
+        historial = self.historial[len(self.historial) - 1]
+        return str(historial)
 
     def marcar(self):
         self.marcado = True

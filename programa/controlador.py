@@ -143,3 +143,17 @@ class Controlador:
     def click_obtener_agenda_cita_dia(self):
         self.vista.obtener_la_agenda_de_las_citas_pendientes_dia(self)
 
+    def click_obtener_historial_paciente_cedula(self):
+        self.vista.historial_paciente(self)
+
+    def click_obtener_ultima_historia_medica(self):
+        try:
+            cedula=self.vista.get_info_historial_paciente()
+            historial_paciente=self.modelo.obtener_historial_paciente(cedula)
+        except UsuarioNoRegistradoError:
+            self.vista.excepcion("El usuario no esta registrado")
+        except PacienteSinHistorialError:
+            self.vista.excepcion("El paciente no tiene historia medica")
+        else:
+            self.vista.ventana_historial_paciente.destroy()
+            print(f"La fecha de la historia clinica es {historial_paciente}")
