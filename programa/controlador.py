@@ -115,7 +115,6 @@ class Controlador:
         else:
             self.vista.finalizar_atender_cita()
 
-
     def click_examen_resultados_atender_cita(self):
         examen=self.vista.proceso_resultado_examen()
         try:
@@ -126,12 +125,17 @@ class Controlador:
             self.vista.finalizar_atender_cita()
 
     def click_obtener_agenda_cita(self):
-        lista_mes_dia=self.vista.obtener_la_agenda_de_las_citas_pendientes()
-        mes=lista_mes_dia[0]
-        dia=lista_mes_dia[1]
-        print(mes,dia)
-
-
+        lista_mes_dia = self.vista.obtener_la_agenda_de_las_citas_pendientes()
+        try:
+            tupla_citas = self.modelo.obtener_agenda_dia(lista_mes_dia[0], int(lista_mes_dia[1]))
+        except MesNoValidoError:
+            self.vista.excepcion("El mes ingresado no es válido")
+        except DiaNoValidoError:
+            self.vista.excepcion("El día ingresado no es válido")
+        except FechaSinCitasError:
+            self.vista.excepcion("La fecha ingresada no tiene citas")
+        else:
+            return self.modelo.traducir_tupla(tupla_citas)
 
 
     def click_obtener_agenda_cita_dia(self):

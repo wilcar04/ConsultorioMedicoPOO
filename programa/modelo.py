@@ -1,6 +1,6 @@
 import datetime
 from abc import ABC, abstractmethod
-from typing import Optional, Type, Tuple
+from typing import Optional, Type
 from exceptions import *
 
 
@@ -264,15 +264,16 @@ class Consultorio:
     def buscar_paciente(self, cedula: str) -> Paciente:
         return self.pacientes[cedula]
 
-    def informacion_paciente_por_cita(self, lista_cedulas_con_citas: list[tuple]) -> list[tuple]:
+    def informacion_paciente_por_cita(self, lista_cedulas_con_citas: list[Type[tuple]]) -> list[tuple[str, str]]:
         informacion = []
-        for cedula, cita in lista_cedulas_con_citas:
+        for dato in lista_cedulas_con_citas:
+            cedula, cita = dato
             paciente = self.buscar_paciente(cedula)
             informacion.append((str(paciente), str(cita)))
         return informacion
 
     def organizar_agenda(self, lista_horas: list[datetime.time],
-                         lista_informacion: list[tuple]) -> tuple[tuple | None, ...]:
+                         lista_informacion: list[Type[tuple]]) -> tuple[Optional[Type[tuple]]]:
         agenda_organizada = []
         for hora in range(self.HORA_INICIAL, self.HORA_FINAL + 1):
             for hora_cita in lista_horas:
@@ -376,7 +377,7 @@ class Consultorio:
         else:
             raise UsuarioNoRegistradoError
 
-    def obtener_agenda_dia(self, mes: str, dia: int) -> tuple[tuple | None, ...]:
+    def obtener_agenda_dia(self, mes: str, dia: int) -> tuple[Optional[Type[tuple]]]:
         numero_mes = self.obtener_numero_mes(mes)
         if numero_mes is None:
             raise MesNoValidoError

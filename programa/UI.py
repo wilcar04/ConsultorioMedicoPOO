@@ -103,8 +103,8 @@ TIPO DE EXAMEN:
 
 
 OBSERVACIONES:"""
-    RUTA_ABSOLUTA = r"C:\Users\jvald\OneDrive\Escritorio\ConsultorioMedicoPOO\programa\files\historia_medica.txt"
-    RUTA_ABSOLUTA_RESULTADO = r"C:\Users\jvald\OneDrive\Escritorio\ConsultorioMedicoPOO\programa\files\resultado_examen.txt"
+    RUTA_ABSOLUTA = r"C:\Users\Wilson\Desktop\ConsultorioMedicoPOO\programa\files\historia_medica.txt"
+    RUTA_ABSOLUTA_RESULTADO = r"C:\Users\Wilson\Desktop\ConsultorioMedicoPOO\programa\files\resultado_examen.txt"
     def __init__(self):
 
         self.imagen_boton_atender_paciente = None
@@ -1143,7 +1143,7 @@ OBSERVACIONES:"""
         historia.write("pepo")
         historia.close()
 
-        os.startfile(r"C:\Users\jvald\PycharmProjects\Interfazz\frontend\files\historia_medica.txt")
+        os.startfile(self.RUTA_ABSOLUTA)
         tk.messagebox.showinfo("Cierrame cuando hayas leido el archivo", "Cierrame cuando hayas leido el archivo")
         historia = open("files/historia_medica.txt", "w", encoding="utf-8")
         historia.write(UI.TEXTO_H_L)
