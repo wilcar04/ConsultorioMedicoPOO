@@ -137,7 +137,6 @@ class Controlador:
         else:
             return self.modelo.traducir_tupla(tupla_citas)
 
-
     def click_obtener_agenda_cita_dia(self):
         self.vista.obtener_la_agenda_de_las_citas_pendientes_dia(self)
 
