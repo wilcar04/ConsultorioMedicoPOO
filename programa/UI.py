@@ -1132,7 +1132,7 @@ OBSERVACIONES:"""
 
         self.ventana_historial_paciente.mainloop()
 
-    def get_info_historial_paciente(self):
+    def mostrar_info_historial_paciente(self):
         self.ventana_historial_paciente.withdraw()
         tk.messagebox.showinfo("Visualización de la ultima historia medica del paciente", """
                1)  Se va abrir el editor de texto.
