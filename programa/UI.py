@@ -4,8 +4,6 @@ from datetime import *
 import os
 
 
-
-
 class UI:
     TEXTO_H_L="""HISTORIA CLINICA 
 Nombre:
@@ -105,6 +103,8 @@ TIPO DE EXAMEN:
 
 
 OBSERVACIONES:"""
+    RUTA_ABSOLUTA = r"C:\Users\jvald\OneDrive\Escritorio\ConsultorioMedicoPOO\programa\files\historia_medica.txt"
+    RUTA_ABSOLUTA_RESULTADO = r"C:\Users\jvald\OneDrive\Escritorio\ConsultorioMedicoPOO\programa\files\resultado_examen.txt"
     def __init__(self):
 
         self.imagen_boton_atender_paciente = None
@@ -285,7 +285,7 @@ OBSERVACIONES:"""
                                  image=self.imagen_boton_atender_paciente, command=controlador.click_atender_cita)
         self.boton_6.config(font="Candara", fg="white", background="black")
         self.boton_7 =tk.Button(self.frame_botones,text="Citas Pendientes", borderwidth=0,
-                                image=self.imagen_boton_obtener_citas_pendientes,command=self.obtener_la_agenda_de_las_citas_pendientes)
+                                image=self.imagen_boton_obtener_citas_pendientes,command=controlador.click_obtener_agenda_cita_dia)
         self.boton_7.config(font="Candara",fg="white",background="black")
         self.boton_8 = tk.Button(self.frame_botones,image=self.imagen_boton_historial_paciente,command=self.historial_paciente,borderwidth=0)
         self.boton_8.config(fg="white",background="black")
@@ -412,7 +412,6 @@ OBSERVACIONES:"""
 
             if test_date == datetime.strptime(date_get_info, "%d/%m/%Y"):
                 pass
-
         except ValueError as error:
             tk.messagebox.showwarning("wrong data entry", str(error))
         except Exception as error:
@@ -461,6 +460,8 @@ OBSERVACIONES:"""
         self.ventana_atender_cita.destroy()
         self.window.iconify()
         self.window.state("zoomed")
+
+
 
     def delete(self,controlador):
         self.window.withdraw()
@@ -701,10 +702,8 @@ OBSERVACIONES:"""
 
             if have_medical_appointment is False:
                 raise Exception("El paciente no tiene una cita asignada")
-
         except Exception as error:
             tk.messagebox.showwarning("Error", str(error))
-
         else:
             return cedula
 
@@ -839,119 +838,147 @@ OBSERVACIONES:"""
         try:
             cedula = str(self.entry_cedula_atender_cita.get())
             hay_paciente = True
-            have_medical_appointment = True
 
             if cedula.isdigit() is False:
                 raise Exception("La cedula es un numero, ingresa el numero nuevamente.")
-
-            if hay_paciente is False:
-                raise Exception("No se encuentra el paciente")
-
-            if have_medical_appointment is False:
-                raise Exception("El paciente no tiene una cita asignada")
 
         except Exception as error:
             tk.messagebox.showwarning("Error", str(error))
 
         else:
-            self.ventana_atender_cita.withdraw()
-            self.ventana_elegir = tk.Toplevel()
+            return cedula
 
-            self.ventana_elegir.maxsize(1280, 720)
-            self.ventana_elegir.state("zoomed")
-            self.ventana_elegir.iconbitmap("images/logo_ventana.ico")
-            self.ventana_elegir.geometry("720x420")
-            self.ventana_elegir.title("Elegir Tipo de examen")
-            self.ventana_elegir.resizable(True, True)
-            self.ventana_elegir.config(background="black")
 
-            self.frame_titulo_elegir = tk.Frame(self.ventana_elegir)
-            self.frame_titulo_elegir.config(background="black")
-            self.frame_titulo_elegir.grid(row=0, column=1)
-            self.frame_botones_elegir = tk.Frame(self.ventana_elegir)
-            self.frame_botones_elegir.config(background="black")
-            self.frame_botones_elegir.grid(row=1,column=1)
 
-            self.label_elegir = tk.Label(self.frame_titulo_elegir, text="Consultorio")
-            self.label_elegir.config(font=("Candara", 48), fg="white", background="black",
-                                     image=self.imagen_titulo_pequena)
-            self.label_elegir.grid(row=0, column=1)
-
-            self.label_vacio_elegir = tk.Label(self.frame_titulo_elegir,
-                                               text="                                                         ",
-                                               background="black", font=("Candara", 30))
-            self.label_vacio_elegir2 = tk.Label(self.frame_titulo_elegir,
-                                                text="                                                         ",
-                                                background="black", font=("Candara", 30))
-            self.label_vacio_elegir.grid(row=0, column=0)
-            self.label_vacio_elegir2.grid(row=0, column=2)
-
-            self.boton_historia_medica=tk.Button(self.frame_botones_elegir, borderwidth=0,
-                                                    image=self.imagen_boton_historia_medica, background="black",
-                                                    command=self.proceso_historia_medica)
-            self.boton_resultado_examen=tk.Button(self.frame_botones_elegir, borderwidth=0, image=self.imagen_boton_resultados_examenes, background="black"
-                                                  ,command=self.proceso_resultado_examen)
-
-            self.boton_return_atender_cita = tk.Button(self.frame_botones_elegir, borderwidth=0,
-                                                           image=self.imagen_boton_volver_menu_registrar,
-                                                           background="black",
-                                                           command=self.return_elegir_a_menu)
-
-            self.boton_return_atender_cita.grid(row=3,column=2)
-            self.boton_historia_medica.grid(row=3,column=0)
-            self.boton_resultado_examen.grid(row=3,column=1)
-
-            self.ventana_elegir.mainloop()
 
 
     def proceso_historia_medica(self):
-        tk.messagebox.showinfo("Para el llenado de la historia medica del paciente", """
-        1)  Se va abrir el editor de texto.
-        2)  Editas el archivo y se guarda(Ctrl+S).
-        3)  Aparece una ventana emergente de informacion, la cierras cuando ya hayas editado el archivo.""")
+        try:
+            tk.messagebox.showinfo("Para el llenado de la historia medica del paciente", """
+            1)  Se va abrir el editor de texto.
+            2)  Editas el archivo y se guarda(Ctrl+S).
+            3)  Aparece una ventana emergente de informacion, la cierras cuando ya hayas editado el archivo.""")
 
-        os.startfile(r"C:\Users\jvald\OneDrive\Escritorio\ui\frontend\files\historia_medica.txt")
-        tk.messagebox.showinfo("Cierrame cuando hayas editado el archivo", "Cierrame cuando hayas editado el archivo")
+            os.startfile(self.RUTA_ABSOLUTA)
+            tk.messagebox.showinfo("Cierrame cuando hayas editado el archivo", "Cierrame cuando hayas editado el archivo")
 
-        historia=open("files/historia_medica.txt","r",encoding="utf-8")
-        texto_historia_medica = historia.read()
-        historia.close()
+            historia = open("files/historia_medica.txt","r",encoding="utf-8")
+            texto_historia_medica = historia.read()
+            historia.close()
 
-        historia=open("files/historia_medica.txt", "w",encoding="utf-8")
-        historia.write(UI.TEXTO_H_L)
-        historia.close()
-        diccionario={"cedula":str(self.entry_cedula_atender_cita.get()),"texto":str(texto_historia_medica)}
-        return diccionario
-
+            historia=open("files/historia_medica.txt", "w",encoding="utf-8")
+            historia.write(UI.TEXTO_H_L)
+            historia.close()
+            info_historia = [self.entry_cedula_atender_cita.get(), str(texto_historia_medica)]
+            return info_historia
+        except FileNotFoundError:
+            tk.messagebox.showwarning("Error: No se encuentra la ruta absoluta",
+                                      "Modifique la ruta absoluta en el archivo Python en UI")
 
     def proceso_resultado_examen(self):
-        tk.messagebox.showinfo("Para el llenado de los resultados de los examenes del paciente", """
+        try:
+            tk.messagebox.showinfo("Para el llenado de los resultados de los examenes del paciente", """
                 1)  Se va abrir el editor de texto.
                 2)  Editas el archivo y se guarda(Ctrl+S).
                 3)  Aparece una ventana emergente de informacion, la cierras cuando ya hallas editado el archivo.""")
-        os.startfile(r"C:\Users\jvald\OneDrive\Escritorio\ui\frontend\files\resultado_examen.txt")
-        tk.messagebox.showinfo("Cierrame cuando hallas editado el archivo", "Cierrame cuando hayas editado el archivo")
+            os.startfile(self.RUTA_ABSOLUTA_RESULTADO)
+            tk.messagebox.showinfo("Cierrame cuando hallas editado el archivo", "Cierrame cuando hayas editado el archivo")
 
-        examen = open("files/resultado_examen.txt", "r", encoding="utf-8")
-        texto_examen = examen.read()
-        examen.close()
-        examen= open("files/resultado_examen.txt", "w", encoding="utf-8")
-        examen.write(UI.TEXTO_E_M)
-        examen.close()
+            examen = open("files/resultado_examen.txt", "r", encoding="utf-8")
+            texto_examen = examen.read()
+            examen.close()
+            examen= open("files/resultado_examen.txt", "w", encoding="utf-8")
+            examen.write(UI.TEXTO_E_M)
+            examen.close()
 
+            info_examen =[self.entry_cedula_atender_cita.get(), texto_examen]
+            print(info_examen)
+        except FileNotFoundError:
+            tk.messagebox.showwarning("Error: No se encuentra la ruta absoluta",
+                                      "Modifique la ruta absoluta en el archivo Python en UI")
+        else:
+            return info_examen
 
-        diccionario = {self.entry_cedula_atender_cita.get(): texto_examen}
-        tk.messagebox.showinfo("Se ha ingresado correctamente", "La información de los resultados de los examenes medico se ingreso correctamente.")
+    def obtener_la_agenda_de_las_citas_pendientes_dia(self,controlador):
 
+        self.window.withdraw()
+        self.ventana_obtener_agenda_dia = tk.Toplevel()
+        self.ventana_obtener_agenda_dia.maxsize(1280, 720)
+        self.ventana_obtener_agenda_dia.state("zoomed")
+        self.ventana_obtener_agenda_dia.iconbitmap("images/logo_ventana.ico")
+        self.ventana_obtener_agenda_dia.geometry("1280x420")
+        self.ventana_obtener_agenda_dia.title("Obtener Agenda dia")
+        self.ventana_obtener_agenda_dia.resizable(True, True)
+        self.ventana_obtener_agenda_dia.config(background="black")
 
-        self.ventana_elegir.destroy()
-        self.ventana_atender_cita.destroy()
-        self.window.iconify()
-        self.window.state("zoomed")
+        self.frame_titulo_obtener_agenda_dia = tk.Frame(self.ventana_obtener_agenda_dia)
+        self.frame_titulo_obtener_agenda_dia.config(background="black")
+        self.frame_botones_obtener_agenda_dia = tk.Frame(self.ventana_obtener_agenda_dia)
+        self.frame_botones_obtener_agenda_dia.config(background="black")
+        self.frame_titulo_obtener_agenda_dia.grid(row=0, column=1)
+        self.frame_botones_obtener_agenda_dia.grid(row=1, column=1)
+
+        self.label_obtener_agenda_dia = tk.Label(self.frame_botones_obtener_agenda_dia, text="Consultorio")
+        self.label_obtener_agenda_dia.config(font=("Candara", 48), fg="white", background="black",
+                                       image=self.imagen_titulo_pequena)
+        self.label_obtener_agenda_dia.grid(row=0, column=1)
+
+        self.label_vacio_obtener_agenda_dia = tk.Label(self.frame_titulo_obtener_agenda_dia,
+                                                 text="                                                         ",
+                                                 background="black", font=("Candara", 30))
+        self.label_vacio_obtener_agenda_dia2 = tk.Label(self.frame_titulo_obtener_agenda_dia,
+                                                  text="                                                         ",
+                                                  background="black", font=("Candara", 30))
+        self.label_vacio_obtener_agenda_dia.grid(row=0, column=0)
+        self.label_vacio_obtener_agenda_dia2.grid(row=0, column=2)
+
+        self.dia_obtener_obtener_agenda = tk.Label(self.frame_botones_obtener_agenda_dia)
+        self.dia_obtener_obtener_agenda.config(font=("Candara", 48), fg="white", background="black",
+                                        image=self.imagen_registrar_cita_dia)
+        self.dia_obtener_obtener_agenda.grid(row=3, column=0)
+        self.mes_obtener_obtener_agenda = tk.Label(self.frame_botones_obtener_agenda_dia)
+        self.mes_obtener_obtener_agenda.config(font=("Candara", 48), fg="white", background="black",
+                                               image=self.imagen_registrar_cita_mes)
+        self.mes_obtener_obtener_agenda.grid(row=2,column=0)
+        self.entry_dia_obtener_agenda = tk.Entry(self.frame_botones_obtener_agenda_dia, font=("Arial rounded MT", 18), bd=4, width=40,
+                                                  justify="center")
+        self.entry_mes_obtener_agenda = tk.Entry(self.frame_botones_obtener_agenda_dia, font=("Arial rounded MT", 18), bd=4, width=40, justify="center")
+        self.entry_dia_obtener_agenda.grid(row=3, column=1)
+        self.entry_mes_obtener_agenda.grid(row=2, column=1)
+
+        self.boton_obtener_dia_agenda_cita = tk.Button(self.frame_botones_obtener_agenda_dia, borderwidth=0,
+                                                    image=self.imagen_boton_obtener_citas_pendientes, background="black",
+                                                    command=controlador.click_obtener_agenda_cita)
+        self.boton_obtener_dia_agenda_cita.grid(row=4, column=1)
+
+        self.boton_return_obtener_agenda = tk.Button(self.frame_botones_obtener_agenda_dia, borderwidth=0,
+                                                   image=self.imagen_boton_volver_menu_registrar,
+                                                   background="black",
+                                                   command=self.return_obtener_la_agenda_dia)
+        self.boton_return_obtener_agenda.grid(row=4, column=0)
+
+        self.ventana_obtener_agenda_dia.mainloop()
 
     def obtener_la_agenda_de_las_citas_pendientes(self):
+        try:
+            mes=str(self.entry_mes_obtener_agenda.get())
+            dia=str(self.entry_dia_obtener_agenda.get())
+            if mes.isalpha() is False:
+                raise Exception("Ingresa bien el mes")
+            if dia.isdigit() is False:
+                raise Exception("Ingresa bien el dia")
+        except Exception as error:
+            tk.messagebox.showwarning("Error",str(error))
+        else:
+            return [mes,dia]
+
+
+
+
+    def crear_ventana_mostrar_info_citas_pendientes(self,texto):
         self.window.withdraw()
-        self.ventana_citas_pendientes= tk.Toplevel()
+        self.ventana_obtener_agenda_dia.destroy()
+        self.ventana_citas_pendientes = tk.Toplevel()
         self.ventana_citas_pendientes.maxsize(1280, 820)
         self.ventana_citas_pendientes.state("zoomed")
         self.ventana_citas_pendientes.iconbitmap("images/logo_ventana.ico")
@@ -963,33 +990,31 @@ OBSERVACIONES:"""
         self.frame_title_citas_pendientes.config(background="black")
         self.frame_labels_citas_pendientes = tk.Frame(self.ventana_citas_pendientes)
         self.frame_labels_citas_pendientes.config(background="black")
-        self.frame_title_citas_pendientes.grid(row=0,column=0)
+        self.frame_title_citas_pendientes.grid(row=0, column=0)
         self.frame_labels_citas_pendientes.grid(row=1, column=0)
 
         self.label_empty_citas_pendientes = tk.Label(self.frame_title_citas_pendientes,
-                                              text="                                                         ",
-                                              background="black", font=("Candara", 30))
+                                                     text="                                                         ",
+                                                     background="black", font=("Candara", 30))
         self.label_empty_citas_pendientes2 = tk.Label(self.frame_title_citas_pendientes,
-                                               text="                                                         ",
-                                               background="black", font=("Candara", 30))
-
-        texto_citas=ciclo_obtener_texto_citas()
+                                                      text="                                                         ",
+                                                      background="black", font=("Candara", 30))
 
         self.label_title_citas_pendientes = tk.Label(self.frame_title_citas_pendientes, text="doctor's office")
         self.label_title_citas_pendientes.config(font=("Candara", 48), fg="white", background="black",
-                                    image=self.imagen_boton_obtener_citas_pendientes)
+                                                 image=self.imagen_boton_obtener_citas_pendientes)
 
-        self.label_citas_pendientes= tk.Label(self.frame_labels_citas_pendientes, text=str(texto_citas))
-        self.label_citas_pendientes.config(font=("Arial rounded MT", 11), fg="white", background="black")
+        self.label_citas_pendientes = tk.Label(self.frame_labels_citas_pendientes,
+                                               text=texto)
+        self.label_citas_pendientes.config(font=("Arial rounded MT", 22), fg="white", background="black")
 
         self.boton_return_citas_pendientes = tk.Button(self.frame_labels_citas_pendientes, borderwidth=0,
-                                                   image=self.imagen_boton_volver_menu_registrar,
-                                                   background="black",
-                                                   command=self.return_citas_pendientes_a_menu)
+                                                       image=self.imagen_boton_volver_menu_registrar,
+                                                       background="black",
+                                                       command=self.return_citas_pendientes_a_menu)
         self.boton_return_citas_pendientes.grid(row=3, column=1)
 
-
-        self.label_citas_pendientes.grid(row=1,column=1)
+        self.label_citas_pendientes.grid(row=1, column=1)
         self.label_empty_citas_pendientes.grid(row=0, column=0)
         self.label_title_citas_pendientes.grid(row=0, column=1)
         self.label_empty_citas_pendientes2.grid(row=0, column=2)
@@ -1030,6 +1055,10 @@ OBSERVACIONES:"""
 
     def return_citas_pendientes_a_menu(self):
         self.ventana_citas_pendientes.destroy()
+        self.window.iconify()
+        self.window.state("zoomed")
+    def return_obtener_la_agenda_dia(self):
+        self.ventana_obtener_agenda_dia.destroy()
         self.window.iconify()
         self.window.state("zoomed")
 
@@ -1114,7 +1143,7 @@ OBSERVACIONES:"""
         historia.write("pepo")
         historia.close()
 
-        os.startfile(r"C:\Users\jvald\PycharmProjects\Interfazz\frontend\files\historia_medica.txt")
+        os.startfile(self.RUTA_ABSOLUTA)
         tk.messagebox.showinfo("Cierrame cuando hayas leido el archivo", "Cierrame cuando hayas leido el archivo")
         historia = open("files/historia_medica.txt", "w", encoding="utf-8")
         historia.write(UI.TEXTO_H_L)
@@ -1127,20 +1156,60 @@ OBSERVACIONES:"""
     def excepcion(self,texto:str):
         tk.messagebox.showerror(texto,texto)
 
+    def ventana_elegir_atender_cita(self,controlador):
+        self.ventana_atender_cita.withdraw()
+        self.ventana_elegir = tk.Toplevel()
+
+        self.ventana_elegir.maxsize(1280, 720)
+        self.ventana_elegir.state("zoomed")
+        self.ventana_elegir.iconbitmap("images/logo_ventana.ico")
+        self.ventana_elegir.geometry("720x420")
+        self.ventana_elegir.title("Elegir Tipo de examen")
+        self.ventana_elegir.resizable(True, True)
+        self.ventana_elegir.config(background="black")
+
+        self.frame_titulo_elegir = tk.Frame(self.ventana_elegir)
+        self.frame_titulo_elegir.config(background="black")
+        self.frame_titulo_elegir.grid(row=0, column=1)
+        self.frame_botones_elegir = tk.Frame(self.ventana_elegir)
+        self.frame_botones_elegir.config(background="black")
+        self.frame_botones_elegir.grid(row=1, column=1)
+
+        self.label_elegir = tk.Label(self.frame_titulo_elegir, text="Consultorio")
+        self.label_elegir.config(font=("Candara", 48), fg="white", background="black",
+                                 image=self.imagen_titulo_pequena)
+        self.label_elegir.grid(row=0, column=1)
+
+        self.label_vacio_elegir = tk.Label(self.frame_titulo_elegir,
+                                           text="                                                         ",
+                                           background="black", font=("Candara", 30))
+        self.label_vacio_elegir2 = tk.Label(self.frame_titulo_elegir,
+                                            text="                                                         ",
+                                            background="black", font=("Candara", 30))
+        self.label_vacio_elegir.grid(row=0, column=0)
+        self.label_vacio_elegir2.grid(row=0, column=2)
+
+        self.boton_historia_medica = tk.Button(self.frame_botones_elegir, borderwidth=0,
+                                               image=self.imagen_boton_historia_medica, background="black",
+                                               command=controlador.click_historia_clinica_atender_cita)
+        self.boton_resultado_examen = tk.Button(self.frame_botones_elegir, borderwidth=0,
+                                                image=self.imagen_boton_resultados_examenes, background="black"
+                                                , command=controlador.click_examen_resultados_atender_cita)
+
+        self.boton_return_atender_cita = tk.Button(self.frame_botones_elegir, borderwidth=0,
+                                                   image=self.imagen_boton_volver_menu_registrar,
+                                                   background="black",
+                                                   command=self.return_elegir_a_menu)
+
+        self.boton_return_atender_cita.grid(row=3, column=2)
+        self.boton_historia_medica.grid(row=3, column=0)
+        self.boton_resultado_examen.grid(row=3, column=1)
+
+        self.ventana_elegir.mainloop()
 
 
-def ciclo_obtener_texto_citas():
 
-    text: str = ""
-    text_acumulado:str=""
-    citas_pacientes_no_atendidos = {"0": ["1000204245", "Juan Esteban" ], "1": ["1000203456","Pepito"]}
 
-    for cita in citas_pacientes_no_atendidos:
-        text = (f"La identificacion de la cita es : {cita} -> El nombre del paciente es : {citas_pacientes_no_atendidos[cita][1]} -> "
-                f"y la cedula del paciente es : {citas_pacientes_no_atendidos[cita][0]}\n")
-        text_acumulado += text + "\n"
-
-    return text_acumulado
 
 def ciclo_obtener_historial_medico_paciente():
 
@@ -1153,10 +1222,6 @@ def ciclo_obtener_historial_medico_paciente():
         text_acumulado += valor + "\n"
 
     return text_acumulado
-
-
-
-
 
 
 
