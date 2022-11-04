@@ -109,6 +109,19 @@ OBSERVACIONES:"""
 
     def __init__(self):
 
+        self.boton_marcar_user = None
+        self.entry_id_marcar = None
+        self.cedula_marcar = None
+        self.label_vacio_marcar2 = None
+        self.label_vacio_marcar = None
+        self.label_marcar = None
+        self.frame_buttons_marcar = None
+        self.frame_title_marcar = None
+        self.ventana_marcar = None
+        self.boton_resultado_examen = None
+        self.boton_historia_medica = None
+        self.label_vacio_elegir2 = None
+        self.label_vacio_elegir = None
         self.label_elegir = None
         self.frame_botones_elegir = None
         self.frame_titulo_elegir = None
@@ -521,25 +534,27 @@ OBSERVACIONES:"""
         self.window.state("zoomed")
 
     def finalizar_confirmar(self):
-        tk.messagebox.showinfo("Confirmación", " la confirmación de la cita se hizo sin problemas.")
+        tk.messagebox.showinfo("Confirmación", " La confirmación de la cita se hizo sin problemas.")
         self.ventana_confirmar_cita.destroy()
         self.window.iconify()
         self.window.state("zoomed")
 
     def finalizar_cancelar_cita(self):
-        tk.messagebox.showinfo("Cancelación", " la eliminación de la cita se hizo sin problemas.")
+        tk.messagebox.showinfo("Cancelación", " La eliminación de la cita se hizo sin problemas.")
         self.ventana_cancelar_cita.destroy()
         self.window.iconify()
         self.window.state("zoomed")
 
     def finalizar_atender_cita(self):
+        tk.messagebox.showinfo("Se ha guardado correctamente la información",
+                               " El registro de la información se hizo sin problemas.")
         self.ventana_elegir.destroy()
         self.ventana_atender_cita.destroy()
         self.window.iconify()
         self.window.state("zoomed")
 
     def finalizar_marcar_cita(self):
-        tk.messagebox.showinfo("Marcar", "El paciente se marco sin ningún problema")
+        tk.messagebox.showinfo("Marcar", "El paciente se marcó sin ningún problema")
         self.ventana_marcar.destroy()
         self.window.iconify()
         self.window.state("zoomed")
@@ -1278,8 +1293,9 @@ OBSERVACIONES:"""
                                                image=self.imagen_boton_historia_medica, background="black",
                                                command=controlador.click_historia_clinica_atender_cita)
         self.boton_resultado_examen = tk.Button(self.frame_botones_elegir, borderwidth=0,
-                                                image=self.imagen_boton_resultados_examenes, background="black"
-                                                , command=controlador.click_examen_resultados_atender_cita)
+                                                image=self.imagen_boton_resultados_examenes,
+                                                background="black", 
+                                                command=controlador.click_examen_resultados_atender_cita)
 
         self.boton_return_atender_cita = tk.Button(self.frame_botones_elegir, borderwidth=0,
                                                    image=self.imagen_boton_volver_menu_registrar,
