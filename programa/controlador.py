@@ -42,21 +42,21 @@ class Controlador:
     def click_obtener_asignar_cita(self):
         datos = self.vista.get_info_registrar_medical_appointment()
         try:
-            self.modelo.asignar_cita(datos["cedula"], datos["mes"], datos["dia"], datos["hora"],datos["tipo_ecografia"])
+            self.modelo.asignar_cita(datos["cedula"], datos["mes"], datos["dia"], datos["hora"], datos["tipo_ecografia"])
         except UsuarioNoRegistradoError:
-            self.vista.excepcion("El Usuario no existe.")
+            self.vista.excepcion("La cédula ingresada no está registrada.")
         except PacienteYaTieneCitaError:
             self.vista.excepcion("El Paciente ya tiene una cita asignada.")
         except MesNoValidoError:
-            self.vista.excepcion("Ingresaste un mes no valido.")
+            self.vista.excepcion("Ingresaste un mes no válido.")
         except DiaNoValidoError:
-            self.vista.excepcion("Ingresaste un dia no vaSlido.")
+            self.vista.excepcion("Ingresaste un dia no válido.")
         except HoraNoValidaError:
-            self.vista.excepcion("Ingresaste una hora no valida.")
+            self.vista.excepcion("Ingresaste una hora no válida.")
         except HoraIndicadaYaOcupadaError:
-            self.vista.excepcion("La cita en esta hora ya se encuentra ocupada.")
+            self.vista.excepcion("La hora indicada ya se encuentra ocupada.")
         except EcografiaIncorrectaError:
-            self.vista.excepcion("La Ecografia no esta bien ingresada")
+            self.vista.excepcion("La Ecografía no está bien ingresada")
         else:
             self.vista.finalizar_registrar_cita()
 
@@ -78,7 +78,7 @@ class Controlador:
         self.vista.delete_medical_appointment(self)
 
     def click_obtener_cancelar_cita(self):
-        cedula = self.vista.get_info_registrar_medical_appointment()
+        cedula = self.vista.get_info_cancelar_cita()
         try:
             self.modelo.cancelar_cita(cedula)
         except UsuarioNoRegistradoError:
@@ -93,12 +93,50 @@ class Controlador:
         self.vista.atender_cita_medica(self)
 
     def click_obtener_atender_cita(self):
-        datos = self.vista.proceso_historia_medica()
-        try:
-            self.modelo.atender_cita(datos["cedula"], datos["texto"])
-        except UsuarioNoRegistradoError:
+
+        cedula= self.vista.get_info_atender_cita()
+        if not self.modelo.usuario_existe(cedula):
             self.vista.excepcion("El Usuario no esta registrado")
+        else:
+            self.crear_ventana_elegir_atender_cita()
+
+
+
+    def crear_ventana_elegir_atender_cita(self):
+        self.vista.ventana_elegir_atender_cita(self)
+
+    def click_historia_clinica_atender_cita(self):
+        historia=self.vista.proceso_historia_medica()
+        try:
+            self.modelo.atender_cita(historia[0],historia[1])
         except PacienteNoTieneCitaError:
-            self.vista.excepcion("El Usuario no tiene cita")
+            self.vista.excepcion("El paciente no tiene cita asignada")
+
         else:
             self.vista.finalizar_atender_cita()
+
+    def click_examen_resultados_atender_cita(self):
+        examen=self.vista.proceso_resultado_examen()
+        try:
+            self.modelo.atender_cita(examen[0],examen[1])
+        except PacienteNoTieneCitaError:
+            self.vista.excepcion("El paciente no tiene cita asignada")
+        else:
+            self.vista.finalizar_atender_cita()
+
+    def click_obtener_agenda_cita(self):
+        lista_mes_dia = self.vista.obtener_la_agenda_de_las_citas_pendientes()
+        try:
+            tupla_citas = self.modelo.obtener_agenda_dia(lista_mes_dia[0], int(lista_mes_dia[1]))
+        except MesNoValidoError:
+            self.vista.excepcion("El mes ingresado no es válido")
+        except DiaNoValidoError:
+            self.vista.excepcion("El día ingresado no es válido")
+        except FechaSinCitasError:
+            self.vista.excepcion("La fecha ingresada no tiene citas")
+        else:
+            return self.modelo.traducir_tupla(tupla_citas)
+
+    def click_obtener_agenda_cita_dia(self):
+        self.vista.obtener_la_agenda_de_las_citas_pendientes_dia(self)
+        
