@@ -135,10 +135,11 @@ class Controlador:
         except FechaSinCitasError:
             self.vista.excepcion("La fecha ingresada no tiene citas")
         else:
-            return self.modelo.traducir_tupla(tupla_citas)
+            txt = self.modelo.traducir_tupla(tupla_citas)
+            self.vista.crear_ventana_mostrar_info_citas_pendientes(txt)
+
+
 
     def click_obtener_agenda_cita_dia(self):
         self.vista.obtener_la_agenda_de_las_citas_pendientes_dia(self)
-
-
 

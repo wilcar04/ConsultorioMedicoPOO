@@ -103,8 +103,8 @@ TIPO DE EXAMEN:
 
 
 OBSERVACIONES:"""
-    RUTA_ABSOLUTA = r"C:\Users\Wilson\Desktop\ConsultorioMedicoPOO\programa\files\historia_medica.txt"
-    RUTA_ABSOLUTA_RESULTADO = r"C:\Users\Wilson\Desktop\ConsultorioMedicoPOO\programa\files\resultado_examen.txt"
+    RUTA_ABSOLUTA = r"C:\Users\jvald\OneDrive\Escritorio\ConsultorioMedicoPOO\programa\files\historia_medica.txt"
+    RUTA_ABSOLUTA_RESULTADO = r"C:\Users\jvald\OneDrive\Escritorio\ConsultorioMedicoPOO\programa\files\resultado_examen.txt"
     def __init__(self):
 
         self.imagen_boton_atender_paciente = None
@@ -975,7 +975,7 @@ OBSERVACIONES:"""
 
 
 
-    def crear_ventana_mostrar_info_citas_pendientes(self):
+    def crear_ventana_mostrar_info_citas_pendientes(self,texto):
         self.window.withdraw()
         self.ventana_obtener_agenda_dia.destroy()
         self.ventana_citas_pendientes = tk.Toplevel()
@@ -1005,8 +1005,8 @@ OBSERVACIONES:"""
                                                  image=self.imagen_boton_obtener_citas_pendientes)
 
         self.label_citas_pendientes = tk.Label(self.frame_labels_citas_pendientes,
-                                               text="HOLLLLLLLAAAAAAAAAAAAAAAAAAAAAAAA")
-        self.label_citas_pendientes.config(font=("Arial rounded MT", 11), fg="white", background="black")
+                                               text=texto)
+        self.label_citas_pendientes.config(font=("Arial rounded MT", 22), fg="white", background="black")
 
         self.boton_return_citas_pendientes = tk.Button(self.frame_labels_citas_pendientes, borderwidth=0,
                                                        image=self.imagen_boton_volver_menu_registrar,
@@ -1132,7 +1132,7 @@ OBSERVACIONES:"""
 
         self.ventana_historial_paciente.mainloop()
 
-    def mostrar_info_historial_paciente(self):
+    def get_info_historial_paciente(self):
         self.ventana_historial_paciente.withdraw()
         tk.messagebox.showinfo("Visualización de la ultima historia medica del paciente", """
                1)  Se va abrir el editor de texto.
@@ -1209,22 +1209,7 @@ OBSERVACIONES:"""
 
 
 
-def ciclo_obtener_texto_citas():
 
-    text: str = ""
-    text_acumulado:str=""
-    citas_pacientes_no_atendidos = {"23":[["Juanes","1000204245"],["Pedro","1000203456"]],}
-    lista_dia=list(citas_pacientes_no_atendidos.keys())
-    dia=lista_dia[0]
-
-
-
-    for cita in citas_pacientes_no_atendidos.values():
-        text = (f"El dia  de la cita es : {dia} -> El nombre del paciente es : {cita[0]} -> "
-                f"y la cedula del paciente es : {cita[1]}\n")
-        text_acumulado += text + "\n"
-
-    return text_acumulado
 
 def ciclo_obtener_historial_medico_paciente():
 
@@ -1237,11 +1222,6 @@ def ciclo_obtener_historial_medico_paciente():
         text_acumulado += valor + "\n"
 
     return text_acumulado
-
-
-
-
-
 
 
 
