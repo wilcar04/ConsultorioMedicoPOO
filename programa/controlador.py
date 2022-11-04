@@ -4,7 +4,7 @@ from exceptions import *
 
 
 class Controlador:
-    def __init__(self, vista: UI, modelo: Consultorio):
+    def _init_(self, vista: UI, modelo: Consultorio):
         self.vista: UI = vista
         self.modelo: Consultorio = modelo
 
@@ -100,26 +100,23 @@ class Controlador:
         else:
             self.crear_ventana_elegir_atender_cita()
 
-
-
     def crear_ventana_elegir_atender_cita(self):
         self.vista.ventana_elegir_atender_cita(self)
 
     def click_historia_clinica_atender_cita(self):
-        historia=self.vista.proceso_historia_medica()
+        historia = self.vista.proceso_historia_medica()
         try:
-            self.modelo.atender_cita(historia[0],historia[1])
+            self.modelo.atender_cita(historia[0], historia[1])
         except PacienteNoTieneCitaError:
             self.vista.excepcion("El paciente no tiene cita asignada")
 
         else:
             self.vista.finalizar_atender_cita()
 
-
     def click_examen_resultados_atender_cita(self):
-        examen=self.vista.proceso_resultado_examen()
+        examen = self.vista.proceso_resultado_examen()
         try:
-            self.modelo.atender_cita(examen[0],examen[1])
+            self.modelo.atender_cita(examen[0], examen[1])
         except PacienteNoTieneCitaError:
             self.vista.excepcion("El paciente no tiene cita asignada")
         else:
@@ -129,7 +126,20 @@ class Controlador:
         self.vista.obtener_la_agenda_de_las_citas_pendientes_dia(self)
 
     def click_obtener_agenda_cita_dia(self):
-        self.vista.obtener_la_agenda_de_las_citas_pendientes()
+        mes, dia = self.vista.obtener_la_agenda_de_las_citas_pendientes()
+        try:
+            tupla_citas = self.modelo.obtener_agenda_dia(mes, int(dia))
+        except MesNoValidoError:
+            self.vista.excepcion("El mes ingresado no es válido")
+        except DiaNoValidoError:
+            self.vista.excepcion("El día ingresado no es válido")
+        except FechaSinCitasError:
+            self.vista.excepcion("La fecha ingresada no tiene citas")
+        else:
+            return self.modelo.traducir_tupla(tupla_citas)
+
+
+
 
 
 

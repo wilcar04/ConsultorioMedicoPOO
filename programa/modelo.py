@@ -285,6 +285,16 @@ class Consultorio:
                 agenda_organizada.append(None)
         return tuple(agenda_organizada)
 
+    def traducir_tupla(self, tupla_citas) -> str:
+        texto = ""
+        for i in range(len(tupla_citas)):
+            texto += f"{self.HORA_INICIAL + i}: "
+            if tupla_citas[i] is None:
+                texto += "Cita disponible\n"
+            else:
+                texto += f"{tupla_citas[i][0]}\n"
+        return texto[:-1]
+
     # Requisitos de programa:
 
     def registrar_ususario(self, cedula: str, nombre: str, sexo: str, fecha_nacimiento: str, celular: str):
