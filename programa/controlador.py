@@ -17,7 +17,8 @@ class Controlador:
     def click_obtener_registrar_usuario(self):
         datos = self.vista.get_info_registrar()
         try:
-            self.modelo.registrar_ususario(datos["id"], datos["name"], datos["gender"], datos["date"], datos["cel_get_info"])
+            self.modelo.registrar_ususario(datos["id"], datos["name"], datos["gender"], datos["date"],
+                                           datos["cel_get_info"])
         except UsuarioYaRegistradoError:
             self.vista.excepcion("Usuario ya registrado")
         else:
@@ -42,7 +43,8 @@ class Controlador:
     def click_obtener_asignar_cita(self):
         datos = self.vista.get_info_registrar_medical_appointment()
         try:
-            self.modelo.asignar_cita(datos["cedula"], datos["mes"], datos["dia"], datos["hora"], datos["tipo_ecografia"])
+            self.modelo.asignar_cita(datos["cedula"], datos["mes"], datos["dia"], datos["hora"],
+                                     datos["tipo_ecografia"])
         except UsuarioNoRegistradoError:
             self.vista.excepcion("La cédula ingresada no está registrada.")
         except PacienteYaTieneCitaError:
@@ -94,21 +96,19 @@ class Controlador:
 
     def click_obtener_atender_cita(self):
 
-        cedula= self.vista.get_info_atender_cita()
+        cedula = self.vista.get_info_atender_cita()
         if not self.modelo.usuario_existe(cedula):
             self.vista.excepcion("El Usuario no esta registrado")
         else:
             self.crear_ventana_elegir_atender_cita()
 
-
-
     def crear_ventana_elegir_atender_cita(self):
         self.vista.ventana_elegir_atender_cita(self)
 
     def click_historia_clinica_atender_cita(self):
-        historia=self.vista.proceso_historia_medica()
+        historia = self.vista.proceso_historia_medica()
         try:
-            self.modelo.atender_cita(historia[0],historia[1])
+            self.modelo.atender_cita(historia[0], historia[1])
         except PacienteNoTieneCitaError:
             self.vista.excepcion("El paciente no tiene cita asignada")
 
@@ -116,9 +116,9 @@ class Controlador:
             self.vista.finalizar_atender_cita()
 
     def click_examen_resultados_atender_cita(self):
-        examen=self.vista.proceso_resultado_examen()
+        examen = self.vista.proceso_resultado_examen()
         try:
-            self.modelo.atender_cita(examen[0],examen[1])
+            self.modelo.atender_cita(examen[0], examen[1])
         except PacienteNoTieneCitaError:
             self.vista.excepcion("El paciente no tiene cita asignada")
         else:
@@ -138,8 +138,6 @@ class Controlador:
             txt = self.modelo.traducir_tupla(tupla_citas)
             self.vista.crear_ventana_mostrar_info_citas_pendientes(txt)
 
-
-
     def click_obtener_agenda_cita_dia(self):
         self.vista.obtener_la_agenda_de_las_citas_pendientes_dia(self)
 
@@ -148,8 +146,8 @@ class Controlador:
 
     def click_obtener_ultima_historia_medica(self):
         try:
-            cedula=self.vista.get_info_historial_paciente()
-            historial_paciente=self.modelo.obtener_historial_paciente(cedula)
+            cedula = self.vista.get_info_historial_paciente()
+            historial_paciente = self.modelo.obtener_historial_paciente(cedula)
         except UsuarioNoRegistradoError:
             self.vista.excepcion("El usuario no esta registrado")
         except PacienteSinHistorialError:
@@ -158,18 +156,15 @@ class Controlador:
             self.vista.ventana_historial_paciente.destroy()
             self.vista.mostrar_ultimo_examen(historial_paciente)
             self.vista.finalizar_historia_medica()
+
     def click_obtener_marcar_paciente_cedula(self):
         self.vista.marcar_paciente(self)
 
     def click_marcar_paciente(self):
         try:
-            cedula= self.vista.get_cedula_marcar()
+            cedula = self.vista.get_cedula_marcar()
             self.modelo.marcar_paciente(cedula)
         except UsuarioNoRegistradoError:
             self.vista.excepcion("El paciente no se encuentra registrado")
         else:
             self.vista.finalizar_marcar_cita()
-
-
-
-
