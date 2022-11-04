@@ -233,6 +233,7 @@ OBSERVACIONES:"""
         self.imagen_registrar_cita_dia= tk.PhotoImage(file="images/registrar_cita_dia.png")
         self.imagen_registrar_cita_hora= tk.PhotoImage(file="images/registrar_cita_hora.png")
         self.imagen_registrar_cita_ecografia= tk.PhotoImage(file="images/registra_cita_ecografia.png")
+        self.imagen_marcar_paciente= tk.PhotoImage(file="images/btn_marcar_paciente.png")
 
 
         self.imagen_titulo = self.imagen_titulo.subsample(2)
@@ -289,6 +290,8 @@ OBSERVACIONES:"""
         self.boton_7.config(font="Candara",fg="white",background="black")
         self.boton_8 = tk.Button(self.frame_botones,image=self.imagen_boton_historial_paciente,command=controlador.click_obtener_historial_paciente_cedula,borderwidth=0)
         self.boton_8.config(fg="white",background="black")
+        self.boton_9 = tk.Button(self.frame_botones,image=self.imagen_marcar_paciente, command=controlador.click_obtener_marcar_paciente_cedula, borderwidth=0 )
+        self.boton_9.config(font="Candara", fg="white", background="black")
 
 
 
@@ -301,6 +304,7 @@ OBSERVACIONES:"""
         self.boton_6.grid(row=1, column=2)
         self.boton_7.grid(row=2, column=0)
         self.boton_8.grid(row=2,column=1)
+        self.boton_9.grid(row=2,column=2)
 
 
         self.window.mainloop()
@@ -460,6 +464,15 @@ OBSERVACIONES:"""
         self.ventana_atender_cita.destroy()
         self.window.iconify()
         self.window.state("zoomed")
+    def finalizar_marcar_cita(self):
+        tk.messagebox.showinfo("Marcar","El paciente se marco sin ningún problema")
+        self.ventana_marcar.destroy()
+        self.window.iconify()
+        self.window.state("zoomed")
+
+    def finalizar_historia_medica(self):
+        self.window.iconify()
+        self.window.state("zoomed")
 
 
 
@@ -516,12 +529,10 @@ OBSERVACIONES:"""
     def delete_user(self):
         try:
             cedula = str(self.entry_id.get())
-            hay_patient = True  # Este valor se cambia en el backend para la excepcion ("No se encuentra paciente")
             if cedula.isdigit() is False:
                 raise Exception("La cedula es un numero, ingresa el numero nuevamente.")
 
-            if hay_patient is False:
-                raise Exception("No se encuentra el paciente")
+
         except Exception as error:
             tk.messagebox.showwarning("Error", str(error))
         else:
@@ -1075,6 +1086,11 @@ OBSERVACIONES:"""
         self.window.iconify()
         self.window.state("zoomed")
 
+    def return_marcar_a_menu(self):
+        self.ventana_marcar.destroy()
+        self.window.iconify()
+        self.window.state("zoomed")
+
 
     def historial_paciente(self,controlador):
         self.window.withdraw()
@@ -1205,37 +1221,91 @@ OBSERVACIONES:"""
 
 
 
-def ciclo_obtener_historial_medico_paciente():
+
+    def mostrar_ultimo_examen(self,texto):
+        tk.messagebox.showinfo("Visualización de la ultima historia medica del paciente", """
+            1)  Se va abrir el editor de texto.
+            2)  lees el archivo y se guarda(Ctrl+S).
+            3)  Aparece una ventana emergente de informacion, la cierras cuando ya hayas leido el archivo.""")
+
+        historia = open("files/historia_medica.txt", "w", encoding="utf-8")
+        historia.write(texto)
+        historia.close()
+
+        os.startfile(self.RUTA_ABSOLUTA)
+        tk.messagebox.showinfo("Cierrame cuando hayas leido el archivo", "Cierrame cuando hayas leido el archivo")
+        historia = open("files/historia_medica.txt", "w", encoding="utf-8")
+        historia.write(UI.TEXTO_H_L)
+        historia.close()
+
+        tk.messagebox.showinfo("Ya finalizaste la lectura de la ultima historia medica",
+                           "No hubo problemas.")
+
+    def marcar_paciente(self, controlador):
+        self.window.withdraw()
+        self.ventana_marcar = tk.Toplevel()
+        self.ventana_marcar.maxsize(1280, 420)
+        self.ventana_marcar.state("zoomed")
+        self.ventana_marcar.iconbitmap("images/logo_ventana.ico")
+        self.ventana_marcar.geometry("720x420")
+        self.ventana_marcar.title("Eliminar")
+        self.ventana_marcar.resizable(True, True)
+        self.ventana_marcar.config(background="black")
+
+        self.frame_title_marcar = tk.Frame(self.ventana_marcar)
+        self.frame_title_marcar.config(background="black")
+        self.frame_buttons_marcar = tk.Frame(self.ventana_marcar)
+        self.frame_buttons_marcar.config(background="black")
+        self.frame_title_marcar.grid(row=0, column=1)
+        self.frame_buttons_marcar.grid(row=1, column=1)
+
+        self.label_marcar = tk.Label(self.frame_title_marcar, text="Consultorio")
+        self.label_marcar.config(font=("Candara", 48), fg="white", background="black",
+                                 image=self.imagen_titulo_pequena)
+        self.label_marcar.grid(row=0, column=1)
+
+        self.label_vacio_marcar = tk.Label(self.frame_title_marcar,
+                                             text="                                                         ",
+                                             background="black", font=("Candara", 30))
+        self.label_vacio_marcar2 = tk.Label(self.frame_title_marcar,
+                                              text="                                                         ",
+                                              background="black", font=("Candara", 30))
+        self.label_vacio_marcar.grid(row=0, column=0)
+        self.label_vacio_marcar2.grid(row=0, column=2)
+
+        self.cedula_marcar = tk.Label(self.frame_buttons_marcar)
+        self.cedula_marcar.config(font=("Candara", 48), fg="white", background="black",
+                                    image=self.imagen_boton_registrar_cedula)
+        self.cedula_marcar.grid(row=2, column=0)
+        self.entry_id_marcar = tk.Entry(self.frame_buttons_marcar, font=("Arial rounded MT", 18), bd=4, width=30,
+                                 justify="center")
+        self.entry_id_marcar.grid(row=2, column=1)
+        self.boton_marcar_user = tk.Button(self.frame_buttons_marcar, borderwidth=0,
+                                             image=self.imagen_marcar_paciente, background="black",
+                                             command=controlador.click_marcar_paciente)
+        self.boton_marcar_user.grid(row=3, column=1)
+
+        self.button_return = tk.Button(self.frame_buttons_marcar, borderwidth=0,
+                                       image=self.imagen_boton_volver_menu_registrar, background="black",
+                                       command=self.return_marcar_a_menu)
+        self.button_return.grid(row=3, column=0)
+
+        self.ventana_marcar.mainloop()
+
+    def get_cedula_marcar(self):
+        try:
+            cedula = str(self.entry_id_marcar.get())
+
+            if cedula.isdigit() is False:
+                raise Exception("La cedula es un numero, ingresa el numero nuevamente.")
+
+        except Exception as error:
+            tk.messagebox.showwarning("Error", str(error))
+        else:
+            return cedula
 
 
-    text_acumulado:str=""
-    historial_paciente = ["Fecha",str(UI.TEXTO_H_L)]
-    valor_acumulado=""
-    for valor in historial_paciente:
 
-        text_acumulado += valor + "\n"
-
-    return text_acumulado
-
-
-# def nose():
-#     tk.messagebox.showinfo("Visualización de la ultima historia medica del paciente", """
-#            1)  Se va abrir el editor de texto.
-#            2)  lees el archivo y se guarda(Ctrl+S).
-#            3)  Aparece una ventana emergente de informacion, la cierras cuando ya hayas leido el archivo.""")
-#
-#     historia = open("files/historia_medica.txt", "w", encoding="utf-8")
-#     historia.write("pepo")
-#     historia.close()
-#
-#     os.startfile(self.RUTA_ABSOLUTA)
-#     tk.messagebox.showinfo("Cierrame cuando hayas leido el archivo", "Cierrame cuando hayas leido el archivo")
-#     historia = open("files/historia_medica.txt", "w", encoding="utf-8")
-#     historia.write(UI.TEXTO_H_L)
-#     historia.close()
-#
-#     tk.messagebox.showinfo("Ya finalizaste la lectura de la ultima historia medica",
-#                            "No hubo problemas.")
 
 
 

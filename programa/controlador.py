@@ -156,4 +156,20 @@ class Controlador:
             self.vista.excepcion("El paciente no tiene historia medica")
         else:
             self.vista.ventana_historial_paciente.destroy()
-            print(f"La fecha de la historia clinica es {historial_paciente}")
+            self.vista.mostrar_ultimo_examen(historial_paciente)
+            self.vista.finalizar_historia_medica()
+    def click_obtener_marcar_paciente_cedula(self):
+        self.vista.marcar_paciente(self)
+
+    def click_marcar_paciente(self):
+        try:
+            cedula= self.vista.get_cedula_marcar()
+            self.modelo.marcar_paciente(cedula)
+        except UsuarioNoRegistradoError:
+            self.vista.excepcion("El paciente no se encuentra registrado")
+        else:
+            self.vista.finalizar_marcar_cita()
+
+
+
+
