@@ -126,7 +126,11 @@ class Controlador:
             self.vista.finalizar_atender_cita()
 
     def click_obtener_agenda_cita(self):
-        self.vista.obtener_la_agenda_de_las_citas_pendientes_dia(self)
+        lista_mes_dia=self.vista.obtener_la_agenda_de_las_citas_pendientes_dia(self)
+        mes=lista_mes_dia[0]
+        dia=lista_mes_dia[1]
+
+
 
     def click_obtener_agenda_cita_dia(self):
         self.vista.obtener_la_agenda_de_las_citas_pendientes()
