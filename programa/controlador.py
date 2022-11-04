@@ -133,6 +133,7 @@ class Controlador:
 
 
 
+
     def click_obtener_agenda_cita_dia(self):
         self.vista.obtener_la_agenda_de_las_citas_pendientes_dia(self)
 

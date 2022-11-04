@@ -1,6 +1,6 @@
 import datetime
 from abc import ABC, abstractmethod
-from typing import Optional, Type
+from typing import Optional, Type, Tuple
 from exceptions import *
 
 
@@ -151,11 +151,11 @@ class AgendaDiaria:
         self.citas: dict[datetime.time, Cita] = {}
 
     @staticmethod
-    def cedula_paciente_por_cita(lista_citas: list[Cita]) -> list[Type[tuple]]:
+    def cedula_paciente_por_cita(lista_citas: list[Cita]) -> list[tuple]:
         lista_cedulas_con_citas = []
         for cita in lista_citas:
             cedula = cita.cedula_paciente
-            lista_cedulas_con_citas.append(tuple[cedula, cita])
+            lista_cedulas_con_citas.append((cedula, cita))
         return lista_cedulas_con_citas
 
     def hora_disponible(self, hora: datetime.time) -> bool:
@@ -209,7 +209,7 @@ class Agenda:
     def lista_citas_en_fecha(self, fecha: datetime.date) -> list[Cita]:
         return self.agendas_diarias[fecha].lista_citas()
 
-    def cedula_paciente_por_cita(self, fecha: datetime.date, lista_citas: list[Cita]) -> list[Type[tuple]]:
+    def cedula_paciente_por_cita(self, fecha: datetime.date, lista_citas: list[Cita]) -> list[tuple]:
         return self.agendas_diarias[fecha].cedula_paciente_por_cita(lista_citas)
 
     def obtener_horas(self, fecha: datetime.date) -> list[datetime.time]:
@@ -264,15 +264,15 @@ class Consultorio:
     def buscar_paciente(self, cedula: str) -> Paciente:
         return self.pacientes[cedula]
 
-    def informacion_paciente_por_cita(self, lista_cedulas_con_citas: list[Type[tuple]]) -> list[Type[tuple]]:
+    def informacion_paciente_por_cita(self, lista_cedulas_con_citas: list[tuple]) -> list[tuple]:
         informacion = []
         for cedula, cita in lista_cedulas_con_citas:
             paciente = self.buscar_paciente(cedula)
-            informacion.append(tuple[str(paciente), str(cita)])
+            informacion.append((str(paciente), str(cita)))
         return informacion
 
     def organizar_agenda(self, lista_horas: list[datetime.time],
-                         lista_informacion: list[Type[tuple]]) -> tuple[Optional[Type[tuple]]]:
+                         lista_informacion: list[tuple]) -> tuple[tuple | None, ...]:
         agenda_organizada = []
         for hora in range(self.HORA_INICIAL, self.HORA_FINAL + 1):
             for hora_cita in lista_horas:
@@ -376,7 +376,7 @@ class Consultorio:
         else:
             raise UsuarioNoRegistradoError
 
-    def obtener_agenda_dia(self, mes: str, dia: int) -> tuple[Optional[Type[tuple]]]:
+    def obtener_agenda_dia(self, mes: str, dia: int) -> tuple[tuple | None, ...]:
         numero_mes = self.obtener_numero_mes(mes)
         if numero_mes is None:
             raise MesNoValidoError
